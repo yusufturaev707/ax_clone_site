@@ -47,4 +47,4 @@ if settings.DEBUG:
     # ... media fayllar
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-handler404 = '/ax_clone_site/user_app.views.error_404'
+handler404 = 'user_app.views.error_404'
