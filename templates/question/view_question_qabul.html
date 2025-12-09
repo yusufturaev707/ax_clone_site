@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal fade viewArticleFont" id="view_question_qabul_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ question.number }}</h5>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-overflow">
+                    <tr>
+                        <td><b>{% trans "ID:" %}</b></td>
+                        <td>{{ question.id }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Nomer:" %}</b></td>
+                        <td>{{ question.number }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "FIO:" %}</b></td>
+                        <td>{{ question.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan:" %}</b></td>
+                        <td>{{ question.subject.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan tili:" %}</b></td>
+                        <td><span class="badge badge-info">{{ question.language.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Mavzu:" %}</b></td>
+                        <td>{{ question.theme.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qiyinlik daraja:" %}</b></td>
+                        <td><span class="badge badge-primary">{{ question.level.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Holat:" %}</b></td>
+                        <td>
+                            {% if question.status.key == 0 %}
+                                <span class="badge badge-danger">{{ question.status.name }}</span>
+                            {% elif question.status.key == 1 %}
+                                <span class="badge badge-success">{{ question.status.name }}</span>
+                            {% else %}
+                                <span class="badge badge-warning">{{ question.status.name }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yaratilgan vaqti:" %}</b></td>
+                        <td>{{ question.created_at }}</td>
+                    </tr>
+                   {% if question.status.key == 1 %}
+                        <tr>
+                        <td><b>{% trans "Latex kod:" %}</b></td>
+                        <td>{{ question.tex_code }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "A)" %}</b></td>
+                        <td>{{ question.a }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "B)" %}</b></td>
+                        <td>{{ question.b }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "C)" %}</b></td>
+                        <td>{{ question.c }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "D)" %}</b></td>
+                        <td>{{ question.d }}</td>
+                    </tr>
+                   {% endif %}
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

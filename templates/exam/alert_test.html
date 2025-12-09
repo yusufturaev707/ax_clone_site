@@ -1,0 +1,66 @@
+{% extends 'exam/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Fanlar{% endblock title %}
+{% block content %}
+    <div class="jumbotron-fluid viewArticleFont">
+    <form method="post" id="startQuestionForm">
+    {% csrf_token %}
+        <div class="panel-body" style="padding-top: 5%;text-transform: uppercase;">
+            <div class="container">
+                <div class="card forshadow">
+                    <div class="card-header justify-content-center">
+                        <img src="{{ subject.picture.url }}" alt=""/>
+                        <h3 class="text-center">{{ subject.name }}</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Variant:</b> {{ box_number }}</li>
+                        <li class="list-group-item"><b>Savollar soni:</b> {{ count_question }}</li>
+                        <li class="list-group-item"><b>Davomiyligi:</b> {{ duration }}</li>
+                    </ul>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+        <div class="text-center" id="spinnerStartExam" style="display: none;">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Yuklanmoqda...</span>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <button type="submit"
+                    class="btn btn-primary countBtnClick forshadow btn-block">{% trans "TESTNI BOSHLAMOQ" %}</button>
+        </div>
+    </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+      $('body').on('submit', '#startQuestionForm', function (e) {
+          e.preventDefault();
+
+          let data = $('#startQuestionForm').serialize();
+
+          $.ajax({
+              url: '{% url 'create_exam' qbox_id %}',
+              type: 'POST',
+              data: data,
+              beforeSend: function () {
+                  $('#spinnerStartExam').css('display', 'block');
+              },
+              success: function (response) {
+                  $('#spinnerStartExam').css('display', 'none');
+                  if (response['exam_id'] === 0) {
+                      alert(response.message);
+                  } else {
+                      window.location.href = `/exam/exam_room/${response['exam_id']}/`;
+                  }
+              },
+          });
+
+      });
+  });
+</script>
+{% endblock content %}

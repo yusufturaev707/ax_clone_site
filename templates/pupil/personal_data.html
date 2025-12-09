@@ -1,0 +1,189 @@
+{% extends 'pupil/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Shaxsiy ma'lumotlar{% endblock title %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 3px; padding: 25px;">
+            <form method="POST" id="updatePupilForm" data-parsley-validate="true" action="{% url 'personal_data' %}">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                    <h4>Shaxsiy ma'lumotlar</h4>
+                    <button type="button" class="btn btn-success btn-sm forshadow" style="float: right" id="btnRefreshDataPupil">{% trans "Yangilash" %}</button><br><br>
+                        <table class="table table-striped bordered table-sm">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    {% if pupil.user.avatar %}
+                                        <img class="mr-2" src="{{ pupil.user.avatar }}" alt="Generic placeholder image"
+                                             width="150" style="border: 1px solid #DFE3E7;border-radius: 5px;">
+                                    {% else %}
+                                        <img src="{% static 'img/no-image.png' %}" width="150"
+                                             style="border: 1px solid #DFE3E7;border-radius: 5px;">
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Pasport seriyasi va raqami" %}</td>
+                                <td>
+                                    {% if pupil.user.pser and pupil.user.pnum %}
+                                        {{ pupil.user.pser }}{{ pupil.user.pnum }}
+                                        {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Familiya" %}</td>
+                                <td>
+                                    {% if pupil.user.last_name %}
+                                        {{ pupil.user.last_name }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Ism" %}</td>
+                                <td>
+                                    {% if pupil.user.first_name %}
+                                        {{ pupil.user.first_name }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Sharif" %}</td>
+                                <td>
+                                    {% if pupil.user.middle_name %}
+                                        {{ pupil.user.middle_name }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Tug‘ilgan sanasi" %}</td>
+                                <td>
+                                    {% if pupil.user.birthday %}
+                                        {{ pupil.user.birthday|date:"d.m.Y" }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "JSh ShIR" %}</td>
+                                <td>
+                                    {% if pupil.user.jshshr %}
+                                        {{ pupil.user.jshshr }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Jins" %}</td>
+                                <td>
+                                    {% if pupil.user.gender %}
+                                        {{ pupil.user.gender }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Tuman" %}</td>
+                                <td>
+                                    {% if pupil.user.district %}
+                                        {{ pupil.user.district.name }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Viloyat" %}</td>
+                                <td>
+                                    {% if pupil.user.region %}
+                                        {{ pupil.user.region.name }}
+                                    {% else %}
+                                        <span class="text text-center text-danger">Mavjud emas</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6" style="padding: 4%">
+                    <h4>Qo'shimcha ma'lumotlar</h4>
+                    <div class="form-group">
+                            <label for="id_phone"><b>Username</b></label>
+                            <input type="text" class="form-control" id="id_username" name="username" {% if pupil.user.username %}
+                                   value="{{ pupil.user.username }}" {% else %} value="" {% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_phone"><b>Telefon</b></label>
+                            <input type="text" class="form-control" id="masked-input-phone" name="phone" placeholder="(__) ___-__-__" {% if pupil.user.phone %}
+                                   value="{{ pupil.user.phone }}" {% else %} value="" {% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_learning_center"><b>O'quv markaz</b></label>
+                            <input type="text" class="form-control" id="id_learning_center" name="learning_center" placeholder=""
+                                    {% if pupil.learning_center %} value="{{ pupil.learning_center }}" {% else %}
+                                   value=""{% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_address"><b>Manzil</b></label>
+                            <input type="text" class="form-control" id="id_address" name="address" placeholder=""
+                                    {% if pupil.address %} value="{{ pupil.address }}" {% else %} value=""{% endif %}>
+                        </div>
+{#                        <div class="form-group">#}
+{#                            <label for="id_address"><b>O'qituvchingizni tokeni</b></label>#}
+{#                            <input type="text" class="form-control" id="id_token" name="token" {% if pupil.token %} value="{{ pupil.token }}" {% else %} value=""{% endif %}>#}
+{#                        </div>#}
+                        <button type="submit" class="btn btn-indigo">Saqlash</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <div id="refresh-btn-div"></div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $('body').on('submit', '#updatePupilForm', function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: "json",
+                encode: true,
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
+        });
+
+        $('body').on('click', '#btnRefreshDataPupil', function (e) {
+            e.preventDefault();
+
+            let url = "{% url 'get_data_ps' %}".toString();
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#refresh-btn-div').html(response);
+                    $('#get_data_ps_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

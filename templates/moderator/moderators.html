@@ -1,0 +1,61 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Moderatorlar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Moderatorlar ro'yxati" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-hover display" id="moderatorLists" style="width:100%">
+                    <thead style="background-color: #03b703" class="table forshadow">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Otasini ismi" %}</strong></th>
+                        <th><strong>{% trans "Moderator" %}</strong></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#moderatorLists').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'get_moderators' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id"},
+                    {data: "user__last_name"},
+                    {data: "user__first_name"},
+                    {data: "user__middle_name"},
+                    {data: "is_moderator"},
+                ],
+                serverSide: true,
+                ordering: true,
+                responsive: true,
+                paging: true,
+                processing: true,
+                {#pageLength: 2,#}
+                info: true,
+                bInfo: true,
+                bSort: true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+            });
+        });
+    </script>
+{% endblock %}

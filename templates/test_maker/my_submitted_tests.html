@@ -1,0 +1,468 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Yuborilgan savollar" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content viewArticleFont">
+    <div class="row">
+    {% if not user.is_blocked %}
+    	{% if user.is_expert %}
+            {% if expert.is_sender %}
+            <div class="col-sm-4">
+        	    <div class="card" style="margin: 1%">
+                    <div class="card-body">
+                        <button class="btn btn-outline-primary btn-block forshadow" id="upload_test_btn" style="float: right"
+                            {% if not user.is_full_personal_data %}disabled{% endif %}><i class="fa fa-paper-plane"></i> &nbsp;<strong>{% trans "Savol yuborish" %}</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if expert.is_checker %}
+            <div class="col-sm-4">
+        	    <div class="card forshadow" style="margin: 1%">
+                    <div class="card-body row">
+                        <div class="col-3"><span class="badge badge-indigo" id="countWork" style="font-size: x-large;"></span></div>
+                        <div class="col-9">
+                            <button class="btn btn-outline-success btn-block forshadow" id="get_work_btn" style="float: right"
+                                {% if not user.is_full_personal_data %}disabled{% endif %}>
+                                <i class="fa fa-balance-scale"></i> &nbsp;<strong>{% trans "Ish olish" %}</strong>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+    {% elif user.is_blocked %}
+        <div class="col-sm-12">
+            <div class="card bg-danger-lighter">
+                <div class="card-body" style="padding: 3%">
+                    <h3 class="text text-center"><i class="fa fa-lock fa-lg" style="color: black; font-size: xx-large"></i> &nbsp; {% trans "Siz Administrator tomonidan bloklangansiz!" %}</h3>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if user.is_moderator%}
+        <div class="col-sm-4">
+            <div class="card forshadow" style="margin: 1%">
+            <div class="card-body row">
+            <div class="col-3"><span class="badge badge-indigo" id="countWorkModerator" style="font-size: x-large;"></span></div>
+            <div class="col-9">
+                <button {% if moderator.is_moderator is False or not user.is_full_personal_data %}disabled{% endif %} class="btn btn-outline-info btn-block forshadow" id="get_work_btn_for_moderator" style="float: right">
+                        <i class="fa fa-text-height"></i> &nbsp;<strong>{% trans "Ish olish" %}</strong>
+                </button>
+            </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+        <br>
+        {% if user.is_full_personal_data %}
+             {% if user.is_expert or user.is_moderator %}
+             	<div class="row">
+                    <div class="col-md-12">
+                        <!-- begin tabs -->
+                        <ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile" data-sortable-id="index-2">
+                            <li class="nav-item" id="in-progress-click"><a href="#" data-toggle="tab" class="nav-link active">
+                                <i class="fa fa-refresh fa-spin fa-fw fa-lg m-r-5 forshadow" aria-hidden="true"></i>
+                                <span class="d-none d-md-inline"></span>
+                                <div style="float: right">{% trans "Qabul qilingan ishlar soni" %}
+                                    &nbsp;&nbsp;<span class="badge badge-success forshadow" id="countOfConfirmed"
+                                          style="font-size: 16px;">0</span></div></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" data-sortable-id="index-3">
+                            <div class="tab-pane fade active show" id="in-progress-test"></div>
+                        </div>
+                        <!-- end tabs -->
+                    </div>
+                </div>
+                <nav class="pagination">
+                    <ul class="pagination" id="myTestListPagination">
+
+                    </ul>
+                </nav>
+             {% elif user.is_admin1 or user.is_admin %}
+                <div id="container" style="margin-bottom: 5%">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="pie-chart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="pie-chart2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 1%">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="pie-chart3"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="pie-chart4"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="fa fa-sort-numeric-down"></i> <strong>{% trans "Kelib tushgan savollar:" %}</strong> <span class="badge badge-success" style="font-size: large">{{ total_questions }}</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+             {% endif %}
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Kechirasiz!</h4>
+                <p>Shaxsiy ma'lumotlariz to'liq emas. Iltimos, shaxsiy ma'lumotlaringizni to'ldiring!</p>
+                <br>
+                <p class="mb-0"><a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">O'zgartirish</a></p>
+            </div>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let config1 = {
+                    type: 'doughnut',
+                    data: {
+                    datasets: [{
+                            data: {{ data1|safe }},
+                            backgroundColor: ['#ee4848', '#43ad07', '#0644a9', '#6aa3f6', '#f1b455'],
+                            label: 'Population'
+                        }],
+                    labels: {{ labels1|safe }}
+                    },
+                    options: {
+                         responsive: true,
+                         title: {
+                              display: true,
+                              text: 'Savollar holati'
+                         }
+                     }
+                    };
+            let config2 = {
+                    type: 'doughnut',
+                    data: {
+                    datasets: [{
+                            data: {{ data2|safe }},
+                            backgroundColor: ['#025eff', '#f14058', '#A9A9A9', '#C0C0C0', '#D3D3D3'],
+                            label: 'Population'
+                        }],
+                    labels: {{ labels2|safe }}
+                    },
+                    options: {
+                         responsive: true,
+                         title: {
+                              display: true,
+                              text: "Fanlar bo'yicha savollar soni"
+                         }
+                     }
+                    };
+            let config3 = {
+                    type: 'doughnut',
+                    data: {
+                    datasets: [{
+                            data: {{ data3|safe }},
+                            backgroundColor: ['#8242e3', '#43ad07', '#0644a9', '#6aa3f6', '#f1b455'],
+                            label: 'Population'
+                        }],
+                    labels: {{ labels2|safe }}
+                    },
+                    options: {
+                         responsive: true,
+                         title: {
+                              display: true,
+                              text: "Fanlar bo'yicha ekspertlar soni"
+                         }
+                     }
+                    };
+            let config4 = {
+                    type: 'doughnut',
+                    data: {
+                    datasets: [{
+                            data: {{ data4|safe }},
+                            backgroundColor: ['#03b703', '#4e1e98', '#0644a9', '#6aa3f6', '#f1b455'],
+                            label: 'Population'
+                        }],
+                    labels: {{ labels2|safe }}
+                    },
+                    options: {
+                         responsive: true,
+                         title: {
+                              display: true,
+                              text: "Fanlar bo'yicha moderatorlar soni"
+                         }
+                     }
+                    };
+
+
+            window.onload = function() {
+                let ctx1 = document.getElementById('pie-chart1').getContext('2d');
+                let ctx2 = document.getElementById('pie-chart2').getContext('2d');
+                let ctx3 = document.getElementById('pie-chart3').getContext('2d');
+                let ctx4 = document.getElementById('pie-chart4').getContext('2d');
+                window.myPie = new Chart(ctx1, config1);
+                window.myPie = new Chart(ctx2, config2);
+                window.myPie = new Chart(ctx3, config3);
+                window.myPie = new Chart(ctx4, config4);
+                };
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'load_my_submit_tests_in_progress' %}",
+                success: function (response) {
+                    let n = response['count_progress'];
+                    if (response.result) {
+                        $('#countOfConfirmed').text(response['count_confirmed']);
+                        $('#countWork').text(response['count_work']);
+                        $('#countWorkModerator').text(response['count_mwork']);
+                        if (response['data'].length === 0) {
+                            $('#in-progress-test').html(`<h3 class="text-lg-center" style="color:#C8C8C8">Ma'lumot mavjud emas</h3>`);
+                        }
+                    }
+
+                    for (let i = 0; i < response['data'].length; i++) {
+                            let tr1 = "";
+                            let status_tr = '';
+                            let status_code = response.data[i]['status_code'];
+                            let step_code = response.data[i]['step_code'];
+
+                            if(step_code === 5){
+                                status_tr += `<span class="badge badge-success">${response.data[i]['step']}</span>`;
+                            } else {
+                                status_tr += `<span class="badge badge-warning">${response.data[i]['step']}</span>`;
+                            }
+
+                            if (response.data[i]['test_type'] === 1){
+                                tr1 += `<b>{% trans "Bo'lim:" %}</b>&nbsp;` + response.data[i]['part'] + `<br>`;
+                                tr1 += `<b>{% trans "Qiyinlik darajasi:" %}</b>&nbsp;<span class="badge badge-blue">` + response.data[i]['level_d'] + `</span><br>`;
+                                tr1 += `<b>{% trans "Qism:" %}</b>&nbsp;` + response.data[i]['part_option_name'] + `</span><br>`;
+                                tr1 += `<b>{% trans "Mavzu:" %}</b>&nbsp;` + response.data[i]['topic_n'] + `</span><br>`;
+                                tr1 += `<b>{% trans "Yuborilgan vaqti:" %}</b><span style="color: #656464">&nbsp;` + response.data[i]['created_at'] + `</span><br>`;
+                            } else if (response.data[i]['test_type'] === 2) {
+                                tr1 += `<b>{% trans "Mavzusi:" %}</b>&nbsp;` + response.data[i]['topic'] + `<br>`;
+                                tr1 += `<b>{% trans "Bob:" %}</b>&nbsp;` + response.data[i]['chapter'] + `<br>`;
+                                tr1 += `<b>{% trans "Bo'lim" %}</b>&nbsp;` + response.data[i]['section'] + `<br>`;
+                            }
+
+
+                        let btn = ``;
+                        let testID = parseInt(response.data[i]['id']);
+                        let resend_url = "{% url 'resend' %}" + testID +"/";
+                        let viewCriteriaUrl = "{% url 'get_rejected_jobcontrol' %}" + testID +"/";
+
+                        if (status_code === 4){
+                            btn += `<a id="resendT${i}" href="${resend_url}" class="btn btn-warning btn-sm resendTestBtn" style="display: none">{% trans "Tahrirlash" %}</a>`;
+                        }
+
+                        if (status_code === 0){
+                            btn += `<span class="text text-danger">{% trans "RAD ETILDI" %}</span><br><br>`;
+                            btn += `<button type="button" id="viewNS${i}" data-url="${viewCriteriaUrl}" class="btn btn-danger btn-sm viewControlSheetNSBtn" style="display: none">{% trans "Rad etilish sabablari" %}</button>`;
+                        }
+
+                        let card = `<div class="card forshadow"><div class="row">` +
+                           `<div class="card-body col-lg-4">` +
+                           `<h5 class="card-title">${response.data[i]['id']}.&nbsp;${response.data[i]['subject']}</h5>` +
+                           `<div class="container-fluid" style="margin-left: 1em">` +
+                           `<p class="card-text">` + tr1 +`</p>` +
+                           `<p><b>{% trans "Holati:" %}</b>&nbsp;${status_tr}</p>` +
+                           `</div>` +
+                           `</div>` +
+                           `<div class="card-body col-lg-4">` +
+                           `<ul id="progressbar${i}" class="progressbar text-center">` +
+                           `<li id="account${i}" class="account"><strong>Yuborildi</strong></li>` +
+                           `<li id="payment${i}" class="payment"><strong>Ko'rilmoqda</strong></li>` +
+                           `<li id="confirm${i}" class="confirm"><strong>Yakunlandi</strong></li>` +
+                           `</ul>` +
+                           `</div>` + `<div class="card-body col-lg-4">` + btn + `</div>` +
+                           `</div></div></div><p></p>`;
+
+                        $('#in-progress-test').append(card);
+
+                        let step = response.data[i]['step_code'];
+
+                        if (step >= 1) { $("#account" + i).addClass('active'); }
+                        if (step >= 2) { $("#payment" + i).addClass('active'); }
+                        if (step === 5) { $("#confirm" + i).addClass('active'); }
+
+                        if (status_code === 4){
+                            $("#resendT" + i).css("display","block");
+                        }
+                        if (status_code === 0){
+                            $("#viewNS" + i).css("display","block");
+                        }
+                    }
+
+                    let pagination = ``;
+                    if (response['has_previous']){
+                        pagination += `<li class="page-item pageBtn" id="pageBtn${response['previous_page_number']}" data-id="${response['previous_page_number']}"><a class="page-link" href="#">« Oldinga</a></li>`;
+
+                        if (response['number'] > 3) {
+                            pagination += `<li class="page-item pageBtn" id="pageBtn1" data-id="1"><a class="page-link" href="#">1</a></li>`;
+                            if (response['number'] > 4){
+                                pagination += `<li class="page-item"><span>...</span></li>`;
+                            }
+                        }
+                    }
+
+                    if (response['num_pages'] > 1){
+                    for (let i = 1; i <= response['num_pages']; i++) {
+                        if (response['number'] === i){
+                            pagination += `<li class="page-item pageBtn" id="pageBtn${i}" data-id="${i}"><a class="page-link" href="#">${i}</a></li>`;
+                        } else if (i > response['number']-3 && i < response['number']+3){
+                            pagination += `<li class="page-item pageBtn" id="pageBtn${i}" data-id="${i}"><a class="page-link" href="#">${i}</a></li>`;
+                        }
+                    }
+                    }
+
+                    if (response['has_next']){
+                        if (response['number'] < response['num_pages'] - 3){
+                            pagination += `<li class="page-item"><span>...</span></li>`;
+                            pagination += `<li class="page-item pageBtn" id="pageBtn${response['num_pages']}" data-id="${response['num_pages']}"><a class="page-link" href="#">${response['num_pages']}</a></li>`;
+                        } else if (response['number'] < response['num_pages'] - 2){
+                            pagination += `<li class="page-item pageBtn" id="pageBtn${response['num_pages']}" data-id="${response['num_pages']}"><a class="page-link" href="#">${response['num_pages']}</a></li>`;
+                        }
+                        pagination += `<li class="page-item pageBtn" id="pageBtn${response['next_page_number']}" data-id="${response['next_page_number']}"><a class="page-link" href="#">Keyin »</a></li>`;
+
+                    }
+
+                    $("#myTestListPagination").html(pagination);
+                    $(`#pageBtn${response['page']}`).addClass("active");
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            $('body').on('click', '.viewControlSheetNSBtn', function (e) {
+                e.preventDefault();
+                let url = $(this).data('url');
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (response) {
+                        $('#show_res').html(response);
+                        $('#view_criteria_info_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+            });
+
+            $('body').on('click', '.pageBtn', function (e) {
+                e.preventDefault();
+                let page = $(this).data('id');
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'set_cookie_page' %}",
+                    data: {"page": page},
+                    success: function (response) {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+            });
+
+            $('body').on('click', '#upload_test_btn', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'upload_test' %}",
+                    success: function (response) {
+                        $('#show_res').html(response);
+                        $('#createNewTestModal').modal({backdrop: 'static', keyboard: false}, 'show');
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+            });
+
+            $('body').on('click', '#get_work_btn', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'get_work' %}",
+                    success: function (response) {
+                        if (response['result'] === 1){
+                            window.location.href="{% url 'expert_dashboard' %}";
+                        }
+                        if (response['result'] === 0){
+                            swal({
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3000
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+            });
+
+            $('body').on('click', '#get_work_btn_for_moderator', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'get_work_for_moderator' %}",
+                    success: function (response) {
+                        if (response['result'] === 1){
+                            window.location.href="{% url 'moderator_dashboard' %}";
+                        }
+                        if (response['result'] === 0){
+                            swal({
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3000
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+            });
+        });
+    </script>
+{% endblock %}

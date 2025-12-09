@@ -1,0 +1,87 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal fade viewArticleFont" id="view_question_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ question.number }}</h5>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-overflow">
+                    <tr>
+                        <td><b>{% trans "ID:" %}</b></td>
+                        <td>{{ question.id }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Nomer:" %}</b></td>
+                        <td>{{ question.number }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "FIO:" %}</b></td>
+                        <td>{{ question.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan:" %}</b></td>
+                        <td>{{ question.subject.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan tili:" %}</b></td>
+                        <td><span class="badge badge-info">{{ question.language.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qism:" %}</b></td>
+                        <td><span class="badge badge-warning">{{ question.part.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qiyinlik daraja:" %}</b></td>
+                        <td><span class="badge badge-primary">{{ question.level.name }}</span></td>
+                    </tr>
+                    {% if question.is_have_audio %}
+                        <tr>
+                            <td><b>{% trans "Audio:" %}</b></td>
+                            <td>
+                                <audio controls>
+                                    <source src="{{ question.file_audio.url }}" type="audio/mpeg">
+                                </audio>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td><b>{% trans "Holat:" %}</b></td>
+                        <td>
+                            {% if question.status.key == 0 %}
+                                <span class="badge badge-warning">{{ question.status.name }}</span>
+                            {% elif question.status.key == 1 %}
+                                <span class="badge badge-success">{{ question.status.name }}</span>
+                            {% else %}
+                                <span class="badge badge-danger">{{ question.status.name }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yaratilgan vaqti:" %}</b></td>
+                        <td>{{ question.created_at }}</td>
+                    </tr>
+                    {% if question.file_word %}
+                        <tr>
+                            <td><b>{% trans "Faylni yuklab olish:" %}</b></td>
+                            <td><a href="{{ question.file_word.url }}" type="button"
+                                   class="btn btn-xs btn-outline-warning" download="download"><img
+                                    src="{% static 'img/word.png' %}" width="40" alt="word"></a></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td><b>{% trans "Faylni yuklab olish:" %}</b></td>
+                            <td><span class="text text-danger"><i>{% trans "Fayl topilmadi" %}</i></span></td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

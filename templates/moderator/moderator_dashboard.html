@@ -1,0 +1,102 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Moderatorlar bo'limi" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content viewArticleFont">
+    <div class="container">
+        <div class="card">
+            {% if job_count >= 1 %}
+        <div class="card-header">
+            <h4 class="title" id="fioModerator" style="text-transform: uppercase"></h4>
+        </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>{% trans "Fan:" %}</b> <p id="subjectName"></p></li>
+                <li class="list-group-item"><b>{% trans "Til:" %}</b> <p id="langName"></p></li>
+                {% if moderator.upload_type.id == 2 %}
+                	<li class="list-group-item"><b>{% trans "Bob:" %}</b> <p id="chapterName"></p></li>
+                    <li class="list-group-item"><b>{% trans "Bo'lim:" %}</b> <p id="sectionName"></p></li>
+                    <li class="list-group-item"><b>{% trans "Mavzu:" %}</b> <p id="topicName"></p></li>
+                {% elif moderator.upload_type.id == 1 %}
+                    <li class="list-group-item"><b>{% trans "Qism:" %}</b> <p id="partName"></p></li>
+                {% endif %}
+                <li class="list-group-item"><b>{% trans "Qiyinlik daraja:" %}</b> <p id="levelName"></p></li>
+                <li class="list-group-item"><b>{% trans "Olingan vaqt:" %}</b> <p id="givenTime"></p></li>
+                <li class="list-group-item"><b>{% trans "Holat:" %}</b> <p id="statusName"></p></li>
+                {% if moderator.upload_type.id == 1 %}
+                    <button type="button" class="btn btn-primary" style="font-size: large" id="viewQuestionBtn"><i class="fa fa-edit"></i> &nbsp; {% trans "Tahrirlashga o'tish" %}</button>
+                {% elif moderator.upload_type.id == 2 %}
+                	<button type="button" class="btn btn-info" style="font-size: large" id="viewTexBtn"><i class="fa fa-edit"></i> &nbsp; {% trans "Tahrirlashga o'tish" %}</button>
+                {% endif %}
+            </ul>
+            {% else %}
+            <h3 class="text-center" style="margin: 3%"><button disabled class="btn btn-danger" style="border-radius: 25px; width:50px; height:50px; font-size: 24px">!</button> &nbsp;{% trans "Sizda ish mavjud emas!" %}</h3>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let jobID = 0;
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'load_test_moderator' %}",
+                success: function (response) {
+                    if (response.result) {
+                        jobID = response['data']['id'];
+                        let n = response.data.length;
+                        if (n === 0) {
+                            $('#jobDiv').html(`<h4 class="text-center" style="color:#C8C8C8;">Ma'lumot mavjud emas.</h4>`);
+                        }
+                        $('#subjectName').text(response['data']['subject']);
+                        $('#langName').text(response['data']['lang']);
+                        $('#chapterName').text(response['data']['chapter']);
+                        $('#sectionName').text(response['data']['section']);
+                        $('#levelName').text(response['data']['level']);
+                        $('#topicName').text(response['data']['topic']);
+                        $('#partName').text(response['data']['part']);
+                        $('#givenTime').text(response['data']['job_given_time']);
+                        $('#statusName').text(response['data']['status']);
+                        $('#fioModerator').text(response['data']['moderator_fio']);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            $('body').on('click', '#viewTexBtn', function (e) {
+                e.preventDefault();
+                    $.ajax({
+                    type: 'GET',
+                    url: `{% url 'check_status' %}${jobID}/`,
+                    success: function (response) {
+                        if (response.result) {
+                            window.location.href = "{% url 'load_test_moderator' %}" + response['data']['id'] + "/";
+                        }
+                    }
+                })
+            });
+
+            $('body').on('click', '#viewQuestionBtn', function (e) {
+                e.preventDefault();
+                    $.ajax({
+                    type: 'GET',
+                    url: `{% url 'checking_job' %}`,
+                    data: {
+                        'jobId': jobID
+                    },
+                    success: function (response) {
+                        if (response.result) {
+                            window.location.href = "{% url 'checking_job' %}" + response['data']['id'] + "/";
+                        }
+                    }
+                })
+            });
+
+        });
+
+    </script>
+{% endblock %}

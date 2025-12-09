@@ -1,0 +1,281 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Tahrirlash" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body forshadow viewArticleFont" style="background-color: #f8f8f8; padding-left: 5%;padding-right: 5%; padding-top: 2%; padding-bottom: 5%">
+        <div class="card" style="margin-top: 1%; padding: 1%">
+        <h5>{% trans "Ekspert etirozlari" %}</h5>
+            <table class="table table-bordered table-hover">
+                <tr class="tex text-center">
+                    <th>{% trans "Tr" %}</th>
+                    <th>{% trans "Kriteriya" %}</th>
+                    <th>{% trans "Ha/Yo'q" %}</th>
+                    <th>{% trans "Izoh" %}</th>
+                </tr>
+                    {% for items, job_number, status_code, message in data %}
+                        <tr><th colspan="4">{% trans "Ekspert" %}{{ forloop.counter }} <i class="fa fa-arrow-down" style="color: #00B0E8"></i></th></tr>
+                        {% if message %}
+                            <tr><td colspan="4" class="text text-justify">{{ message|safe }}</td></tr>
+                        {% endif %}
+                        {% if items.count > 0 %}
+                            {% for item in items %}
+                    		<tr>
+                                <td><i class="fa fa-warning" style="color: red"></i></td>
+                                <td>{{ item.control_sheet.description }}</td>
+                                <td><i class="fa fa-times"></i> {% trans "Yo'q" %}</td>
+                                <td>{{ item.comment }}</td>
+                            </tr>
+                    	    {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </table>
+        </div>
+        <br>
+            <div class="container">
+                <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data" class="EditTestForm"
+                          data-url="{% url 'resend_test' submission.id %}" data-parsley-validate="true">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label>Tanlangan fan</label>
+                                    <input type="text" value="{{ submission.submission.subject.name }}" class="form-control" disabled>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Tanlangan til</label>
+                                    <input type="text" value="{{ submission.submission.lang.name }}" class="form-control" disabled>
+                            </div>
+                             <div class="form-group col-lg-4">
+                                <label>Tanlangan savol turi</label>
+                                <input type="text" value="{{ submission.submission.type_test_upload.name }}" class="form-control"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        {% if submission.submission.type_test_upload.id == 2 %}
+                        	<div class="row">
+                            <div class="form-group col-xl-6">
+                                <label>Bob</label>
+                                <input type="text" value="{{ submission.submission.chapter.name }}" class="form-control"
+                                       disabled>
+                            </div>
+                            <div class="form-group col-xl-6">
+                                <label for="id_section">Bo'lim</label>
+                                <input type="text" value="{{ submission.submission.section.name }}" class="form-control"
+                                       disabled>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if submission.submission.type_test_upload_id == 1 %}
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <label for="id_part">Bo'lim</label>
+                                    <input type="text" value="{{ submission.submission.part.name }}"
+                                           class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="id_level_dn">Qiyinlik daraja</label>
+                                    <input type="text" value="{{ submission.submission.level_dn.name }}"
+                                           class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="id_part_option">Qism</label>
+                                    <input type="text" value="{{ submission.submission.part_option.name }}"
+                                           class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xl-12">
+                                    <label for="id_topic_n">Mavzu</label>
+                                    <input type="text" value="{{ submission.submission.topic_n }}" class="form-control" name="topic_n">
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if submission.submission.type_test_upload_id == 2 %}
+                            <div class="row">
+                                <div class="form-group col-xl-12">
+                                    <label for="id_topic">Mavzu</label>
+                                    <input type="text" value="{{ submission.submission.topic.name }}"
+                                           class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if submission.submission.type_test_upload.id == 2 %}
+                            <div class="form-group"><label for="Level">Qiyinlik darajasi</label>
+                                <input type="text" value="{{ submission.submission.level_d.name }}" class="form-control" disabled>
+                            </div>
+                        {% endif %}
+                        <div class="panel panel-inverse">
+                            <div class="panel-body">
+                                <div class="note note-yellow m-b-15 alert alert-dismissable">
+                                    <div class="note-icon f-s-20">
+                                        <i class="fa fa-lightbulb fa-2x"></i>
+                                    </div>
+                                    <div class="note-content" style="font-family: Cambria,sans-serif">
+                                        <h4 class="m-t-5 m-b-5 p-b-2">Diqqat!</h4>
+                                        <ul class="m-b-5 p-l-25">
+                                            <li>Word (<strong>.doc, .docx</strong>) formatidagi
+                                                fayllarni yuklay olasiz.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div id="FileUploadTest" class="col-md-12">
+                                        <label>Word fayl yuklash</label>
+                                        <div class="wrapper" id="file-list-display">
+                                            <div class="upload_test" id="testUpload">
+                                                <i class="fa fa-file-word" aria-hidden="true"></i>
+                                                <input type="file" class="form-control" name="file_word" id="id_file_word">
+                                            </div>
+                                            <p class="text-center text-danger warningText" style="display: none;">
+                                                Quyidagi qizil rangdagi fayllar tizimga yuklanmaydi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-6">
+                             <a href="{% url 'my_submit_tests' %}" class="btn btn-grey forshadow btn-block" style="font-size: 16px">Orqaga qaytish</a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-success forshadow btn-block" id="submitEditTestBtn" style="font-size: 16px">
+                            <span class="spinner-border spinner-border-sm upload_spinner" role="status"
+                                  aria-hidden="true"></span>
+                            <span class="visually-hidden upload_spinner">{% trans "Yuklanmoqda" %}...</span>
+                            <span class="upload_btn_text">{% trans "Yuborish" %}</span>
+                        </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+
+        $('.upload_spinner').css('display', 'none');
+
+        (function () {
+            let fileInput = document.getElementById('id_file_word');
+
+            let fileList = [];
+            let renderFileList;
+
+            fileInput.addEventListener('change', function (evnt) {
+                fileList = [];
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    fileList.push(fileInput.files[i]);
+                }
+                renderFileList();
+            });
+
+            renderFileList = function () {
+                fileList.forEach(function (file, index) {
+                    let fileType = file.type;
+                    console.log(1)
+
+                    let allowedExtension1 = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    let allowedExtension2 = "application/msword";
+                    if (fileType === allowedExtension1 || fileType === allowedExtension2) {
+                        let temp1 = `<div class="uploaded uploaded--one"><i class="far fa-file-word"></i><div class="file"><div class="file__name"><p>` + file.name + `</p><i class="fas fa-check"></i></div></div></div></div>`;
+                        $('#file-list-display').append(temp1);
+                    } else {
+                        $('.warningText').css('display', 'block');
+                        let temp2 = `<div class="uploaded uploaded--one" style="background-color: #EED1CE;"><i class="far fa-file-word"></i><div class="file"><div class="file__name"><p>` + file.name + `</p><i class="fas fa-times"></i></div></div></div></div>`;
+                        $('#file-list-display').append(temp2);
+                    }
+
+                });
+            };
+        })();
+        $('body').on('submit', '.EditTestForm', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+            let url = $('.EditTestForm').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.upload_spinner').css('display', 'block');
+                    $('.upload_btn_text').css('display', 'none');
+                    $('#submitEditTestBtn').prop('disabled', true);
+                },
+                success: function (response) {
+                    if (response.result) {
+                        swal({
+                            title: 'Muvaffaqiyat!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                                confirm: {
+                                    text: 'Success',
+                                    value: true,
+                                    visible: true,
+                                    className: 'btn btn-success',
+                                    closeModal: true
+                                }
+                            }
+                        });
+                        window.location.href = response.url;
+                    } else {
+                        swal({
+                            title: 'Diqqat!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                },
+                complete: function (data) {
+                    $('.upload_spinner').css('display', 'none');
+                    $('#submitEditTestBtn').prop('disabled', false);
+                    $('.upload_btn_text').css('display', 'block');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Umumta'lim fanlaridan yuborgan test savollari" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <br>
+        <h5 class="viewArticleFont">
+            {% trans "Umumta'lim fanlaridan yuborgan test savollari" %}
+        </h5>
+        <br>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 1%;">
+            <div class="container-fluid">
+                <table class="table table-bordered table-hover table-striped nowrap"
+                       style="text-align: center;width:100%"
+                       id="tests">
+                    <thead class="table table-success">
+                    <tr class="dataGrid">
+                        <th>ID</th>
+                        <th>Familiya</th>
+                        <th>Ism</th>
+                        <th>Otasini ismi</th>
+                        <th>Fan</th>
+                        <th>Tili</th>
+                        <th>Mavzu</th>
+                        <th>Qiyinchilik darajasi</th>
+                        <th>Qadam</th>
+                        <th>Holati</th>
+                        <th>Yuborilgan vaqti</th>
+                        <th class="action-color" colspan="2">Amal</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="crudTest"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#tests thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#tests thead');
+
+            var table = $('#tests').DataTable(
+                {
+                    "ajax": "/moderator/submission_tests/",
+                    "columns": [
+                        {"data": "id"},
+                        {"data": "first_name"},
+                        {"data": "last_name"},
+                        {"data": "middle_name"},
+                        {"data": "subject"},
+                        {"data": "lang"},
+                        {"data": "topic"},
+                        {"data": "level_d"},
+                        {"data": "step"},
+                        {"data": "status"},
+                        {"data": "created_at"},
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                return '<button type="button" class="btn btn-outline-warning editTest" data-id="' + data.id + '"><i class="fa fa-edit" /></button>';
+                            }
+                        },
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                return '<button type="button" class="btn btn-outline-danger deleteTest" data-id="' + data.id + '"><i class="fa fa-trash" /></button>';
+                            }
+                        }
+                    ],
+                    processing: true,
+                    responsive: true,
+                    select: true,
+                    paging: true,
+                    pageLength: 10,
+                    lengthChange: true,
+                    autoWidth: false,
+                    searching: true,
+                    bInfo: true,
+                    bSort: true,
+                    order: [],
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    "language":
+                        {
+                            "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
+                        },
+                    "columnDefs": [{
+                        "targets": [],
+                        "orderable": false
+                    }],
+                    dom: 'lBfrtip',
+                    {#dom: 'Bfrtip',#}
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            text: '<i class="fas fa-clone"></i>',
+                            className: 'btn btn-secondary',
+                            titleAttr: 'Copy',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                            },
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fas fa-file-excel"></i>',
+                            className: 'btn btn-secondary',
+                            titleAttr: 'Excel',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3]
+                            },
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="fas fa-file-pdf"></i>',
+                            className: 'btn btn-secondary',
+                            titleAttr: 'PDF',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3]
+                            },
+                            tableHeader: {
+                                alignment: 'center'
+                            },
+                            customize: function (doc) {
+                                doc.styles.tableHeader.alignment = 'center';
+                                doc.styles.tableBodyOdd.alignment = 'center';
+                                doc.styles.tableBodyEven.alignment = 'center';
+                                doc.styles.tableHeader.fontSize = 7;
+                                doc.defaultStyle.fontSize = 6;
+                                doc.content[1].table.widths = Array(doc.content[1].table.body[1].length + 1).join('*').split('');
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fas fa-print"></i>',
+                            className: 'btn btn-secondary',
+                            titleAttr: 'Print',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3]
+                            },
+                            customize: function (win) {
+                                $(win.document.body).css('font-size', '10pt');
+                                $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                    initComplete: function () {
+                        let api = this.api();
+                        api
+                            .columns([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+                            .eq(0)
+                            .each(function (colIdx) {
+                                let cell = $('.filters th').eq(
+                                    $(api.column(colIdx).header()).index()
+                                );
+                                let title = $(cell).text();
+                                $(cell).html('<input type="text" class="form-control" placeholder=".....">');
+                                $(
+                                    'input',
+                                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                                ).off('keyup change')
+                                    .on('keyup change', function (e) {
+                                        e.stopPropagation();
+                                        $(this).attr('title', $(this).val());
+                                        var regexr = '({search})';
+                                        var cursorPosition = this.selectionStart;
+
+                                        api
+                                            .column(colIdx)
+                                            .search(
+                                                this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '',
+                                                this.value != '',
+                                                this.value == '',
+                                            ).draw();
+
+                                        $(this)
+                                            .focus()[0]
+                                            .setSelectionRange(cursorPosition, cursorPosition);
+                                    })
+                            })
+                    }
+                });
+            let newSearch = $("#tests").DataTable();
+            $("#search").keyup(function () {
+                newSearch.search($(this).val()).draw();
+            });
+
+            $('#tests tbody').on('click', '.editTest', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'choosen_reviewer_role' %}",
+                    success: function (response) {
+                        $('#crudTest').html(response);
+                        $('#choosen_reviewerRole').modal('show');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+            $('#tests tbody').on('click', '.deleteTest', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                alert(id);
+            });
+        });
+    </script>
+{% endblock %}

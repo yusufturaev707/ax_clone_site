@@ -1,0 +1,206 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Ro'yxatdan o'tish" %}
+{% endblock %}
+{% block base_content %}
+    <div id="page-container" class="fade reg_div">
+        <div class="login login-v1">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="brand">
+                        <b>{% trans "Ro‘yxatdan o‘tish" %}</b>
+                    </div>
+                </div>
+                <div class="login-body">
+                    <div class="login-content">
+                        <form data-url="{% url 'register' %}" method="POST" class="margin-bottom-0 registerForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group m-b-20 reg_page">
+                                        <input type="text" name="username"
+                                               class="form-control form-control-xs inverse-mode username forshadow"
+                                               placeholder="{% trans 'Foydalanuvchi nomi' %}"/>
+                                        <div class="form-text">{% trans "Foydalanuvchi nomingiz 5 ta belgidan kam bo'lmasligi kerak!" %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group m-b-20 reg_page">
+                                        <input type="password" name="password1"
+                                               class="form-control form-control-xs inverse-mode password1 forshadow"
+                                               placeholder="{% trans 'Parol' %}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group m-b-20 reg_page">
+                                        <input type="password" name="password2"
+                                               class="form-control form-control-xs inverse-mode password2 forshadow"
+                                               placeholder="{% trans 'Parolni takror kiriting' %}"
+                                               aria-describedby="passwordInfo"/>
+                                        <div id="passwordInfo"
+                                             class="form-text">{% trans "Parol kamida 8 ta belgidan va bunda lotin alifbosida kamida 1 ta bosh, kichik va 1ta maxsus(!@#$) belgilardan iborat bo'lsin." %}</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group m-b-20 reg_page">
+                                        <select class="form-control form-control-xs inverse-mode forshadow"
+                                                name="chosen_role" id="id_chosen_role">
+                                            <option value="" style="color: #c5c5c5">{% trans "Rol tanlang" %}</option>
+                                            {% if roles.count > 0 %}
+                                                {% for role in roles %}
+                                                    <option value="{{ role.id }}">{{ role.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-b-20 reg_page">
+                                {{ form.captcha.errors }}
+                                <i class="icon-refresh captcha forshadow"
+                                   style="color: #246dea; font-size: large; font-weight: bold"></i>
+                                {{ form.captcha }}
+                                <input type="hidden" name="next" value="{{ next }}">
+                            </div>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" id="Offer" name="offer">
+                                <label class="form-check-label"
+                                       for="Offer">{% trans "Ommaviy oferta shartlariga rozimisiz?" %}</label>
+                            </div>
+                            <div class="login-buttons">
+                                <button type="submit"
+                                        class="UserModal btn btn-primary btn-block btn-md registerBtn forshadow"
+                                        disabled>{% trans "Ro'yxatdan o'tish" %}</button>
+                            </div>
+                            <div class="m-t-30 m-b-30 p-b-30">
+                                {% trans "Siz oldin ro'yxatdan o'tgan bo'lsangiz." %}
+                                <a href="{% url 'login' %}">{% trans "Kirish" %}</a>
+                            </div>
+                            <div class="row d-flex justify-content-center" id="registerFormError"></div>
+                            <hr/>
+                            <p class="text-center mb-0">
+                                &copy; Bilimni baholash agentligi
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        $('#Offer').change(function () {
+            let is_checked = $(this).is(':checked');
+            if (is_checked) {
+                $('.registerBtn').prop('disabled', false);
+            } else {
+                $('.registerBtn').prop('disabled', true);
+            }
+        });
+
+        const formValidate = array => {
+            let is_validRForm = true;
+
+            // Avvalgi xatoliklarni tozalaymiz
+            $('.text-danger').remove();
+
+            array.forEach(field => {
+                const {key, value, message} = field;
+                const inputElement = $('.' + key);
+
+                if (key === 'email') {
+                    if (!value) {
+                        inputElement.after('<span class="text-danger">Iltimos, e-mailingizni kiriting.</span>');
+                        is_validRForm = false;
+                    } else if (!validateEmail(value)) {
+                        inputElement.after('<span class="text-danger">Iltimos, to‘g‘ri e-mail kiriting.</span>');
+                        is_validRForm = false;
+                    }
+                } else {
+                    if (!value) {
+                        inputElement.after(`<span class="text-danger">${message}ni kiriting!</span>`);
+                        is_validRForm = false;
+                    }
+                }
+            });
+
+            return is_validRForm;
+        };
+
+$('body').on('click', '.captcha', function (e) {
+    e.preventDefault();
+    $.getJSON("/captcha/refresh/", function (result) {
+        $('.captcha').attr('src', result['image_url']);
+        $('#id_captcha_0').val(result['key']);
+    });
+});
+
+
+$('.registerForm').on('submit', function (e) {
+    e.preventDefault();
+
+    // Foydalanuvchi kiritgan ma'lumotlar
+    const username = $('.username').val();
+    const password1 = $('.password1').val();
+    const password2 = $('.password2').val();
+
+    // Formani tekshirish uchun massiv
+    const formData = [
+        { key: 'username', value: username, message: "Login" },
+        { key: 'password1', value: password1, message: "Parol" },
+        { key: 'password2', value: password2, message: "Takroriy parol" },
+    ];
+
+    // Avvalgi xatolik xabarlari tozalanadi
+    $('.text-danger').remove();
+    $('#registerFormError').empty();
+
+    // Tekshiruv funksiyasi
+    const isValid = formValidate(formData);
+
+    // Agar forma to'g'ri to'ldirilgan bo'lsa — AJAX yuboriladi
+    if (isValid) {
+        const url = $('.registerForm').data('url');
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: $('.registerForm').serialize(),
+            success: function (response) {
+                $('.text-danger').remove(); // Oldingi xatolarni tozalash
+
+                if (response.success) {
+                    $('#registerFormError').html(`<span class="text-success">${response.message}</span>`);
+                    // Kerak bo‘lsa: window.location.href = "/";
+                } else {
+                    // CAPTCHA yoki boshqa xatolikni ajratib ko‘rsatish
+                    if (response.is_captcha === false) {
+                        $('#registerFormError').html(`<span class="text-danger">${response.message}</span>`);
+                    } else if (response.is_captcha === true) {
+                        $('#id_captcha_1').after(`<br><span class="text-danger">${response.message}</span>`);
+                    } else {
+                        $('#registerFormError').html(`<span class="text-danger">${response.message || "Noma’lum xatolik yuz berdi"}</span>`);
+                    }
+                }
+            },
+            error: function (xhr) {
+                // Server xatosi bo‘lsa
+                $('#registerFormError').html(`<span class="text-danger">Server xatoligi: ${xhr.status}</span>`);
+            }
+        });
+
+        $.getJSON("/captcha/refresh/", function (result) {
+        $('.captcha').attr('src', result['image_url']);
+        $('#id_captcha_0').val(result['key']);
+    });
+    }
+});
+
+
+    </script>
+{% endblock base_content %}

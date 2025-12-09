@@ -1,0 +1,42 @@
+{% extends "pupil/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    Online test
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        {% if objects.count > 0 %}
+            <div class="row">
+                {% for object in objects %}
+                    <div class="card" style="margin: 1%">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <h4 class="card-title">{{ object.subject.name }}</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        Variant: {{ object.question_box.box_number }}</h6>
+                                </li>
+                                <li class="list-group-item">To'g'ri topilgan savollar soni: &nbsp;{{ object.count_correct_answer }}</li>
+                                <li class="list-group-item">Savollar soni: &nbsp;{{ object.question_box.count_question }}</li>
+                                <li class="list-group-item">Ajratilgan vaqt: {{ object.duration }}</li>
+                                <li class="list-group-item">Boshlangan vaqt: {{object.start_time|date:"SHORT_DATE_FORMAT"}} {{object.start_time|time:"H:i"}}</li>
+                                <li class="list-group-item">Tugatgan vaqt: {{object.finish_time|date:"SHORT_DATE_FORMAT"}} {{object.finish_time|time:"H:i"}}</li>
+                                <li class="list-group-item">To'plangan ball: {{ object.score }}</li>
+                                <li class="list-group-item"><a class="btn btn-outline-info btn-sm viewResultTestBtn" href="{% url 'exam_result_dash' object.id %}"><i class="fa fa-list"></i> Batafsil</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card" style="width: 15rem;">
+                <div class="card-body">
+                    <p class="text text-center text-success"
+                       style="font-size: xx-large; font-weight: normal">Ma'lumot topilmadi</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script src="{% static 'assets/js/demo/form-plugins.demo.js' %}"></script>
+{% endblock %}

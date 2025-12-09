@@ -1,0 +1,60 @@
+{% load i18n %}
+{% load static %}
+<form method="post" id="UpdateCheckedArticleForm">
+    {% csrf_token %}
+    <div class="modal fade" id="UpdateCheckedArticleModal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="background-color: #EEEEEE">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Maqolaning qisqacha mazmuni va kalit so'zlarini o'zgartirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                <select id="id_article" name="article" class="form-control" style="visibility: hidden">
+                        <option selected value="{{ article.id }}"></option>
+                    </select>
+                    <div class="form-group row m-b-15">
+                       <label class="col-sm-12"><b>Qisqacha mazmuni:</b> <br>{{ form.abstract }}</label>
+                        <label class="col-sm-12"><b>Kalit so'zlar:</b><br>{{ form.keywords }}</label>
+                        <label class="col-sm-12"><b>Qisqacha mazmuni(en):</b><br>{{ form.abstract_en }}</label>
+                        <label class="col-sm-12"><b>Kalit so'zlar(en):</b><br>{{ form.keywords_en }}</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Yopish" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#UpdateCheckedArticleForm').submit(function (e) {
+            e.preventDefault();
+            let form = $('#UpdateCheckedArticleForm');
+            let formData = form.serialize();
+            $.ajax({
+                url: "{% url 'update_checked_article' article.id %}",
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.result) {
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                    }
+
+                },
+            });
+        });
+    });
+
+</script>

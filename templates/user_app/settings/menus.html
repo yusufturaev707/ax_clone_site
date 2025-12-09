@@ -1,0 +1,82 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Menyular ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Menyular ro'yxati" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container">
+                <button type="button" style="float: left"
+                        data-url="{% url 'create_menu' %}"
+                        class="btn btn-primary btn-sm create_menu_btn"><i
+                        class="fa fa-plus mr-1"></i>{% trans "Yangi menyu yaratish" %}
+                </button>
+                <br>
+                <br>
+                <table class="table table-hover table-fixed table-responsive-lg">
+
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Nomi" %}</strong></th>
+                        <th><strong>{% trans "Belgi nomi" %}</strong></th>
+                        <th><strong>{% trans "Url nomi" %}</strong></th>
+                        <th><strong>{% trans "Tartibi" %}</strong></th>
+                        <th><strong>{% trans "Menyu turi" %}</strong></th>
+                        <th><strong>{% trans "Ruxsat etilgan rollar" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th></th>
+                        <th width="10%"></th>
+                    </tr>
+                    </thead>
+
+                    {% if objects.count > 0 %}
+                        {% for item in objects %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ item.name }}</td>
+                                <td>
+                                    {% if item.icon_name %}
+                                        {{ item.icon_name }}
+                                        {% else %}
+                                        {% trans "-" %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.url_name }}</td>
+                                <td>{{ item.order }}</td>
+                                <td>{{ item.type }}</td>
+                                <td>
+                                    {% for role in item.allowed_roles.all %}
+                                        <span class="badge badge-default">{{ role.name }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% if item.status %}
+                                        <span class="badge badge-success">{% trans "Aktiv" %}</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">{% trans "Aktiv emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit_menu_btn"
+                                            data-url="{% url 'edit_menu' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-edit"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm delete_menu_btn"
+                                            data-url="{% url 'delete_menu' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

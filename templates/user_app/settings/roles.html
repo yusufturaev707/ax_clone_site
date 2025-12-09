@@ -1,0 +1,58 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Rollar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Rollar ro'yxati" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 1% 3%">
+            <button type="button"
+                        data-url="{% url 'create_role' %}"
+                        class="btn btn-primary btn-sm create_role_btn"><i
+                        class="fa fa-plus mr-1"></i>{% trans "Yangi rol yaratish" %}
+                </button>
+                <br>
+                <br>
+                <table class="table table-hover table-fixed table-responsive table-striped">
+
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Nomi" %}</strong></th>
+                         <th><strong>{% trans "Kod nomi" %}</strong></th>
+                         <th><strong>{% trans "Darajasi" %}</strong></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if objects.count > 0 %}
+                        {% for item in objects %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.code_name }}</td>
+                                <td>{{ item.level }}</td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit_role_btn"
+                                            data-url="{% url 'edit_role' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-edit"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm delete_role_btn"
+                                            data-url="{% url 'delete_role' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,93 @@
+.forshadow {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.viewArticleFont {
+    font-family: Tahoma, Geneva, sans-serif;
+    /*font-family: Cambria, sans-serif;*/
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    display: inline-block;
+}
+
+a {
+    text-decoration: none;
+}
+
+.pagination {
+    padding: 5px 0;
+}
+
+.pagination ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.pagination .paginationBtn {
+    display: inline-block;
+    /*padding: 10px 18px;*/
+    margin: 2px;
+    color: #222;
+    border: 1px solid;
+    border-radius: 10px;
+    border-color: gainsboro;
+}
+
+
+/* THREE */
+
+.p3 .is-active {
+    background-color: #7AC6ED;
+    color: #fff;
+    border-radius: 10px;
+    border: 1px solid #81b0f5;
+}
+
+
+.label {
+    position: relative;
+    margin: 5px;
+    cursor: pointer;
+}
+
+label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    border: 1px solid grey;
+    position: absolute;
+    left: 18px;
+    top: 25px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+label img {
+    height: 100px;
+    width: 100px;
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+:checked + label {
+    border-color: #ddd;
+}
+
+:checked + label:before {
+    content: "\2713";
+    background-color: #43ad07;
+    transform: scale(2.5);
+    font-size: 15px;
+}

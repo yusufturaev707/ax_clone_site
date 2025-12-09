@@ -1,0 +1,210 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Ekspert tekshiruvi" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content viewArticleFont">
+        <div class="card forshadow">
+            {% if job_count >= 1 %}
+                <div class="row">
+                    <div class="card-body col-lg-6">
+                        <h4 class="card-title"></h4>
+                        <div class="container-fluid" style="margin-left: 1em">
+                            <p class="card-text">
+                                <b>{% trans 'ID:' %}</b>&nbsp;<span class="text-title" id="submissionId"
+                                                                    style="font-size: 16px"></span><br>
+                                <b>{% trans 'Fan:' %}</b>&nbsp;<span class="text-title" id="subjectName"></span><br>
+                                <b>{% trans 'Til:' %}</b>&nbsp;<span class="badge badge-success"
+                                                                     id="langName"></span><br>
+                                <b>{% trans 'Qiyinlik darajasi:' %}</b>&nbsp;<span
+                                    class="badge badge-blue" id="levelQuestion"></span><br>
+{#                                <b>{% trans 'Bob:' %}</b>&nbsp; <span id="chapterName"></span><br>#}
+{#                                <b>{% trans "Bo'lim:" %}</b>&nbsp; <span id="sectionName"></span><br>#}
+{#                                <b>{% trans "Mavzu:" %}</b>&nbsp; <span id="topicName"></span><br>#}
+                                <b>{% trans "Yaratilgan vaqti:" %}</b>&nbsp; <span style="color: #656464"
+                                                                                   id="createdAt"></span>
+                            <p><b>{% trans 'Holati:' %}</b>&nbsp;<span id="statusName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card" style="height: 100%">
+                            <div class="card-body">
+                                <div id="isCheckJob" style="margin: 10%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block checkJobBtn"
+                            style="margin-left: 3%; margin-right: 3%; margin-bottom: 1%">{% trans "Ishni tekshirish" %}</button>
+                </div>
+                {% else %}
+                <h3 class="text-center" style="margin: 3%"><button disabled class="btn btn-danger" style="border-radius: 25px; width:50px; height:50px; font-size: 24px">!</button> &nbsp;{% trans "Sizda ish mavjud emas!" %}</h3>
+            {% endif %}
+        </div>
+    <br>
+    <hr>
+    <h5 class="text">Tekshirgan ishlarim</h5>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-striped display" id="ChickedJobLists" style="width:100%">
+                    <thead class="table forshadow" style="background-color: #d3d1d1">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Til" %}</strong></th>
+                        <th><strong>{% trans "Bob" %}</strong></th>
+                        <th><strong>{% trans "Bo'lim" %}</strong></th>
+                        <th><strong>{% trans "Mavzu/Qism" %}</strong></th>
+                        <th><strong>{% trans "Qiyinlik Daraja" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th><strong>{% trans "Ish turi" %}</strong></th>
+                        <th><strong>{% trans "Olingan vaqt" %}</strong></th>
+                        <th><strong>{% trans "Tugatgan vaqt" %}</strong></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function isCheckView(is_check) {
+            let sp = ``;
+            if (is_check === true) {
+                sp = sp + `<p class="text text-center" style="font-size: xxx-large"><i class="fa fa-check"></i></p>`;
+            }
+            if (is_check === false) {
+                sp = sp + `<p class="text text-center" style="font-size: xxx-large; float: right"><i class="fa fa-times"></i></p>`;
+            }
+            return sp;
+        }
+
+        function statusView(code, name) {
+            let st = ``;
+            if (code === 4) {
+                st = st + `<span class="badge badge-info">` + name + `</span>`;
+            }
+            if (code === 3) {
+                st = st + `<span class="badge badge-info">` + name + `</span>`;
+            }
+            if (code === 2) {
+                st = st + `<span class="badge badge-warning">` + name + `</span>`;
+            }
+            if (code === 0) {
+                st = st + `<span class="badge badge-danger">` + name + `</span>`;
+            }
+            if (code === 1) {
+                st = st + `<span class="badge badge-success">` + name + `</span>`;
+            }
+            return st;
+        }
+
+
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'load_test_for_expert' %}",
+                success: function (response) {
+                    if (response.result) {
+                        let n = response.data.length;
+                        if (n === 0) {
+                            $('#jobDiv').html(`<h4 class="text-center" style="color:#C8C8C8;">Ma'lumot mavjud emas.</h4>`);
+                        }
+                        let is_check = isCheckView(response['data']['is_check']);
+                        let status = statusView(response['data']['status_test_code'], response['data']['status_test']);
+
+                        $('#submissionId').text(response['data']['id']);
+                        $('#subjectName').text(response['data']['subject']);
+                        $('#langName').text(response['data']['lang']);
+                        $('#levelQuestion').text(response['data']['level_d']);
+                        $('#chapterName').text(response['data']['chapter']);
+                        $('#sectionName').text(response['data']['section']);
+                        $('#topicName').text(response['data']['topic']);
+                        $('#createdAt').text(response['data']['created_at']);
+                        $('#statusName').html(status);
+                        $('#isCheckJob').html(is_check);
+
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            let table = $('#ChickedJobLists').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'load_checked_jobs' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id"},
+                    {data: "subject"},
+                    {data: "lang"},
+                    {data: "chapter"},
+                    {data: "section"},
+                    {data: "topic"},
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<span class="badge badge-green">' + data['level_d'] + '</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            let st = '';
+                            if (data['status_test_code'] === 0){
+                                st = '<span class="badge badge-danger">' + data['status_test'] + '</span>';
+                            } else if (data['status_test_code'] === 1) {
+                                 st = '<span class="badge badge-success">' + data['status_test'] + '</span>';
+                            } else if (data['status_test_code'] === 2) {
+                                 st = '<span class="badge badge-warning">' + data['status_test'] + '</span>';
+                            } else if (data['status_test_code'] === 3) {
+                                 st = '<span class="badge badge-indigo">' + data['status_test'] + '</span>';
+                            }
+                            return st;
+                        }
+                    },
+                    {data: "job_type"},
+                    {data: "job_given_time"},
+                    {data: "updated_at"},
+                ],
+                serverSide: true,
+                ordering: true,
+                {#responsive: true,#}
+                paging: true,
+                processing: true,
+                {#pageLength: 2,#}
+                info: true,
+                bInfo: true,
+                bSort: true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+            });
+
+        });
+
+        $('body').on('click', '.checkJobBtn', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'load_test_for_expert' %}",
+                success: function (response) {
+                    let jobId = response['data']['id'];
+                    window.location.href = "{% url 'load_test_for_expert' %}" + jobId + "/";
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+
+    </script>
+{% endblock %}

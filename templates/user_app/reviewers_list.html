@@ -1,0 +1,66 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Taqrizchilar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Taqrizchilar ro'yxati" %}
+        </h2>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 15px;">
+                <table class="table table-hover table-fixed">
+
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "F.I.O" %}</strong></th>
+                        <th><strong>{% trans "E-mail" %}</strong></th>
+                        <th><strong>{% trans "Telefon nomeri" %}</strong></th>
+                        <th><strong>{% trans "Tug'ilgan kuni" %}</strong></th>
+                        <th><strong>{% trans "Ilmiy Darajasi" %}</strong></th>
+                        <th><strong>{% trans "Taqrizchimi" %}</strong></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if reviewers.count > 0 %}
+                        {% for reviewer in reviewers %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ reviewer.user.full_name }}</td>
+                                <td>{{ reviewer.user.email }}</td>
+                                <td>
+                                    {% if reviewer.user.phone %}
+                                        {{ reviewer.user.phone }}
+                                    {% else %}
+                                        <span style="color: #b9b9b9">{% trans "Mavjud emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                     {% if reviewer.user.birthday %}
+                                        {{ reviewer.user.birthday }}
+                                    {% else %}
+                                        <span style="color: #bebebe">{% trans "Mavjud emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class='badge badge-default'>{{ reviewer.scientific_degree.name }}</span>
+                                </td>
+                                <td>
+                                    {% if reviewer.is_reviewer %}
+                                        <span class='badge badge-success'>{% trans "Ha" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Yo'q" %}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

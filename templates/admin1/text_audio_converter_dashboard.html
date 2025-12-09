@@ -1,0 +1,203 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Konverter" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="container">
+                <form method="post" data-url="{% url 'text_to_speech' %}" id="textToSpeechForm">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="id_type_voice">{% trans "Ovoz turini tanlang" %}</label>
+                        <select class="form-control" id="id_type_voice" name="type_voice">
+                            <option value="">{% trans "Tanlang" %}</option>
+                            {% for item in  type_voices %}
+                                <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_language">{% trans "Tilni tanlang" %}</label>
+                        <select class="form-control" id="id_language" name="language">
+                            <option value="">{% trans "Tanlang" %}</option>
+                            {% for item in  languages %}
+                                <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <label for="id_text_string">{% trans "Matnni nusxasini joylashtiring" %}</label>
+                    <textarea class="form-control" id="id_text_string" name="text_string" rows="5"></textarea>
+                <button type="submit" class="btn btn-outline-primary textToSpeechBtn" style="margin-top: 2%"><img src="{% static 'icons/text-to-speech.png' %}" alt="No icon"> &nbsp;{% trans "CONVERTING" %}</button>
+                </form>
+                <div id="spinnerDiv" style="display: none">
+                    <div class="spinner-grow text-muted"></div>
+                    <div class="spinner-grow text-primary"></div>
+                    <div class="spinner-grow text-success"></div>
+                    <div class="spinner-grow text-info"></div>
+                    <div class="spinner-grow text-warning"></div>
+                    <div class="spinner-grow text-danger"></div>
+                    <div class="spinner-grow text-secondary"></div>
+                    <div class="spinner-grow text-dark"></div>
+                    <div class="spinner-grow text-light"></div>
+                </div>
+            </div>
+        </div>
+    <br>
+        <div class="panel-body" style="border-radius: 5px; padding: 2em;">
+            <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped display" id="convertedAudiosTable" style="width:100%">
+                    <thead class="table forshadow">
+                        <tr class="dataGrid">
+                            <th class="align-content-center"><strong>{% trans "ID" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Matn" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Ovoz turi" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Til" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Audio fayl" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Yaratilgan vaqt" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Amal" %}</strong></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initTable();
+
+            function initTable() {
+                let table = $('#convertedAudiosTable').DataTable({
+                    columnDefs: [
+                        {className: 'dt-center', targets: '_all'},
+                    ],
+                    destroy: true,
+                    ajax: {
+                        type: 'POST',
+                        url: "{% url 'load_converted_audios' %}",
+                        data: {
+                            csrfmiddlewaretoken: getCookie('csrftoken')
+                        },
+                        datatype: "json",
+                    },
+                    columns: [
+                        {data: "id",},
+                        {data: "text"},
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                let path_audio = data['domain_url'] + data['audio_file'].toString();
+                                return `<audio controls><source src="${path_audio}" type="audio/mp3"></audio>`;
+                            }
+                        },
+                        {data: "voice_name"},
+                        {data: "language"},
+                        {data: "created_at"},
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                return '<button type="button" class="btn btn-outline-danger removeAudioBtn" data-id="' + data.id + '"><i class="fa fa-trash" /></button>';
+                            }
+                        },
+                    ],
+                    serverSide: true,
+                    ordering: true,
+                    paging: true,
+                    processing: true,
+                    info: true,
+                    bInfo: true,
+                    bSort: true,
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    order: [],
+                });
+            }
+
+            $('#convertedAudiosTable tbody').on('click', '.removeAudioBtn', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = "{% url 'delete_audio' %}"
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        if (response['result']) {
+                            swal({
+                                title: 'Muvaffaqiyat!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 1000,
+                            });
+
+                            initTable();
+
+                        } else {
+                            swal({
+                                title: 'Diqqat!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3500,
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+
+            $('body').on('submit', '#textToSpeechForm', function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                let url = $('#textToSpeechForm').data('url');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
+                        $('.textToSpeechBtn').prop('disabled', true);
+                        $('#spinnerDiv').css('display', 'block');
+                    },
+                    success: function (response) {
+                        if (response.result) {
+                            $('#textToSpeechForm')[0].reset();
+                            swal({
+                                title: 'Muvaffaqiyat!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 1500,
+                            });
+                            initTable();
+                        } else {
+                            swal({
+                                title: 'Diqqat!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3500,
+                            });
+                        }
+                    },
+                    complete: function (data) {
+                        $('.textToSpeechBtn').prop('disabled', false);
+                        $('#spinnerDiv').css('display', 'none');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+        });
+</script>
+{% endblock %}

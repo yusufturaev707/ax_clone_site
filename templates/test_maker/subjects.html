@@ -1,0 +1,129 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Fanlar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Fanlar ro'yxati" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 5px;">
+                <button type="button" style="float: left"
+                        data-url="{% url 'create_subject' %}"
+                        class="btn btn-primary btn-sm create_subject_btn"><i
+                        class="fa fa-plus mr-1"></i>{% trans "Fan qo'shish" %}
+                </button>
+                <br>
+                <br>
+                <table class="table table-hover table-fixed table-responsive-lg">
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Nomi" %}</strong></th>
+                        <th><strong>{% trans "Qisqacha nomi" %}</strong></th>
+                        <th><strong>{% trans "Davomiyligi" %}</strong></th>
+                        <th><strong>{% trans "Savollar limiti" %}</strong></th>
+                        <th><strong>{% trans "Til" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th><strong>{% trans "Rasm" %}</strong></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if subjects.count > 0 %}
+                        {% for item in subjects %}
+                            <tr>
+                                <th scope="row">{{ item.id }}</th>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.key }}</td>
+                                <td>{{ item.duration }}</td>
+                                <td>{{ item.limit_question }}</td>
+                                <td>
+                                    {% if item.lang_key %}
+                                        {{ item.lang_key }}
+                                    {% else %}
+                                        <i class="fa fa-times"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.status %}
+                                        <i class="fa fa-check"></i>
+                                    {% else %}
+                                        <i class="fa fa-times"></i>
+                                    {% endif %}
+                                </td>
+                                <td><img src="{{ item.picture.url }}" alt="No image" width="40"/></td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit_subject_btn" data-url="{% url 'edit_subject' item.id %}">
+                                        <i class="far fa-lg fa-fw fa-edit"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm delete_subject_btn" data-url="{% url 'delete_subject' item.id %}">
+                                        <i class="far fa-lg fa-fw fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $('body').on('click', '.create_subject_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#show_res').html(response);
+                    $('#create_subject_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('click', '.edit_subject_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#show_res').html(response);
+                    $('#edit_subject_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+         $('body').on('click', '.delete_subject_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#show_res').html(response);
+                    $('#delete_subject_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+         });
+    </script>
+{% endblock %}

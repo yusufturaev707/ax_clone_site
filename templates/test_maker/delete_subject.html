@@ -1,0 +1,50 @@
+{% load static %}
+{% load i18n %}
+<form method="post" data-url="{% url 'delete_subject' subject.id %}" id="delete_subject_form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="delete_subject_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Fanni o'chirmoqchimisiz?" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-center"><img src="{{ subject.picture.url }}" width="50" alt="No"> &nbsp;{{ subject.name }}</h2>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Ha" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('submit', '#delete_subject_form', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+            let formData = $('#delete_subject_form').serialize();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                success: function (response) {
+                    swal({
+                        title: response.message,
+                        icon: 'success',
+                        timer: 1500,
+                    });
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>

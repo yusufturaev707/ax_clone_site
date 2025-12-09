@@ -1,0 +1,488 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Savollarni yuklash" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body forshadow"
+             style="background-color: #f6f6f6;padding-left: 10%;padding-right: 10%; padding-top: 2%; padding-bottom: 5%">
+            <div class="container">
+                <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data" class="sendTestForm"
+                          data-url="{% url 'edit_test' submission.id %}" data-parsley-validate="true">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label>Tanlangan fan</label>
+                                    <input type="text" value="{{ submission.subject.name }}" class="form-control" disabled>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Tanlangan til</label>
+                                    <input type="text" value="{{ submission.lang.name }}" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xl-12">
+                                <label>Tanlangan savol turi</label>
+                                <input type="text" value="{{ submission.type_test_upload.name }}" class="form-control"
+                                       disabled>
+                            </div>
+                        </div>
+                        {% if submission.type_test_upload.id == 2 %}
+                        	<div class="row" id="chapter_div">
+                            <div class="form-group col-xl-6">
+                                <label for="id_chapter">Bob</label>
+                                <select id="id_chapter" name="chapter"
+                                        class="form-control">
+                                    {% if submission.chapter %}
+                                        <option value="{{ submission.chapter.id }}" selected>{{ submission.chapter.name }}</option>
+                                    {% endif %}
+
+                                </select>
+                            </div>
+                            <div class="form-group col-xl-6">
+                                <label for="id_section">Bo'lim</label>
+                                <select id="id_section" name="section"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                            </div>
+                        {% endif %}
+                        <div class="row" id="part_div">
+                            <div class="form-group col-xl-12">
+                                <label for="id_part">Qaysi bo'lim</label>
+                                <select id="id_part" name="part"
+                                        class="form-control">
+
+                                </select>
+                                <span id="danger_part" class="text text-danger" style="display: none">Iltimos bo'limni tanlang!</span>
+                            </div>
+                        </div>
+                        <div class="row" id="topic_div">
+                            <div class="form-group col-xl-12">
+                                <label for="id_topic">Mavzu</label>
+                                <select id="id_topic" name="topic"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Level">Qiyinlik darajasi</label>
+                            <div class="note note-info m-b-15 alert alert-dismissable">
+                                <div class="note-icon f-s-20">
+                                    <i class="fa fa-info fa-2x"></i>
+                                </div>
+                                <div class="note-content">
+                                    {% for level in levels %}
+                                        <span style="font-family: Cambria,sans-serif"><b>{{ level.name }}</b> - {{ level.desc }}</span>
+                                        &nbsp;
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% if submission.type_test_upload.id == 1 %}
+{#                                {{ form.level_dn }}#}
+                        <div class="row" id="level_dn_div">
+                            <div class="form-group col-xl-12">
+                                <select id="id_level_dn" name="level_dn" class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                         <div class="row" id="part_option_div">
+                            <div class="form-group col-xl-12">
+                                <label for="id_part_option">Qaysi qismga tegishli</label>
+                                <select id="id_part_option" name="part_option" class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                         <div class="row">
+                            <div class="form-group col-xl-12">
+                                <label for="id_topic_n">Mavzu</label>
+                                {{ form.topic_n }}
+                            </div>
+                        </div>
+                        {% elif submission.type_test_upload.id == 2 %}
+                             {{ form.level_d }}
+                        {% endif %}
+                        </div>
+                        <div class="panel panel-inverse">
+                            <div class="panel-body">
+                                <div class="note note-yellow m-b-15 alert alert-dismissable">
+                                    <div class="note-icon f-s-20">
+                                        <i class="fa fa-lightbulb fa-2x"></i>
+                                    </div>
+                                    <div class="note-content" style="font-family: Cambria,sans-serif">
+                                        <h4 class="m-t-5 m-b-5 p-b-2">Diqqat!</h4>
+                                        <ul class="m-b-5 p-l-25">
+                                            <li>Word (<strong>.doc, .docx</strong>) formatidagi
+                                                fayllarni yuklay olasiz.
+                                            </li>
+                                            <li>Bittadan ko'p test yuklashda, bir vaqtni o'zida kerakli test
+                                                fayllarni belgilab yuklaysiz.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% if submission.type_test_upload.id == 1 %}
+                                    <div class="note note-info m-b-15">
+                                        <div class="note-icon f-s-20">
+                                            <i class="fa fa-lightbulb fa-2x"></i>
+                                        </div>
+                                        <div class="note-content">
+                                            <h4 class="m-t-5 m-b-5 p-b-2">Shablon!</h4>
+                                            <div id="template_div">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div id="FileUploadTest" class="col-md-12">
+                                        <label>{% trans "Yuklab olgan shablonni to'ldiring va tizimga yuklang!" %}</label>
+                                        <div class="wrapper" id="file-list-display">
+                                            <div class="upload_test" id="testUpload">
+                                                <i class="fa fa-file-word" aria-hidden="true"></i>
+{#                                                {{ fileForm.file_word }}#}
+                                                <input type="file" class="form-control" name="file_word" id="id_file_word" multiple="multiple">
+                                            </div>
+                                            <p class="text-center text-danger warningText" style="display: none;">
+                                                {% trans "Quyidagi qizil rangdagi fayllar tizimga yuklanmaydi" %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='file-list-display'></div>
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                             <a href="{% url 'my_submit_tests' %}" class="btn btn-grey forshadow btn-block" style="font-size: 16px">Orqaga qaytish</a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-success forshadow btn-block" id="submitUploadBtn" style="font-size: 16px">
+                            <span class="spinner-border spinner-border-sm upload_spinner" role="status"
+                                  aria-hidden="true"></span>
+                            <span class="visually-hidden upload_spinner">{% trans "Yuklanmoqda" %}...</span>
+                            <span class="upload_btn_text">{% trans "Yuborish" %}</span>
+                        </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+
+            let typeID = parseInt("{{ submission.type_test_upload.id }}");
+            let subjectID = parseInt("{{ submission.subject.id }}");
+            let langID = parseInt("{{ submission.lang.id }}");
+            let is_langSubject = "{{ submission.subject.is_lang }}";
+
+            let testTypeId = parseInt("{{ submission.type_test_upload.id }}");
+
+            $('#id_part_option').change(function () {
+                    let levelID = $('#id_level_dn').val();
+                    let partID = $('#id_part').val();
+                    let part_optionID = $(this).val();
+
+                    if (part_optionID) {
+                        $.ajax({
+                            url: '{% url "get_template_part_option" %}',
+                            data: {
+                                'type_upload_id': testTypeId,
+                                'subject_id': subjectID,
+                                'lang_id': langID,
+                                'level_id': levelID,
+                                'part_id': partID,
+                                'part_option_id': part_optionID,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                            let btn = `<a href="${data['file_url']}" type="button" style="font-size: large" class="btn btn-xs btn-outline-inverse btn-block" download="download"><i class="fa fa-file-word"></i>${data['name']} shablonni yuklab oling!</a>`;
+                                $('#template_div').html(btn);
+                            }
+                        });
+                    } else {
+                        console.log("Xatolik")
+                }
+            });
+
+            $('#id_level_dn').change(function () {
+                    let levelID = $(this).val();
+                    let partID = $('#id_part').val();
+
+                    $('#id_part_option').val("");
+
+                    if (levelID) {
+                        $.ajax({
+                            url: '{% url "get_part_option" %}',
+                            data: {
+                                'type_upload_id': testTypeId,
+                                'subject_id': subjectID,
+                                'lang_id': langID,
+                                'level_id': levelID,
+                                'part_id': partID,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                let options = '<option value="">Qismni tanlang</option>';
+                                if (data.length > 0){
+                                    $.each(data, function (index, item) {
+                                        options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                                    });
+                                    $('#id_part_option').html(options);
+                                } else if (data.length === 0){
+                                    $('#danger_part').css("display", "block");
+                                }
+                            }
+                        });
+                    } else {
+                        $('#id_part').html(`<option value="">Bo'lim tanlanmadi!</option>`);
+                }
+            });
+
+            $('#id_chapter').change(function () {
+                let chapterId = $(this).val();
+
+                if (chapterId) {
+                    $.ajax({
+                        url: '{% url "get_section_by_chapter" %}',
+                        data: {
+                            'chapter_id': chapterId
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.length === 1) {
+                                let option = `<option selected value="` + data[0]['id'] + `">` + data[0]['name'] + `</option>`;
+                                $('#id_section').html(option);
+                            } else {
+                                let options = '<option value="">Bo\'limni tanlang</option>';
+                                $.each(data, function (index, item) {
+                                    options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                                });
+                                $('#id_section').html(options);
+                            }
+                        }
+                    });
+
+                } else {
+                    $('#id_section').html('<option value="">Bob tanlanmadi</option>');
+                }
+            });
+
+            $.ajax({
+                url: '{% url "get_chapter_by_subject" %}',
+                data: {
+                    'subject_id': subjectID,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    let options = '<option value=""><i style="color: red">Tanglang</i></option>';
+                    $.each(data, function (index, item) {
+                        options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                    });
+                    $('#id_chapter').html(options);
+                }
+            });
+
+            $.ajax({
+                url: '{% url "get_level_dn_list" %}',
+                dataType: 'json',
+                success: function (data) {
+                    let options = '<option value=""><i style="color: red">Tanglang</i></option>';
+                    $.each(data, function (index, item) {
+                        options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                    });
+                    $('#id_level_dn').html(options);
+                }
+            });
+
+            if (testTypeId === 2) {
+                $('#topic_div').css('display', 'block');
+                $('#part_div').css('display', 'none');
+
+                $('#id_section').change(function () {
+                    let sectionId = $(this).val();
+                    if (sectionId) {
+                        $.ajax({
+                            url: '{% url "get_topic_by_section" %}',
+                            data: {
+                                'section_id': sectionId
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.length === 1) {
+                                    let option = `<option selected value="` + data[0]['id'] + `">` + data[0]['name'] + `</option>`;
+                                    $('#id_topic').html(option);
+                                } else {
+                                    let options = '<option value="">Mavzuni tanlang</option>';
+                                    $.each(data, function (index, item) {
+                                        options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                                    });
+                                    $('#id_topic').html(options);
+                                }
+                            }
+                        });
+
+                    } else {
+                        $('#id_section').html('<option value="">Bob tanlanmadi</option>');
+                }
+            });
+
+            } else {
+                    $('#topic_div').css('display', 'none');
+                }
+
+            if (testTypeId === 1) {
+                $('#part_div').css('display', 'block');
+                $('#topic_div').css('display', 'none');
+
+                $.ajax({
+                        url: '{% url "get_part_by_type" %}',
+                        data: {
+                            'subject_id': subjectID,
+                            'upload_type_id': typeID,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            let options = '<option value=""><i style="color: red">Tanglang</i></option>';
+                            $.each(data, function (index, item) {
+                                options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                            });
+                            $('#id_part').html(options);
+                        }
+                    });
+            } else {
+                $('#part_div').css('display', 'none');
+            }
+
+            if (testTypeId === 2) {
+                $('#topic_div').css('display', 'block');
+                $('#part_div').css('display', 'none');
+            } else {
+                $('#topic_div').css('display', 'none');
+            }
+
+
+            $('#id_part').change(function () {
+                let partId = $(this).val();
+                $('#id_level_dn').val("");
+                $('#id_part_option').val("");
+                $('#danger_part').css("display", "none");
+
+                if (partId) {
+
+                    if (partId === '2'){
+                        $('#templateReading').css('display', 'block');
+                        $('#templateListening').css('display', 'none');
+                        $('#templateWriting').css('display', 'none');
+                        $('#templateSpeaking').css('display', 'none');
+                        $('#templateGrammar').css('display', 'none');
+                    }
+
+                    if (partId === '3'){
+                        $('#templateReading').css('display', 'none');
+                        $('#templateListening').css('display', 'block');
+                        $('#templateWriting').css('display', 'none');
+                        $('#templateSpeaking').css('display', 'none');
+                        $('#templateGrammar').css('display', 'none');
+                    }
+
+                    if (partId === '4'){
+                        $('#templateReading').css('display', 'none');
+                        $('#templateListening').css('display', 'none');
+                        $('#templateWriting').css('display', 'block');
+                        $('#templateSpeaking').css('display', 'none');
+                        $('#templateGrammar').css('display', 'none');
+                    }
+
+                    if (partId === '5'){
+                        $('#templateReading').css('display', 'none');
+                        $('#templateListening').css('display', 'none');
+                        $('#templateWriting').css('display', 'none');
+                        $('#templateSpeaking').css('display', 'block');
+                        $('#templateGrammar').css('display', 'none');
+                    }
+
+                    if (partId === '1'){
+                        $('#templateReading').css('display', 'none');
+                        $('#templateListening').css('display', 'none');
+                        $('#templateWriting').css('display', 'none');
+                        $('#templateSpeaking').css('display', 'none');
+                        $('#templateGrammar').css('display', 'block');
+                    }
+
+                    {# Audio yuklanmas ekan #}
+                    {#$.ajax({#}
+                    {#    url: '{% url "get_is_have_audio" %}',#}
+                    {#    data: {#}
+                    {#        'subject_id': fanID,#}
+                    {#        'part_id': partId,#}
+                    {#    },#}
+                    {#    dataType: 'json',#}
+                    {#    success: function (response) {#}
+                    {#      if (response['is_have_audio']){#}
+                    {#          $('#AudioUploadTest').css('display', 'block');#}
+                    {#      } else {#}
+                    {#           $('#AudioUploadTest').css('display', 'none');#}
+                    {#      }#}
+                    {#    }});#}
+
+                } else {
+                    $('#id_topic').html('<option value="">Fan tanlanmadi</option>');
+                }
+            });
+
+        });
+
+        $('.upload_spinner').css('display', 'none');
+
+        (function () {
+            let fileInput = document.getElementById('id_file_word');
+
+            let fileList = [];
+            let renderFileList;
+
+            fileInput.addEventListener('change', function (evnt) {
+                fileList = [];
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    fileList.push(fileInput.files[i]);
+                }
+                renderFileList();
+            });
+
+            renderFileList = function () {
+                fileList.forEach(function (file, index) {
+                    let fileType = file.type;
+                    console.log(1)
+
+                    let allowedExtension1 = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    let allowedExtension2 = "application/msword";
+                    if (fileType === allowedExtension1 || fileType === allowedExtension2) {
+                        let temp1 = `<div class="uploaded uploaded--one"><i class="far fa-file-word"></i><div class="file"><div class="file__name"><p>` + file.name + `</p><i class="fas fa-check"></i></div></div></div></div>`;
+                        $('#file-list-display').append(temp1);
+                    } else {
+                        $('.warningText').css('display', 'block');
+                        let temp2 = `<div class="uploaded uploaded--one" style="background-color: #EED1CE;"><i class="far fa-file-word"></i><div class="file"><div class="file__name"><p>` + file.name + `</p><i class="fas fa-times"></i></div></div></div></div>`;
+                        $('#file-list-display').append(temp2);
+                    }
+
+                });
+            };
+        })();
+    </script>
+{% endblock %}

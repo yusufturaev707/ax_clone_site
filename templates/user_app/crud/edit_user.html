@@ -1,0 +1,61 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade" id="edit_user_modal">
+    <div class="modal-dialog">
+        <form method="post" data-url="{% url 'edit_user' user.id %}" id="choose_role_form">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Foydalanuvchiga rol tayinlash" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <h5>{{ user.full_name }}</h5>
+                    <div class="widget-todolist widget-todolist-rounded m-b-30" data-id="widget"
+                         id="list_roles">
+                        <div class="widget-todolist-header">
+                            <div class="widget-todolist-header-left">
+                                <h4 class="widget-todolist-header-title">{% trans "Rollar" %}</h4>
+                            </div>
+                            <div class="widget-todolist-header-right">
+                                <div class="widget-todolist-header-total"></div>
+                            </div>
+                        </div>
+                        <div class="widget-todolist-body" id="widget-todolist-body-role">
+                            {% for role in roles %}
+                                <div class="widget-todolist-item">
+                                    <div class="widget-todolist-input">
+                                        <div class="checkbox checkbox-css pt-0">
+                                            <input type="checkbox" id="widget_todolist_{{ role.id }}"
+                                                   name="role_checkbox" value="{{ role.id }}"
+                                                   {% if role in user.roles.all %}checked{% endif %}
+                                                   {% if role.level == 3 %} disabled {% endif %}
+                                            />
+                                            <label for="widget_todolist_{{ role.id }}" class="p-l-15">&nbsp;</label>
+                                        </div>
+                                    </div>
+                                    <div class="widget-todolist-content">
+                                         {% if role.level == 3 %}
+                                             <h4 class="widget-todolist-title" style="color: red;">{{ role.name }}</h4>
+                                             {% else %}
+                                             <h4 class="widget-todolist-title">{{ role.name }}</h4>
+                                         {% endif %}
+                                        <p class="widget-todolist-desc">Level: {{ role.level }}</p>
+                                    </div>
+                                    <div class="widget-todolist-icon">
+                                        <a href="#"><i class="fa fa-question-circle"></i></a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="button" class="btn btn-primary edit_user_btn_save">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

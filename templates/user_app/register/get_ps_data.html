@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade" id="get_data_ps_modal">
+    <div class="modal-dialog">
+        <form method="post" data-url="{% url 'get_data_ps' %}" id="get_data_ps_form">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <th class="text-nowrap">{% trans "JSh ShIR" %}</th>
+                            <td class="text-nowrap">
+                                <input type="text" name="jshshir" id="masked-input-jshshr" class="form-control" placeholder="______________"
+                                       required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Pasport seriya va raqami" %}</th>
+                            <td class="text-nowrap">
+                                <input type="text" name="pasport" id="masked-input-passport" class="form-control" placeholder="__ _______"
+                                       style="text-transform: uppercase" required>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Yangilash" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'assets/js/demo/form-plugins.demo.js' %}"></script>
+<script>
+    $('body').on('submit', '#get_data_ps_form', function (e) {
+        e.preventDefault();
+        let form = $('#get_data_ps_form');
+        let url = $(this).data('url');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function (response) {
+
+                if (response['result']) {
+                    swal({
+                        title: 'Muvaffaqiyat!',
+                        text: response.message,
+                        icon: 'success',
+                        timer: 3000,
+                    });
+                    window.location.reload();
+                } else {
+                    swal({
+                        title: 'Xatolik!',
+                        text: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                    });
+                }
+
+            }
+        });
+    })
+</script>

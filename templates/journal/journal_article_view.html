@@ -1,0 +1,65 @@
+{% extends 'article_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {{ jarticle.article.title }}
+{% endblock %}
+{% block content %}
+    <div class="row viewArticleFont"
+         style="background-color: white; padding:10px; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;;">
+        <div class="container" style="padding: 4em">
+            <p style="color:black; text-transform: uppercase;font-weight: bold; text-align: center">
+                {% if lang == 'uz' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.title }}
+                {% elif lang == 'uz' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.title_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.title_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.title }}
+                {% else %}
+                    {{ jarticle.article.title }}
+                {% endif %}
+            </p>
+            <br>
+            {% for item in authors %}
+                {{ forloop.counter }}. {{ item.lname }} {{ item.fname }}. &nbsp; <i>{{ item.work }}</i><br/>
+            {% endfor %}
+            <br>
+            <div style="text-align: justify;text-justify: inter-word;">
+                <b style="color:black;">{% trans "Qisqacha mazmuni" %}.</b>
+                {% if lang == 'uz' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.abstract }}
+                {% elif lang == 'uz' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.abstract_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.abstract_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.abstract }}
+                {% else %}
+                    {{ jarticle.article.abstract }}
+                {% endif %}
+            </div>
+            <br>
+            <div style="text-align: justify;text-justify: inter-word;">
+                <b style="color:black;">{% trans "Kalit so'zlar" %}.</b>
+                {% if lang == 'uz' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.keywords }}
+                {% elif lang == 'uz' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.keywords_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'uz' %}
+                    {{ jarticle.article.keywords_en }}
+                {% elif lang == 'en' and jarticle.article.article_lang.key == 'en' %}
+                    {{ jarticle.article.keywords }}
+                {% else %}
+                    {{ jarticle.article.keywords }}
+                {% endif %}
+            </div>
+            <br>
+            <br>
+            <a href="{{ jarticle.article_pdf.url }}" target="_blank" class="btn btn-outline-danger btn-sm"><i
+                    class="fa fa-file-pdf fa-lg"></i>&nbsp;&nbsp;{% trans "To'liq matni" %}</a>
+        </div>
+    </div>
+    <br>
+{% endblock content %}

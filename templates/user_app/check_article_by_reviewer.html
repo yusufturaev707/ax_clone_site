@@ -1,0 +1,153 @@
+{% load i18n %}
+{% load static %}
+<h2 class="page-header viewArticleFont">
+    {% trans "Maqola tekshirish" %}
+</h2>
+<div>
+    <div class="panel-body" style="padding:10px;">
+        <div class="row jumbotron forshadow" style="background-color: #FFFFFF; font-size: 14px;">
+            <div class="col-md-12">
+                <table style="margin-left: 3%;">
+                    <tr>
+                        <td><p><b>{% trans "Mavzu:" %} </b>{{ article.title|safe }}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p><b>{% trans "Rukn:" %} </b>{{ article.section.name }}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p><b>{% trans "Maqola turi:" %} </b><span class="badge badge-success">{{ article.article_type.name }}</span></p></td>
+                    </tr>
+
+                    <tr>
+                        <td><p></p><b>{% trans "Qisqacha mazmuni:" %} </b>{{ article.abstract|safe }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Kalit so'zlar:" %} </b>{{ article.keywords|safe }}</td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><b>{% trans "Fayl:" %} </b>
+                            <a class="btn btn-outline-info btn-sm" target="_blank" href="{{ article.filePDF.url }}"><i
+                                    class="icon-paper-clip"></i><span> {% trans "To'liq ko'rish" %}</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <button type="button" data-id="{{ article.id }}" id="view-article-messages-by-reviewer"
+                    data-url="{% url 'comment_author_vs_editor' article.id %}"
+                    class="btn btn-md btn-info forshadow">
+                <i class="fa fa-comment"></i> &nbsp;{% trans "Xabarlar" %}
+            </button>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-12 col-lg-6" style="display: none;" id="MessageBoxReviewer">
+                    <div class="m-b-10 m-t-10 f-s-12">
+                        <h5 class="text-inverse">{% trans "Xabarlar" %}</h5>
+                    </div>
+
+                    <div class="widget-chat widget-chat-rounded m-b-30 forshadow" data-id="widget">
+                        <div class="widget-chat-header">
+                            <div class="widget-chat-header-icon">
+                                <i class="fa fa-book width-30 height-30 f-s-20 bg-yellow text-inverse text-center rounded-corner"
+                                   style="line-height: 30px"></i>
+                            </div>
+                            <div class="widget-chat-header-content">
+                                <h4 class="widget-chat-header-title">{% trans "Muharrir bilan yozishmalar" %}</h4>
+                            </div>
+                        </div>
+                        <div class="widget-chat-body" data-scrollbar="true" data-height="250px" id="reviewer_chat_body">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-lg-6">
+                <div class="card forshadow">
+                    <ul style="margin: 2%;">
+                        <li><b>{% trans "Mavzu:" %} </b> {{ article_review.article.title }}</li>
+                        <li><b>{% trans "Muharrir:" %} </b> {{ article_review.editor.user.full_name }}</li>
+                        <li><b>{% trans "Taqrizchi:" %} </b> {{ article_review.reviewer.user.full_name }}</li>
+                        <li><b>Status: </b> <span {% if article_review.status.id == 1 %}
+                            class='badge badge-warning' {% elif article_review.status.id == 2 %}
+                            class='badge badge-info' {% elif article_review.status.id == 3 %}
+                            class='badge badge-success' {% elif article_review.status.id == 4 %}
+                            class='badge badge-danger' {% elif article_review.status.id == 5 %}
+                            class='badge badge-indigo' {% endif %}>
+                                    {{ article_review.status.name }}
+                                </span></li>
+                        <li><b>{% trans "Yuborilgan vaqti:" %} </b> {{ article_review.created_at }}</li>
+                    </ul>
+                    <br>
+                    {% if article_review.result == 0 %}
+                        <form method="post" class="sending_editor_form">
+                            {% csrf_token %}
+                                <input type="number" value="{{ article_review.id }}" name="review_article_id" hidden="hidden">
+                                <input type="number" value="{{ notifification.id }}" name="notif_id" hidden="hidden">
+                            <table class="table table-striped table-td-valign-middle">
+                                <tbody>
+                                <tr>
+                                    <td class="text-nowrap">
+                                        <label for="Comment"><b>{% trans "Taqriz bayonini kiriting" %}</b></label>
+                                        <p>{{ form.comment }}</p>
+                                        {{ form.media }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    {% else %}
+                        <div class="card forshadow" style="margin: 1%;">
+                            <div class="card-body">
+                                <h5 class="card-title">{% trans "Taqriz bayoni" %}</h5>
+                                <p class="card-text">
+                                    {{ article_review.comment|safe }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <br>
+                    <br>
+                    <div class="row d-flex justify-content-center">
+                        <button type="button" class="btn btn-danger forshadow" id="reject_reviewer_btn"
+                                data-url="{% url 'reviewer_rejected' %}"
+                                style="margin-right: 1%;" disabled>{% trans "Rad etish" %}
+                        </button>
+                        <button type="button" class="btn btn-warning forshadow" id="resubmit_reviewer_btn"
+                                data-url="{% url 'reviewer_resubmit' %}"
+                                style="margin-right: 1%;" disabled>{% trans "Muallif maqolani qayta yuborsin" %}
+                        </button>
+                        <button type="button" class="btn btn-success forshadow"
+                                data-url="{% url 'reviewer_confirmed' article_review.id %}"
+                                id="confirm_reviewer_btn" disabled>
+                            {% trans "Tasdiqlash" %}
+                        </button>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="write_reviewer_message_div"></div>
+<script type="text/javascript">
+    let is_checked = '{{ article_review.result }}';
+    if (is_checked === '0') {
+        $('#reject_reviewer_btn').prop("disabled", false);
+        $('#resubmit_reviewer_btn').prop("disabled", false);
+        $('#confirm_reviewer_btn').prop("disabled", false);
+    } else {
+        $('#reject_reviewer_btn').prop("disabled", true);
+        $('#confirm_reviewer_btn').prop("disabled", true);
+        $('#resubmit_reviewer_btn').prop("disabled", true);
+    }
+
+</script>

@@ -1,0 +1,115 @@
+{% load static %}
+{% load i18n %}
+{% with request.resolver_match.url_name as url_name %}
+<div id="header" class="header navbar navbar-default navbar-fixed-top navbar-expand-lg">
+    <div class="container">
+{#        <a href="{% url 'main_page' %}">#}
+{#            <img src="" alt="" width="80"/>#}
+{#        </a>#}
+        <span style="text-transform: uppercase; margin-left: 1em; font-size: 16px; font-family: Roboto,sans-serif; text-align: center; display: table-cell; vertical-align: middle;">
+                <a href="{% url 'main_page' %}" style="text-decoration: none;"><b style="color: black;">{% trans "Axborotnoma" %}</b></a>
+        </span>
+
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="collapse navbar-collapse" id="header-navbar">
+            <ul class="nav navbar-nav navbar-right d-flex flex-grow-1 navbar_menus">
+
+            </ul>
+        <ul class="nav navbar-nav navbar-right d-flex flex-grow-1">
+             <li style="margin-top: 1%">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    <div class="dropdown">
+                        <button class="btn btn-white dropdown-toggle" type="button" id="lang_btn"
+                                data-toggle="dropdown">
+                            {% if LANGUAGE_CODE == 'uz' %}
+                                <span class="flag-icon flag-icon-uz"></span>
+                                O‘zbek tili
+                            {% elif LANGUAGE_CODE == 'ru' %}
+                                <span class="flag-icon flag-icon-ru"></span>
+                                Русский
+                            {% elif LANGUAGE_CODE == 'en' %}
+                                <span class="flag-icon flag-icon-gb"></span>
+                                English
+                            {% elif LANGUAGE_CODE == 'kk' %}
+                                <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                                Qoraqalpoq tili
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for language in languages %}
+                                <li id="lang_{{ language.code }}">
+
+                                    <a href="{% url 'set-language' language.code %}" class="btn btn-white btn-block text-left">
+                                        {% if language.code != 'kk' %}
+                                            <span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
+                                        {% else %}
+                                            <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                                        {% endif %}
+                                        {% if language.code == 'kk' %}
+                                            Qaraqalpaq tili
+                                        {% elif language.code == 'uz' %}
+                                            O‘zbek tili
+                                        {% else %}
+                                            {{ language.name_local }}
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+        </ul>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $('body').ready(function () {
+        let url = '{% url 'load_navbar_menus' %}'.toString();
+        let base_url = "{{ url_name }}";
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                let lang = response.lang;
+                $('.navbar_menus').empty();
+                for (let item of response.navbar_menus) {
+                    if(response.is_authenticated){
+                        if (item.url_name === 'login' || item.url_name === 'register'){ continue; }
+                    }
+                    let link = "/" + lang + item.url;
+                    if (lang === 'uz') {
+                        link = item.url;
+                    }
+                    let temp = `<li id="navbar_menus_${item.id}">` +
+                        `<a href="${link}" id="navbar_menu_text_${item.id}" style="font-family: Cambria, Helvetica, Arial, Sans-Serif,serif; font-size: 16px;">${item.name}</a></li>`;
+                    $('.navbar_menus').append(temp);
+
+
+                    if (base_url === item.url_name.toString()) {
+                        $('#navbar_menu_text_' + item.id).css({"font-weight": "bold", "color": "#3e6db5" });
+                    }
+                }
+                let temp2 = `<li class="dropdown navbar-user"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;"><b><span class="d-none d-md-inline">${response.full_name}</span></b></a>`+
+                        `<div class="dropdown-menu dropdown-menu-right">`+
+                            `<a href="{% url 'dashboard' %}" class="dropdown-item" style="font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;"><i class="icon-pencil  p-r-10"></i><span>{% trans "Shaxsiy kabinet" %}</span></a>`+
+                            `<a href="{% url 'logout' %}" class="dropdown-item" style="font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;"><i class="icon-logout  p-r-10"></i><span>{% trans "Chiqish" %}</span></a></div></li>`;
+                            if (response.is_authenticated){
+                                $('.navbar_menus').append(temp2);
+                            }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+{% endwith %}

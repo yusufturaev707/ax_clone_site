@@ -1,0 +1,17 @@
+{% extends 'article_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Bog'lanish" %}
+{% endblock %}
+{% block content %}
+    <div class="row"
+         style="background-color: white; padding:10px; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;;">
+        <div class="container">
+            <br>
+            {{ contact.body|safe }}
+            <br>
+        </div>
+    </div>
+    <br>
+{% endblock content %}

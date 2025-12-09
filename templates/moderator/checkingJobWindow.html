@@ -1,0 +1,182 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Ishni tekshirish oynasi" %}
+{% endblock %}
+{% block content %}
+<div id="content" class="content viewArticleFont">
+    <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+    <form method="post" data-parsley-validate="true" enctype="multipart/form-data" id="check_job_moderator_form" data-url="{% url 'checking_job_window' job.id %}">
+                {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-12">
+                <table class="table table-bordered table-hover table-striped table-overflow forshadow">
+                    <tr>
+                        <td><b>{% trans "Fan" %}</b></td>
+                        <td><b>{{ job.submission_test.submission.subject.name }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qiyinlik darajasi" %}</b></td>
+                        <td>
+                            <span class="badge badge-info">
+                                {{ job.submission_test.submission.level_dn.name }}
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>{% trans "Bo'lim" %}</b></td>
+                        <td>{{ job.submission_test.submission.part.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>{% trans "Qism" %}</b></td>
+                        <td>{{ job.submission_test.submission.part_option.name }}</td>
+                    </tr>
+                     <tr>
+                        <td><b>{% trans "Mavzu" %}</b></td>
+                        <td>{{ job.submission_test.submission.topic_n }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Holati" %}</b></td>
+                        <td><span class="badge badge-warning">{{ job.status.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Tekshiruvchi moderator" %}</b></td>
+                        <td>{{ moderator.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Faylni yuklab olish" %}</b></td>
+                        <td>
+                            <a href="{{ job.submission_test.test.file_word.url }}" type="button"
+                               class="btn btn-xs btn-outline-warning" download="download"><img
+                                src="{% static 'img/word.png' %}" width="40" alt="word">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        <div class="col-lg-12" style="padding-left: 5%">
+            <h4 class="text text-center"><button disabled class="btn btn-danger" style="border-radius: 25px; width:45px; height:45px;">!</button>&nbsp; <b>{% trans 'Test topshirig‘ini ekspertizadan o‘tkazish bo‘yicha nazorat varaqasi' %}</b></h4>
+                <table class="table table-bordered table-striped table-hover">
+                {% for control in controls %}
+                    {% if control.control_sheet.code == 1 %}
+                    	<tr><td colspan="3"><b>{{ control.control_sheet.sheet.name }} *</b><span> {{ control.control_sheet.sheet.level.name }} * <span> {{ control.control_sheet.part_option.name }}</span></span></td></tr>
+                    {% endif %}
+                     <tr>
+                        <td>
+                            <div class="form-check-inline">
+                                {{ forloop.counter }}. {{ control.control_sheet.description }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check-inline" style="border: 1px solid green; border-radius: 5px; padding: 5px; width: 70px">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" value="1" name="res_radio{{ control.control_sheet.code }}" onclick="commentShow(this)">{% trans 'Ха' %}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check-inline" style="border: 1px solid red;border-radius: 5px; padding: 5px; width: 70px">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" value="0" name="res_radio{{ control.control_sheet.code }}" onclick="commentShow(this)">{% trans "Йўқ" %}
+                                </label>
+                            </div>
+                        </td>
+                        <td style="width: 700px; display: none" id="commentBox{{ control.control_sheet.code }}">
+                        <textarea rows="2" name="comment{{ control.control_sheet.code }}" class="form-control" placeholder="{% trans 'Izoh kiriting...' %}"></textarea>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+
+            </div>
+        <div class="container forshadow" style="border: 1px solid #9a9898; padding: 1%; background: #ececec; border-radius: 5px">
+            <label for="id_status"><b>{% trans "Tasdiq holatini belgilang" %}</b>&nbsp;<span class="text text-danger">*</span></label>
+            &nbsp;<select id="id_status" name="status" class="form-control status" onchange="resultShow(this)">
+                {% for id, name in form.fields.status.choices %}
+                    {% if id != 3 %}
+                        <option value="{{ id }}"><i class="fa fa-check"></i>{{ name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            {% if job.submission_test.submission.part.key == 'l' %}
+            	<div class="container" style="background-color: #f5f5f5; margin-top: 2%; border: 1px solid blue; padding: 2%">
+                <label for="id_type_voice">Voice Type</label><select class="form-control" id="id_type_voice" name="type_voice">
+                <option value="">{% trans "Tanlang" %}</option>
+                   {% for item in  type_voices %}
+                       <option value="{{ item.id }}">{{ item.name }}</option>
+                   {% endfor %}
+                </select>
+                <label for="id_text_string">Text</label><textarea class="form-control" id="id_text_string" name="text_string"></textarea>
+            </div>
+            {% endif %}
+             <button type="submit" class="btn btn-primary btn-block check_job_moderatortBtn" style="margin-top: 2%"><i
+                    class="fa fa-check" style="color: white"></i>
+                &nbsp;{% trans "SAQLASH" %}
+            </button>
+        </div>
+    </div>
+    <div class="container" style="margin-top: 1%"><p class="text"><span class="text-danger">*</span> {% trans "Diqqat! Savolni diqqat bilan tekshiring!" %}</p></div>
+    </form>
+    </div>
+</div>
+<script type="text/javascript">
+        function resultShow(select) {
+            console.log(select.value)
+            if (select.value === '2') {
+                $(`#typeDbDiv`).css('display', 'block');
+            } else if (select.value === '1' || select.value === '' ) {
+               $(`#typeDbDiv`).css('display', 'none');
+            }
+        }
+        
+        function commentShow(select) {
+            let code = select.name.toString().replace('res_radio', '');
+            console.log(`#commentBox${code}`)
+            if (select.value === '1') {
+                $(`#commentBox${code}`).css('display', 'none');
+            } else if (select.value === '0' ) {
+               $(`#commentBox${code}`).css('display', 'block');
+            }
+        }
+
+        $('body').on('submit', '#check_job_moderator_form', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+            let url = $('#check_job_moderator_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.check_job_moderatortBtn').prop('disabled', true);
+                },
+                success: function (response) {
+                if (response.result) {
+                    window.location.href = "{% url 'moderator_dashboard' %}";
+                } else {
+                    swal({
+                        title: 'Diqqat!',
+                        text: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                    });
+                }
+            },
+                complete: function (data) {
+                    $('.check_job_moderatortBtn').prop('disabled', false);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+         });
+</script>
+{% endblock %}

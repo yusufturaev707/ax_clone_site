@@ -1,0 +1,108 @@
+{% load i18n %}
+{% load static %}
+<form method="post" data-url="{% url 'edit_subject' subject.id %}" id="edit_subject_form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="edit_subject_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "O'zgartirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-striped table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Nomi" %}</th>
+                            <td class="text-nowrap">{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Qisqacha nomi" %}</th>
+                            <td class="text-nowrap">{{ form.key }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Davomiyligi" %}</th>
+                            <td class="text-nowrap">{{ form.duration }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Savollar limiti" %}</th>
+                            <td class="text-nowrap">{{ form.limit_question }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Tilli fanmi" %}</th>
+                            <td class="text-nowrap">{{ form.is_lang }}</td>
+                        </tr>
+                         <tr>
+                            <th class="text-nowrap">{% trans "Tilni qisqacha nomi" %}</th>
+                            <td class="text-nowrap">{{ form.lang_key }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Holat" %}</th>
+                            <td class="text-nowrap">{{ form.status }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Rasm" %}</th>
+                            <td class="text-nowrap">{{ form.picture }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('submit', '#edit_subject_form', function (e) {
+            e.preventDefault();
+            let $myForm = $('#edit_subject_form');
+            let $thisURL = $myForm.attr('data-url')
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                type: "POST",
+                url: $thisURL,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response['result']) {
+                        $('#edit_subject_modal').modal('hide');
+                        swal({
+                            title: response.message,
+                            icon: 'success',
+                            timer: 1500,
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            text: response.message,
+                            icon: 'error',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Yopish',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>

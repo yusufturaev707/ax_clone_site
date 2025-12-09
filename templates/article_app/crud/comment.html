@@ -1,0 +1,49 @@
+{% load static %}
+{% load i18n %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 col-md-6" id="MessageBoxAuthor">
+                    <!-- begin widget-chat -->
+                    <div class="m-b-10 m-t-10 f-s-12">
+                        <h5 class="text-inverse">{% trans "Yozishmalar" %}</h5>
+                    </div>
+
+                    <div class="widget-chat widget-chat-rounded m-b-30 forshadow" data-id="widget">
+
+                        <!-- begin widget-chat-header -->
+                        <div class="widget-chat-header">
+                            <div class="widget-chat-header-icon">
+                                <i class="fa fa-file width-30 height-30 f-s-20 bg-yellow text-inverse text-center rounded-corner"
+                                   style="line-height: 30px"></i><b>{% trans "Mavzu" %}</b>
+                            </div>
+                            <div class="widget-chat-header-content">
+                                <h4 class="widget-chat-header-title"
+                                    id="article_title">{% trans "Ilmiy Markaz" %}</h4>
+                            </div>
+                        </div>
+                        <div class="widget-chat-body" data-scrollbar="true" data-height="250px"
+                             id="user_chat_body">
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

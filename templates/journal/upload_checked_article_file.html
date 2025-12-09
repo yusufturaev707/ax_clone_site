@@ -1,0 +1,73 @@
+{% load i18n %}
+{% load static %}
+<form data-parsley-validate="true" method="post" id="CreateCheckedArticleFileForm" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="CreateCheckedArticleFileModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Pdf fayl yuklang" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+
+                <div class="modal-body">
+                <select id="id_article" name="article" class="form-control" style="visibility: hidden">
+                        <option selected value="{{ article.id }}"></option>
+                    </select>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Fayl(.pdf)" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            <div class="input-group">
+                                <div class="input-group-prepend"></div>
+                                {{ form.file }}
+                                {% if message %}
+                                    <div class="invalid-feedback">{% trans "Fayl yuklashda xatolik mavjud!" %}</div>
+                                {% else %}
+                                    <div class="valid-feedback">{% trans "Fayl yuklash uchun tayyor!" %}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Yopish" %}</button>
+                    <button type="submit" class="btn btn-primary" id="btn_UploadCheckedArticleFile">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#CreateCheckedArticleFileForm').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            $.ajax({
+                url: "{% url 'upload_checked_file' article.id %}",
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.result) {
+                        $('#CreateCheckedArticleFileModal').click();
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                    }
+
+                },
+            });
+        });
+    });
+
+</script>

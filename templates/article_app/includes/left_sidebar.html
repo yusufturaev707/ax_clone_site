@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load static %}
+{% with request.resolver_match.url_name as url_name %}
+    <div class="card card-forum" style="box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;">
+        <div class="card-header f-w-600"
+             style="color:black; font-family: Tahoma, Helvetica, Arial,serif; font-size: 14px;"></div>
+        <ul class="threads-list left_sidebar_menus"></ul>
+    </div>
+    <br>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let url = '{% url 'load_sidebar_menus' %}'.toString();
+            let base_url = "{{ url_name }}";
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    let lang = response.lang;
+                    $('.left_sidebar_menus').empty();
+                    for (let item of response.menus) {
+                        let link = "/" + lang + item.url;
+                        if (lang === 'uz') {
+                            link = item.url;
+                        }
+                        let temp = `<li id="left_menu_${item.id}">` +
+                            `<h4 class="title" id="left_menu_h4_${item.id}" style="color: black, font-size: 18px;">` +
+                            `<a href="${link}">${item.name}</a></h4></li>`;
+                        $('.left_sidebar_menus').append(temp);
+
+                        if (base_url === item.url_name.toString()) {
+                            $('#left_menu_h4_' + item.id).css({"font-size": "18px", "font-weight": "bold"});
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+{% endwith %}
+<div style="width: 250px">
+    <a href="{% url 'last_journal' %}"
+       class="btn btn-block btn-outline-info"><strong>{% trans "So‘nggi nashr" %}</strong>
+    </a>
+</div>

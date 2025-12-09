@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load static %}
+<form data-url="{% url 'choosen_reviewer_role' %}" data-parsley-validate="true" method="post" id="choosen_reviewerRole_form">
+    {% csrf_token %}
+    <div class="modal fade" id="choosen_reviewerRole">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Hurmatli talabgor formani to'ldiring" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row m-b-15" hidden>
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Maqola" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            <select id="id_user" name="user" class="form-control">
+                                <option selected value="{{ user.id }}">{{ user.username }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Ruknni tanlang" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.section }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Fayl" %}<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            <label class="form-check-label">{% trans "Chop etilgan ilmiy ishlaringiz ro‘yxatini yuklang" %}</label>
+                            {{ fileForm.file }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="close btn btn-outline-info" id="choosen_reiewer_role_modal"
+                       data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-success">{% trans "Yuborish" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>

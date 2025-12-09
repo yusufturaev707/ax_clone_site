@@ -1,0 +1,86 @@
+{% load i18n %}
+<div class="modal modal-message fade" id="view_user_modal">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header forshadow">
+                <h5 class="modal-title">{% trans "Foydalanuvchi" %}</h5>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body forshadow">
+
+                <table id="data-table-default"
+                       class="table table-striped table-bordered table-td-valign-middle">
+                    <tbody>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Familiya" %}</th>
+                        <td class="text-nowrap">{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Ism" %}</th>
+                        <td class="text-nowrap">{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Otasini ismi" %}</th>
+                        <td class="text-nowrap">{{ user.middle_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Tug'ilgan sana" %}</th>
+                        <td class="text-nowrap">{{ user.birthday }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Jins" %}</th>
+                        <td class="text-nowrap">{{ user.gender }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Telefon" %}</th>
+                        <td class="text-nowrap">{{ user.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "E-mail" %}</th>
+                        <td class="text-nowrap">{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Pasport Seriya" %}</th>
+                        <td class="text-nowrap">{{ user.pser }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Pasport Raqam" %}</th>
+                        <td class="text-nowrap">{{ user.pnum }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Viloyat" %}</th>
+                        <td class="text-nowrap">{{ user.region }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Rol" %}</th>
+                        <td class="text-nowrap">
+                            {% for role in user.roles.all %}
+                            <span class="badge badge-success">{{ role.name }}</span>
+                            {% endfor %}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Oxirgi kirgan vaqti" %}</th>
+                        <td class="text-nowrap">{{ user.last_login }}</td>
+                    </tr>
+                     <tr>
+                        <th class="text-nowrap">{% trans "Ish joyi" %}</th>
+                        <td class="text-nowrap">{{ user.work }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Rasm" %}</th>
+                        <td class="text-nowrap"><img src="{{ user.avatar }}" width="50" alt=""></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-warning" data-dismiss="modal">{% trans "Yopish" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,29 @@
+{% load i18n %}
+<div class="modal fade" id="edit_notification_status_modal">
+    <div class="modal-dialog">
+        <form method="post" data-url="{% url 'edit_notification_status' notification_status.id %}" id="edit_notification_status_form">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Xabar holatini o'zgartirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Nomi" %}</th>
+                            <td class="text-nowrap">{{ form.name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

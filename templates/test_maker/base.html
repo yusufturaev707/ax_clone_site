@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static '/img/logo.ico' %}">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+    <link href="{% static '/assets/css/google/app.min.css' %}" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+
+</head>
+<body style="background-color: #eeeeee" class="viewArticleFont">
+<div id="page-loader" class="fade show">
+    <span class="spinner"></span>
+</div>
+{% block base_content %}
+    <div class="fade page-sidebar-fixed page-header-fixed page-with-wide-sidebar page-with-light-sidebar">
+        {% include 'test_maker/header.html' %}
+
+        {% block content %}
+        {% endblock content %}
+
+        <div id="show_res"></div>
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    </div>
+{% endblock base_content %}
+<script src="{% static 'js/test_user.js' %}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% load i18n %}
+{% load static %}
+<form class="delete_journal_form" method="post" data-url="{% url 'delete_journal' journal.id %}">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal fade" id="delete_journal_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">{% trans "Jurnali o'chirish" %}</h3>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{{ journal.name }}</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('.delete_journal_form').submit(function (e) {
+            e.preventDefault();
+
+            const $formData = $('.delete_journal_form');
+            let url = $('.delete_journal_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $formData.serialize(),
+                success: function (response) {
+                    $('#delete_journal_modal').modal('hide');
+
+                    swal({
+                        title: response.message,
+                        timer: 2000,
+                    });
+
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+
+

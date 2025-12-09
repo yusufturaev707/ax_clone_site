@@ -1,0 +1,407 @@
+{% load i18n %}
+{% load static %}
+<h2 class="page-header viewArticleFont">
+    {% trans "Maqola tekshirish" %}
+</h2>
+
+<div>
+    <div class="panel-body" style="padding:10px;">
+        <div class="row jumbotron forshadow" style="background-color: #FFFFFF; font-size: 14px;">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        <td><p><b>{% trans "Mavzu:" %} </b>{{ article.title|safe }}</p></td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><p><b>{% trans "Rukn:" %} </b>{{ article.section.name }}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p><b>{% trans "Maqola turi:" %} </b><span class="badge badge-success">{{ article.article_type.name }}</span></p></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>{% trans "Muallif:" %} </b>{{ article.author.last_name }} {{ article.author.first_name }}
+                            <br><i>{{ article.author.email }}</i></td>
+                    </tr>
+                    <tr>
+                        <td><p></p><b>{% trans "Qisqacha mazmuni:" %} </b>{{ article.abstract|safe }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Kalit so'zlar:" %} </b>{{ article.keywords|safe }}</td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><b>{% trans "Fayl:" %} </b><a class="btn btn-outline-info btn-sm" target="_blank"
+                                                          href="{{ article.filePDF.url }}"><i
+                                class="icon-paper-clip"></i><span> {% trans "To'liq ko'rish" %}</span></a>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <hr>
+                <br>
+                <h5>{% trans "Muallifga taqrizchilarga yuborishdan oldin qayta yuborishi yoki rad etish sababini kiriting:" %}</h5>
+                <textarea id="resubmit_or_reject_text" class="form-control forshadow"
+                        {% if article.article_status.id != 1 %}
+                          disabled {% endif %} placeholder="..."></textarea><br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" data-url="{% url 'editor_submit_result' %}"
+                                {% if article.article_status.id != 1 %} disabled {% endif %}
+                                data-id="{{ article.id }},{{ notif_id }},0"
+                                data-action="{% url 'editor_check_article' notif_id %}"
+                                class="btn btn-sm btn-outline-warning btn-block resultBtnUnReview">{% trans "Muallifga yuborish" %}
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" data-url="{% url 'editor_submit_result' %}"
+                                {% if article.article_status.id != 1 %} disabled {% endif %}
+                                data-id="{{ article.id }},{{ notif_id }},1"
+                                data-action="{% url 'editor_check_article' notif_id %}"
+                                class="btn btn-sm btn-block btn-outline-danger resultBtnUnReview">{% trans "Maqola jurnalga to'g'ri kelmaydi" %}
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-8 col-lg-6" id="MessageBoxEditor">
+                    <div class="m-b-10 m-t-10 f-s-12">
+                        <h5 class="text-inverse">{% trans "Xabarlar" %}</h5>
+                    </div>
+                    <div class="widget-chat widget-chat-rounded m-b-30 forshadow" data-id="widget">
+                        <div class="widget-chat-header">
+
+                            <div class="widget-chat-header-content">
+                                <button type="button" id="view-article-messages-by-editor"
+                                        style="margin-top: 10px; margin-right: 2%;"
+                                        data-id="{{ article.id }}"
+                                        data-url="{% url 'comment_author_vs_editor' article.id %}"
+                                        class="btn btn-sm btn-block btn-outline-success forshadow">
+                                    <i class="fa fa-comment"></i> {% trans "Muallif va taqrizchilar bilan yozishmalar" %}
+                                </button>
+                            </div>
+
+                        </div>
+                        <div class="widget-chat-body" data-scrollbar="true" data-height="250px" id="editor_chat_body">
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-lg-6">
+                <div class="m-b-10 m-t-10 f-s-12">
+                    <h5 class="text-inverse">{% trans "Taqrizchilarni tanlash" %}</h5>
+                </div>
+                <div class="row forshadow" style="background-color: #FFFFFF; border-radius: 5px; padding-top: 1%;">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <button type="button"
+                                    data-url="{% url 'load_reviewers' article.id %}"
+                                    class="btn btn-outline-success btn-sm btn-block forshadow choose_type_sumit_btn"
+                                    data-id="1">
+                                {% trans "Taqrizchini ixtiyoriy tanlash" %}
+                            </button>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <button type="button"
+                                    class="btn btn-outline-success btn-sm btn-block forshadow choose_type_sumit_btn"
+                                    data-id="2">{% trans "Taqrizchini tasodifiy tanlash" %}
+                            </button>
+                        </div>
+                        <div class="form-check">
+                            <form method="post" data-url="{% url 'random_sending_reviewer' %}"
+                                  class="random_sending_reviewer_form">
+                                {% csrf_token %}
+                                <br>
+                                <div class="container" id="random_btn" style="display: none;">
+                                    <label>{% trans "Taqrizchilar soni" %}
+                                        <input type="number" id="reviewer_number" name="reviewer_number" value="2"
+                                               disabled
+                                                {#                                                {% if article.article_status.id != 1 or article.is_resubmit %}#}
+                                                {#                                               disabled {% endif %}#}
+                                               class="form-control">
+                                    </label>
+                                    <button class="btn btn-md btn-success" id="random_send_reviewer_btn" type="button"
+                                            data-action="{% url 'editor_check_article' notif_id %}"
+                                            data-id="{{ article.id }},{{ notif_id }}"
+                                            {% if article.article_status.id != 1 or article.is_resubmit %}
+                                            disabled {% endif %}>{% trans "Yuborish" %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 col-md-4 col-md-3">
+                        <form method="post" id="choose_reviewer_form" data-url="{% url 'sending_reviewer' %}">
+                            {% csrf_token %}
+                            <div class="widget-todolist widget-todolist-rounded m-b-30" data-id="widget"
+                                 id="list_reviewers" style="display: none;">
+                                <div class="widget-todolist-header">
+                                    <div class="widget-todolist-header-left">
+                                        <h4 class="widget-todolist-header-title">{% trans "Taqrizchilar" %}</h4>
+                                    </div>
+                                    <div class="widget-todolist-header-right">
+                                        <div class="widget-todolist-header-total" id="count_reviewer"></div>
+                                    </div>
+                                </div>
+                                <div class="widget-todolist-body" id="widget-todolist-body">
+
+
+                                </div>
+                                <div class="widget-todolist-item">
+                                    <div class="widget-todolist-input">
+                                        <button type="button" data-id="{{ article.id }},{{ notif_id }}"
+                                                data-action="{% url 'editor_check_article' notif_id %}"
+                                                class="btn btn-success" id="send_btn_to_reviewer"
+                                                {% if article.article_status.id != 1 or article.is_resubmit %}disabled {% endif %}
+                                        >
+                                            {% trans "Tanlangan taqrizchilarga yuborish" %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-lg-6">
+                <div class="m-b-10 m-t-10 f-s-12">
+                    <h5 class="text-inverse">{% trans "Taqrizchilar maqolani ko'rib chiqish holatlari" %}</h5>
+                </div>
+                {% for item in article_reviews %}
+                    <div class="card forshadow" style="padding: 1%;">
+                        <table>
+                            <tr>
+                                <div class="progress">
+                                    {% if item.status.id == 1 %}
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Yuborilgan" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                             role="progressbar" style="width: 0%" aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Ko'rilmoqda" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped bg-success"
+                                             role="progressbar" style="width: 0%" aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Tugatildi" %}
+                                        </div>
+                                    {% endif %}
+                                    {% if item.status.id == 2 %}
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Yuborilgan" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                             role="progressbar" style="width: 35%" aria-valuenow="35"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Ko'rilmoqda" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                             role="progressbar" style="width: 0%" aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Tugatildi" %}
+                                        </div>
+                                    {% endif %}
+                                    {% if item.status.id == 3 or item.status.id == 4 %}
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Yuborilgan" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                             role="progressbar" style="width: 35%" aria-valuenow="35"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Ko'rilmoqda" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                             role="progressbar" style="width: 40%" aria-valuenow="40"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Tugatildi" %}
+                                        </div>
+                                    {% endif %}
+                                    {% if item.status.id == 5 %}
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Yuborilgan" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Ko'rilmoqda" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                             role="progressbar" style="width: 25%" aria-valuenow="25"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Qayta yuborish" %}
+                                        </div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                             role="progressbar" style="width: 0%" aria-valuenow="0"
+                                             aria-valuemin="0" aria-valuemax="100">{% trans "Tugatildi" %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <br>
+                            </tr>
+                            <tr>
+                                <td><h3>{{ forloop.counter }}</h3></td>
+                                <td><b>{% trans "Taqrizchi:" %} </b> {{ item.reviewer.user.full_name }}</td>
+                                <td><b>{% trans "Holat" %} </b>
+                                    <span {% if item.status.id == 1 %}
+                                        class='badge badge-warning' {% elif item.status.id == 2 %}
+                                        class='badge badge-info' {% elif item.status.id == 3 %}
+                                        class='badge badge-success' {% elif item.status.id == 4 %}
+                                        class='badge badge-danger' {% elif item.status.id == 5 %}
+                                        class='badge badge-indigo' {% endif %}>
+                                                    {{ item.status.name }}
+                                                </span>
+                                </td>
+                                <td><b>{% trans "Yaratilgan vaqt:" %} </b>{% if item.created_at %}{{ item.created_at }}{% else %}
+                                    {% trans "Hali tayyor emas!" %} {% endif %}</td>
+                                <td><b>{% trans "Yangilangan vaqt:" %} </b>{% if item.updated_at %}{{ item.updated_at }}{% else %}
+                                    {% trans "Hali tayyor emas!" %} {% endif %}</td>
+                                <td>
+                                    {% if item.status.id == 5 and item.is_resubmit_reviewer is True %}
+                                        <form method="post" data-url="{% url 'editor_resubmit_to_reviewer' %}"
+                                              id="editor_resubmit_to_reviewer_form{{ item.id }}">
+                                            {% csrf_token %}
+                                            <button type="button" data-id="{{ item.id }},{{ notif_id }}"
+                                                    id="resubmit_to_reviewer_btn_{{ item.id }}"
+                                                    data-action="{% url 'editor_check_article' notif_id %}"
+                                                    class="btn btn-outline-success btn-xs resubmit_to_reviewer_btn">
+                                                <i class="fas fa-lg fa-fw m-r-10 fa-arrow-circle-right"></i>{% trans "Qayta yuborish" %}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                                <td>{% if item.status.id == 3 %}<i class="fas fa-lg fa-fw m-r-10 fa-check"
+                                                                   style="color: lightgreen; font-size: 18px;"></i>{% else %}
+                                    <i class="fas fa-lg fa-fw m-r-10 fa-times"
+                                       style="color: pink; font-size: 18px;"></i>{% endif %}</td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <br><b>{% trans "Taqriz bayoni:" %} </b>
+                                {% if item.comment %}
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div id="accordion{{ item.id }}">
+                                                <div class="card">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h5 class="mb-0">
+                                                            <button class="btn btn-link" data-toggle="collapse"
+                                                                    data-target="#collapseOne{{ item.id }}"
+                                                                    aria-expanded="true"
+                                                                    aria-controls="collapseOne">
+                                                                {% trans "Ko'rish" %}
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseOne{{ item.id }}" class="collapse"
+                                                         aria-labelledby="headingOne" data-parent="#accordion{{ item.id }}">
+                                                        <div class="card-body">
+                                                            {{ item.comment|safe }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <em>{% trans "Mavjud emas" %}</em> {% endif %}
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                {% endfor %}
+                <br>
+                <form method="post" data-url="{% url 'approve_publish' %}" class="approve_form">
+                    {% csrf_token %}
+                    <div class="row" {% if not is_ready_publish %} style="display: none;" {% endif %}>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button data-id="{{ article.id }},{{ notif_id }},0"
+                                    data-action="{% url 'editor_check_article' notif_id %}"
+                                    class="btn btn-sm btn-success btn-block forshadow resultBtn"
+                                    id="approveForPublicationBtn"
+                                    {% if article.article_status.id != 5 %} disabled {% endif %}
+                                    {% if not is_ready_publish %} disabled {% endif %}>
+                                {% trans "Tasdiqlash" %}
+                            </button>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="row" {% if not is_ready_rejected %} style="display: none;" {% endif %}>
+                    <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button data-id="{{ article.id }},{{ notif_id }},1"
+                                    data-action="{% url 'editor_check_article' notif_id %}"
+                                    class="btn btn-sm btn-danger btn-block forshadow resultBtn"
+                                    id="rejectedBtn"
+                                    {% if article.article_status.id != 5 %} disabled {% endif %}
+                                    {% if not is_ready_rejected %} disabled {% endif %}>RAD ETISH
+                            </button>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                     <div class="row" {% if not is_ready_resubmit %} style="display: none;" {% endif %}>
+                     <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button data-id="{{ article.id }},{{ notif_id }},2"
+                                    data-action="{% url 'editor_check_article' notif_id %}"
+                                    class="btn btn-sm btn-primary btn-block forshadow resultBtn"
+                                    id="resubmitBtn"
+                                    {% if article.article_status.id != 5 %} disabled {% endif %}
+                                    {% if not is_ready_resubmit %} disabled {% endif %}>{% trans "Muallifga qayta yuborish" %}
+                            </button>
+                        </div>
+                        <div class="col-md-3"></div>
+                     </div>
+                        <div class="row" {% if not is_ready_resubmit_extra_reviewer %} style="display: none;" {% endif %}>
+                         <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <button data-id="{{ article.id }},{{ notif_id }},3"
+                                    data-action="{% url 'editor_check_article' notif_id %}"
+                                    class="btn btn-sm btn-info btn-block forshadow resultBtn"
+                                    id="rejectedExtraReviewerBtn"
+                                    {% if article.article_status.id != 5 %} disabled {% endif %}
+                                    {% if not is_ready_resubmit_extra_reviewer %} disabled {% endif %}>{% trans "Boshqa taqrizchiga maqolani yuborish" %}
+                            </button>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        {% if is_ready_resubmit %}
+                            <textarea id="resubmit_text" class="form-control"
+                                      placeholder="..."></textarea>
+                        {% endif %}
+                        <br>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="writeeditor_message_div"></div>
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>

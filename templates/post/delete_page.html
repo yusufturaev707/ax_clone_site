@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load static %}
+<form class="delete_page_form" method="post" data-url="{% url 'delete_page' page.id %}">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal fade" id="delete_page_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Sahifani o'chirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{{ page.title }}</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "O'chirish" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+
+

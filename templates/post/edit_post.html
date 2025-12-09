@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load static %}
+<form class="edit_post_form forshadow" method="post" data-url="{% url 'edit_post' post.id %}">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal modal-message fade" id="edit_post_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">{% trans "E'lonni o'zgartirish" %}</h3>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body forshadow">
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{% trans "Sarlavhasi" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-12 col-sm-12">
+                            {{ form.title }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{% trans "Teg" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-12 col-sm-12">
+                            {{ form.tag }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{% trans "To'liq matni" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-12 col-sm-12">
+                            {{ form.desc }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{% trans "Rasm" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-12 col-sm-12">
+                            {{ form.img }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label">{% trans "Nashr holati" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-12 col-sm-12">
+                            {{ form.is_publish }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+
+

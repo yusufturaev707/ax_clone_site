@@ -1,0 +1,228 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Text Konverter" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body forshadow viewArticleFont" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="container">
+                <form method="post" data-url="{% url 'generate_text' %}" id="generateTextForm">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="id_language">{% trans "Tilni tanlang" %}</label>
+                        <select class="form-control" id="id_language" name="language">
+                            <option value="">{% trans "Tanlang" %}</option>
+                            {% for item in  languages %}
+                                <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_word_count">{% trans "So'z uzunligi" %}</label><input type="number" min="1" max="500" name="word_count" placeholder="Word count" id="id_word_count" class="form-control">
+                    </div>
+                    <div class="col-12" style="margin-top: 1%">
+                        <div class="note note-info m-b-15" style="height: 50px">
+							<div class="note-icon f-s-20">
+								<i class="fa fa-lightbulb fa-x"></i>
+							</div>
+							<div class="note-content">
+								<p>Mavzuni kiritayotganizda qaysi til tanlangan bo'lsa shu tilda kiriting.</p>
+							</div>
+						</div>
+                        <label for="id_theme">{% trans "Mavzuni kiriting" %}</label><input type="text" name="theme" placeholder="Mavzuni kiriting" id="id_theme" class="form-control">
+                    </div>
+                <button type="submit" class="btn btn-outline-primary textGenerateBtn" style="margin-top: 2%"> &nbsp;{% trans "GENERATE TEXT" %}</button>
+                </div>
+                </form>
+                <div id="spinnerDiv" style="display: none">
+                    <div class="spinner-grow text-muted"></div>
+                    <div class="spinner-grow text-primary"></div>
+                    <div class="spinner-grow text-success"></div>
+                    <div class="spinner-grow text-info"></div>
+                    <div class="spinner-grow text-warning"></div>
+                    <div class="spinner-grow text-danger"></div>
+                    <div class="spinner-grow text-secondary"></div>
+                    <div class="spinner-grow text-dark"></div>
+                    <div class="spinner-grow text-light"></div>
+                </div>
+            </div>
+        </div>
+    <br>
+        <div class="panel-body" style="border-radius: 5px; padding: 2em;">
+            <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped display" id="generateTextTable" style="width:100%">
+                    <thead class="table forshadow">
+                        <tr class="dataGrid">
+                            <th class="align-content-center"><strong>{% trans "Mavzu" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Til" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Matn" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Yaratilgan vaqt" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Test yaratish" %}</strong></th>
+                            <th class="align-content-center"><strong>{% trans "Amal" %}</strong></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+        <div id="testInfoJson"></div>
+    </div>
+<script href="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initTable();
+
+            function initTable() {
+                let table = $('#generateTextTable').DataTable({
+                    columnDefs: [
+                        {className: 'dt-justify', targets: '_all'},
+                    ],
+                    destroy: true,
+                    ajax: {
+                        type: 'POST',
+                        url: "{% url 'load_converted_texts' %}",
+                        data: {
+                            csrfmiddlewaretoken: getCookie('csrftoken')
+                        },
+                        datatype: "json",
+                    },
+                    columns: [
+                        {data: "theme"},
+                        {data: "language__name"},
+                        {data: "text"},
+                        {data: "created_at"},
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                if (data['language__key'] === 1){
+                                    return `<button type="button" class="btn btn-outline-success generateTestBtn" data-id="${data.id}"><i class="fa fa-cloud"></i></button>`;
+                                }
+                                return ``;
+                            }
+                        },
+                        {
+                            data: null,
+                            bSortable: false,
+                            render: function (data, type, row) {
+                                return '<button type="button" class="btn btn-outline-danger removeTextBtn" data-id="' + data.id + '"><i class="fa fa-trash" /></button>';
+                            }
+                        },
+                    ],
+                    serverSide: true,
+                    ordering: true,
+                    paging: true,
+                    processing: true,
+                    info: true,
+                    bInfo: true,
+                    bSort: true,
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    order: [],
+                });
+            }
+
+            $('#generateTextTable tbody').on('click', '.removeTextBtn', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = "{% url 'delete_text' %}"
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        if (response['result']) {
+                            swal({
+                                title: 'Muvaffaqiyat!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 1000,
+                            });
+
+                            initTable();
+
+                        } else {
+                            swal({
+                                title: 'Diqqat!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3500,
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+
+            $('body').on('submit', '#generateTextForm', function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                let url = $('#generateTextForm').data('url');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
+                        $('.textGenerateBtn').prop('disabled', true);
+                        $('#spinnerDiv').css('display', 'block');
+                    },
+                    success: function (response) {
+                        if (response.result) {
+                            $('#generateTextForm')[0].reset();
+                            swal({
+                                title: 'Muvaffaqiyat!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 1500,
+                            });
+                            initTable();
+                        } else {
+                            swal({
+                                title: 'Diqqat!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3500,
+                            });
+                        }
+                    },
+                    complete: function (data) {
+                        $('.textGenerateBtn').prop('disabled', false);
+                        $('#spinnerDiv').css('display', 'none');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            $('#generateTextTable tbody').on('click', '.generateTestBtn', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = "{% url 'g_test' %}"
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        $('#testInfoJson').html(response);
+                        $('#view_test_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% load i18n %}
+<div class="modal fade" id="delete_user_modal">
+    <div class="modal-dialog">
+        <form method="post" id="delete_user_form" enctype="multipart/form-data" data-url="{% url 'delete_user' user.pk %}">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans "Foydalanuvchini o'chirish" %}</h4>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <img src="{{ user.avatar.url }}" alt="" width="60">
+                    <b><i>{{ user.last_name }} {{ user.first_name }}</i></b><br>
+                    <hr>
+                    <span style="font-size: small">{% trans "Bu foydalanuvchini o'chirishga ishonchingiz komilmi?" %}</span>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yoq" %}</a>
+                    {% if user.is_superuser %}
+                        <button type="submit" class="btn btn-primary" disabled>{% trans "Ha" %}</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary">{% trans "Ha" %}</button>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        const $RemoveUserForm = $('#delete_user_form');
+        $RemoveUserForm.submit(function (e) {
+        e.preventDefault();
+
+        const $formData = $RemoveUserForm.serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'delete_user' user.id %}",
+            data: $formData,
+            success: function (response) {
+                $('#delete_user_modal').modal('hide');
+
+                if (response.result){
+                    swal({
+                        title: response.message,
+                        timer: 2000,
+                    });
+                        location.reload(true);
+                } else {
+                    alert("Xatolik");
+                }
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        return false;
+    });
+    });
+</script>

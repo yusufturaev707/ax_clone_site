@@ -1,0 +1,82 @@
+{% load i18n %}
+{% load static %}
+
+<div id="header" class="header navbar-default navbar-fixed-top navbar-expand-lg">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed navbar-toggle-left" data-click="sidebar-minify">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+    <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+    </div>
+    <ul class="navbar-nav d-flex flex-grow-1">
+        <li style="padding-top: 20px;">
+            <span style="text-transform: uppercase; margin-left: 1em; font-size: 16px; font-family: Roboto,sans-serif; text-align: center; display: table-cell; vertical-align: middle;">
+                <a href="{% url 'main_page' %}" style="text-decoration: none;"><b style="color: black;">{% trans "Bilimni baholash agentligi" %}</b></a>
+        </span>
+        </li>
+        <li class="navbar-form flex-grow-1"></li>
+        <li class="navbar-brand">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle" type="button" id="lang_btn"
+                        data-toggle="dropdown">
+                    {% if LANGUAGE_CODE == 'uz' %}
+                        <span class="flag-icon flag-icon-uz"></span>
+                        O‘zbek tili
+                    {% elif LANGUAGE_CODE == 'ru' %}
+                        <span class="flag-icon flag-icon-ru"></span>
+                        Русский
+                    {% elif LANGUAGE_CODE == 'en' %}
+                        <span class="flag-icon flag-icon-gb"></span>
+                        English
+                    {% elif LANGUAGE_CODE == 'kk' %}
+                        <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                        Qoraqalpoq tili
+                    {% endif %}
+                </button>
+                <ul class="dropdown-menu">
+                    {% for language in languages %}
+                        <li id="lang_{{ language.code }}">
+
+                            <a href="{% url 'set-language' language.code %}" class="btn btn-white btn-block text-left">
+                                {% if language.code != 'kk' %}
+                                    &nbsp;<span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
+                                {% else %}
+                                    &nbsp;<span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                                {% endif %}
+                                {% if language.code == 'kk' %}
+                                    Qoraqalpoq tili
+                                {% elif language.code == 'uz' %}
+                                    O‘zbek tili
+                                {% else %}
+                                    {{ language.name_local }}
+                                {% endif %} </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        <li class="dropdown navbar-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {% if request.user.avatar %}
+                    <img src="{{ request.user.avatar }}" alt=""/>
+                    {% else %}
+                 <img src="{% static 'img/no-image.png' %}" alt=""/>
+                {% endif %}
+                <span class="d-none d-md-inline">{{ request.user.full_name }}</span><b class="caret"></b>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="{% url 'logout' %}" class="dropdown-item"><i
+                        class="icon-logout  p-r-10"></i><span>{% trans "Chiqish" %}</span></a>
+            </div>
+        </li>
+    </ul>
+</div>

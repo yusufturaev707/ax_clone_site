@@ -1,0 +1,101 @@
+{% load i18n %}
+{% load static %}
+<form class="create_journal_form" method="post" data-url="{% url 'create_journal' %}">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal fade" id="create_journal_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Yangi jurnal yaratish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body forshadow">
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Nomi" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.name }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Yili" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.year }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Soni" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.number }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary create-journal-btn"><span class="spinner-grow spinner-grow-sm" id="create-journal-btn-spinner" style="display: none"></span><span id="btn-text">{% trans "Yaratish" %}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('.create_journal_form').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            let url = $('.create_journal_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('#create-journal-btn-spinner').css('display', 'block');
+                    $('#btn-text').css('display', 'none');
+                    $('.create-journal-btn').prop('disabled', true);
+                },
+                success: function (response) {
+                    if (response.result) {
+                        $('#create_journal_modal').modal('hide');
+                        window.location.reload();
+                    } else {
+                        swal({
+                        title: 'Xatolik!',
+                        text: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                        buttons: {
+                            cancel: {
+                                text: 'Cancel',
+                                value: null,
+                                visible: true,
+                                className: 'btn btn-default',
+                                closeModal: true,
+                            },
+                        }
+                    });
+                    }
+                },
+                complete: function (data) {
+                    $('#create-journal-btn-spinner').css('display', 'none');
+                    $('#btn-text').css('display', 'block');
+                    $('.create-journal-btn').prop('disabled', false);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+

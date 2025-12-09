@@ -1,0 +1,274 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Ishni tekshirish oynasi" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content viewArticleFont">
+    <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+    <form method="post" data-url="{% url 'check_current_test_expert' test.id %}" data-parsley-validate="true"
+                  enctype="multipart/form-data"
+                  id="check_current_test_expert_form">
+                {% csrf_token %}
+                {{ form.media }}
+        <div class="row">
+        <div class="col-lg-12">
+                <table class="table table-bordered table-hover table-striped table-overflow forshadow">
+                    <tr>
+                        <td><b>{% trans "Fan:" %}</b></td>
+                        <td><b>{{ test.submission_test.submission.subject.name }}</b></td>
+                    </tr>
+                    {% if test.submission_test.submission.type_test_upload_id == 2 %}
+                    	<tr>
+                            <td><b>{% trans "Tili:" %}</b></td>
+                                <td><span class="badge badge-blue">{{ test.submission_test.submission.lang.name }}</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if test.submission_test.submission.type_test_upload.id == 1 %}
+                        <tr>
+                            <td><b>{% trans "Bo'lim:" %}</b></td>
+                            <td>{{ test.submission_test.submission.part.name }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{% trans "Mavzu:" %}</b></td>
+                            <td>{{ test.submission_test.submission.topic_n }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{% trans "Qism:" %}</b></td>
+                            <td>{{ test.submission_test.submission.part_option.name }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if test.submission_test.submission.type_test_upload.id == 2 %}
+                    <tr>
+                        <td><b>{% trans "Bob:" %}</b></td>
+                        <td>{{ test.submission_test.submission.chapter.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Bo'lim:" %}</b></td>
+                        <td>{{ test.submission_test.submission.section.name }}</td>
+                    </tr>
+                        <tr>
+                            <td><b>{% trans "Mavzusi:" %}</b></td>
+                            <td>{{ test.submission_test.submission.topic.name }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td><b>{% trans "Qiyinlik darajasi:" %}</b></td>
+                        <td><span class="badge badge-info">
+                        {% if test.submission_test.submission.type_test_upload.id == 1 %}
+                            {{ test.submission_test.submission.level_dn.name }}
+                        {% elif test.submission_test.submission.type_test_upload.id == 2 %}
+                            {{ test.submission_test.submission.level_d.name }}
+                        {% endif %} </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Holati:" %}</b></td>
+                        <td><span class="badge badge-warning">{{ test.status_test.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Tekshiruvchi ekspert:" %}</b></td>
+                        <td>{{ expert.user.full_name }}</td>
+                    </tr>
+
+{#                    {% if test.submission_test.submission.type_test_upload.id == 1 %}#}
+{#                        {% if test.submission_test.submission.part.key == 'l' or test.submission_test.submission.part.key == 's' %}#}
+{#                            <tr>#}
+{#                                <td><b>{% trans "Audio:" %}</b></td>#}
+{#                                <td>#}
+{#                                    <audio controls>#}
+{#                                        <source src="{{ test.submission_test.audio.audio.url }}" type="audio/mpeg">#}
+{#                                    </audio>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endif %}#}
+{#                    {% endif %}#}
+
+                    <tr>
+                        <td><b>{% trans "Faylni yuklab olish:" %}</b></td>
+                        <td><a href="{{ test.submission_test.test.file_word.url }}" type="button"
+                               class="btn btn-xs btn-outline-warning" download="download"><img src="{% static 'img/word.png' %}" width="40" alt="word"></a></td>
+                    </tr>
+                </table>
+            </div>
+        <div class="col-lg-12" style="padding-left: 5%">
+            <h4 class="text text-center"><button disabled class="btn btn-danger" style="border-radius: 25px; width:45px; height:45px;">!</button>&nbsp; <b>{% trans 'Test topshirig‘ini ekspertizadan o‘tkazish bo‘yicha nazorat varaqasi' %}</b></h4>
+                <table class="table table-bordered table-striped table-hover table-responsive">
+                {% for control in controls %}
+                     <tr>
+                        <td>
+                            <div class="form-check-inline">
+                                {% if test.submission_test.submission.type_test_upload_id == 1 %}
+                                	{{ forloop.counter }}. {{ control.control_sheet.description }}
+                                {% endif %}
+                                {% if test.submission_test.submission.type_test_upload_id == 2 %}
+                                	{{ forloop.counter }}. {{ control.control_sheet.name }}
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check-inline" style="border: 1px solid green; border-radius: 5px; padding: 5px; width: 70px">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" value="1" name="res_radio{{ control.control_sheet.code }}" onclick="resultShow(this)">{% trans 'Yes' %}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check-inline" style="border: 1px solid red;border-radius: 5px; padding: 5px; width: 70px">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" value="0" name="res_radio{{ control.control_sheet.code }}" onclick="resultShow(this)">{% trans "No" %}
+                                </label>
+                            </div>
+                        </td>
+                        <td style="width: 800px; display: none" id="commentBox{{ control.control_sheet.code }}">
+                        <textarea rows="2" name="comment{{ control.control_sheet.code }}" class="form-control" placeholder="{% trans 'Izoh kiriting...' %}"></textarea>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+
+            </div>
+            <div class="container">
+                <label for="id_status"><b>{% trans "Tasdiq holatini belgilang" %}</b>&nbsp;<span
+                    class="text text-danger">*</span></label>
+            <select id="id_status" name="status" class="form-control status forshadow" style="border: 1px solid #f8854d"
+                    onchange="show(this)">
+                {% if test.submission_test.submission.type_test_upload_id == 2 %}
+                    {% for id, name in form.fields.status.choices %}
+                        {% if id == 3 and test.job_number == 3 and test.is_extra_expert %}
+                            <option value="{{ id }}">{{ name }}</option>
+                        {% elif id == 3 and test.job_number == 4 and test.is_extra_expert %}
+                            <option hidden="hidden" value="{{ id }}">{{ name }}</option>
+                        {% elif id == 3 and not test.is_extra_expert %}
+                            <option hidden="hidden" value="{{ id }}">{{ name }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% elif test.submission_test.submission.type_test_upload_id == 1 %}
+                    {% for id, name in form.fields.status.choices %}
+                        {% if id == 3 and test.is_extra_expert %}
+                            <option hidden="hidden" value="{{ id }}">{{ name }}</option>
+                        {% elif id == 3 and not test.is_extra_expert %}
+                            <option value="{{ id }}">{{ name }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+             <br>
+            <div class="row" style="display: none; padding: 0 1%;" id="id_message_tr">
+                <label for="id_message"><b>{% trans "Xabar qoldiring" %}<span class="text text-danger">*</span>
+                </b></label>
+                {{ form.message }}
+                <br>
+            </div>
+{#            <div class="row" style="display: none; padding: 0 1%;" id="id_feedback_tr">#}
+{#                <label for="id_feedback"><b>{% trans "Feedback" %}<span class="text text-danger">*</span>#}
+{#                </b></label>&nbsp;&nbsp;#}
+{#                {{ form.file }}#}
+{#            </div>#}
+            <button type="submit" class="btn btn-primary btn-block check_current_test_expertBtn forshadow" style="margin-top: 2%"><i
+                    class="fa fa-check" style="color: white"></i>
+                &nbsp;{% trans "SAQLASH" %}
+            </button>
+            </div>
+        </div>
+    </form>
+    </div>
+    </div>
+    <script type="text/javascript">
+        function show(select) {
+            if (select.value === '1' || select.value === '3') {
+                document.getElementById('id_message_tr').style.display = "block";
+                {#document.getElementById('id_feedback_tr').style.display = "block";#}
+            } else {
+                document.getElementById('id_message_tr').style.display = "none";
+                {#document.getElementById('id_feedback_tr').style.display = "none";#}
+            }
+        }
+
+        function resultShow(select) {
+            let code = select.name.toString().replace('res_radio', '');
+            console.log(`#commentBox${code}`)
+            if (select.value === '1') {
+                $(`#commentBox${code}`).css('display', 'none');
+            } else if (select.value === '0' ) {
+               $(`#commentBox${code}`).css('display', 'block');
+            }
+        }
+
+        $('body').on('submit', '#check_current_test_expert_form', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+            let url = $('#check_current_test_expert_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.checkSpinner').css('display', 'block');
+                    $('.check_current_test_expertBtn').prop('disabled', true);
+                },
+                success: function (response) {
+                if (response.result) {
+                    $('.check_current_test_expert_form').trigger("reset");
+                    swal({
+                        title: 'Muvaffaqiyat!',
+                        text: response.message,
+                        icon: 'success',
+                        timer: 3000,
+                        buttons: {
+                            cancel: {
+                                text: 'Cancel',
+                                value: null,
+                                visible: true,
+                                className: 'btn btn-default',
+                                closeModal: true,
+                            },
+                            confirm: {
+                                text: 'Success',
+                                value: true,
+                                visible: true,
+                                className: 'btn btn-success',
+                                closeModal: true
+                            }
+                        }
+                    });
+                    window.location.href = "{% url 'my_submit_tests' %}";
+                } else {
+                    swal({
+                        title: 'Diqqat!',
+                        text: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                        buttons: {
+                            cancel: {
+                                text: 'Cancel',
+                                value: null,
+                                visible: true,
+                                className: 'btn btn-default',
+                                closeModal: true,
+                            },
+                        }
+                    });
+                }
+            },
+                complete: function (data) {
+                    $('.checkSpinner').css('display', 'none');
+                    $('.check_current_test_expertBtn').prop('disabled', false);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+         });
+    </script>
+{% endblock %}

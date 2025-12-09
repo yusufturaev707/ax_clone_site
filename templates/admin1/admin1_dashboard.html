@@ -1,0 +1,227 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Kelib tushgan savollar" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header">
+            {% trans "Kelib tushgan savollar" %}
+        </h2>
+        {% csrf_token %}
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-striped display styled-table dt-responsive compact" id="questionInComingListsForAdmin1" style="width:100%">
+                    <thead class="table forshadow">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Q_Daraja" %}</strong></th>
+                        <th><strong>{% trans "Bo'lim" %}</strong></th>
+                        <th><strong>{% trans "Qism" %}</strong></th>
+                        <th><strong>{% trans "Mavzu" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Sharif" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th><strong>{% trans "Tugallanganmi" %}</strong></th>
+                        <th><strong>{% trans "Vaqt" %}</strong></th>
+                        <th><strong>{% trans "Amal" %}</strong></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th><strong>{% trans "ID" %}</strong></th>
+                            <th><strong>{% trans "Fan" %}</strong></th>
+                            <th><strong>{% trans "Q_Daraja" %}</strong></th>
+                            <th><strong>{% trans "Bo'lim" %}</strong></th>
+                            <th><strong>{% trans "Qism" %}</strong></th>
+                            <th><strong>{% trans "Mavzu" %}</strong></th>
+                            <th><strong>{% trans "Familiya" %}</strong></th>
+                            <th><strong>{% trans "Ism" %}</strong></th>
+                            <th><strong>{% trans "Sharif" %}</strong></th>
+                            <th><strong>{% trans "Holat" %}</strong></th>
+                            <th><strong>{% trans "Tugallanganmi" %}</strong></th>
+                            <th colspan="2"><strong>{% trans "Vaqt" %}</strong></th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="ViewIncomingQuestionAdmin1Div"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#questionInComingListsForAdmin1').DataTable({
+                layout: {
+                    topFinish: {
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, ':visible']
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                autoFilter: true,
+                                sheetName: 'Exported data',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ]
+                    }
+                },
+
+                destroy: true,
+                orderCellsTop: true,
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'load_questions_admin1' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id", },
+                    {data: "subject"},
+                    {data: "level_d"},
+                    {data: "part"},
+                    {data: "part_option_name"},
+                    {data: "topic_n"},
+                    {data: "last_name"},
+                    {data: "first_name"},
+                    {data: "middle_name"},
+                    {data: "status"},
+                    {
+                        data: 'is_check_finish',
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            let st = '';
+                            if (data) {
+                                st = '<span class="badge badge-success">Ha</span>';
+                            } else {
+                                 st = '<span class="badge badge-danger">Yo\'q</span>';
+                            }
+                            return st;
+                        }
+                    },
+                    {data: "created_at"},
+                    {
+                        targets: 2,
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<button type="button" class="btn btn-outline-info admin1ViewQuestionInfo" data-id="' + data.id + '" data-url="{% url 'view_question_admin1' %}"><i class="fa fa-eye" /></button>';
+                        }
+                    },
+                ],
+                serverSide: true,
+                ordering: true,
+                paging: true,
+                processing: true,
+                searchDelay: 800,
+                info: true,
+                bInfo: true,
+                bSort: true,
+                order: [],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"],
+                ],
+                initComplete: function () {
+                    this.api().columns([0,5,6,7,8]).every(function (i) {
+                        let column = this;
+                        let title = column.footer().textContent;
+                        $('<input type="text" class="form-control" style="width:100%" placeholder="'+ title + '" />')
+                                .appendTo($(column.footer()).empty())
+                                .on('keyup change clear', function () {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                            });
+                    });
+
+                    this.api().columns(11).every(function (i) {
+                        let column = this;
+                        let title = column.footer().textContent;
+                        $('<input id="created_at" type="text" class="form-control" data-plugin="datepicker" placeholder="'+ title +'"></input>')
+                                .appendTo($(column.footer()).empty())
+                                .on('keyup change clear', function () {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                            });
+                            $('#created_at').datepicker({
+                                    format: 'yyyy-mm-dd',
+                                    // startDate: '-3d'
+                            });
+
+                    });
+
+                    this.api().columns([1,2,3,4,9]).every( function (i) {
+                        let column = this;
+                        let select = $('<select class="form-control" style="width:100%"><option value="">---</option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                let val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column.search($(this).val(), {exact: true}).draw();
+                            } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'" class="form-control" style="width:100%">'+d+'</option>' )
+                            } );
+                    } );
+
+                    this.api().columns([10]).every( function (i) {
+                        let column = this;
+                        let select = $('<select class="form-control" style="width:100%"><option value="">---</option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                let val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column.search($(this).val(), {exact: true}).draw();
+                            } );
+
+                            column.data().unique().sort().each( function ( d, j ) {
+                                if (j === 0){
+                                    select.append( '<option value="'+d+'" class="form-control" style="width:100%">Yo\'q</option>' )
+                                }
+                                if (j === 1){
+                                    select.append( '<option value="'+d+'" class="form-control" style="width:100%">Ha</option>' )
+                                }
+                                } );
+
+                    } );
+
+                },
+                fixedHeader: {
+                footer: true
+                }
+            });
+
+            $('#questionInComingListsForAdmin1 tbody').on('click', '.admin1ViewQuestionInfo', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = $(this).data('url');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        $('#ViewIncomingQuestionAdmin1Div').html(response);
+                        $('#view_question_info_admin1_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

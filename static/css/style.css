@@ -1,0 +1,325 @@
+.forshadow {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.viewArticleFont {
+    font-family: Tahoma, Geneva, sans-serif;
+    /*font-family: Cambria, sans-serif;*/
+}
+
+.not-visible {
+    display: none;
+}
+
+#id_captcha_1 {
+    margin-top: 10px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width: 319px) {
+    .reg_div {
+        padding-top: 15%;
+        margin-top: 20%;
+        font-size: 10px;
+    }
+
+    #id_captcha_1 {
+        height: 25px;
+    }
+
+    .form-control {
+        height: 25px;
+    }
+
+    b {
+        font-size: 14px;
+    }
+
+    small {
+        font-size: 12px;
+    }
+
+    .registerBtn {
+        height: 30px;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 389px) {
+    .reg_div {
+        padding-left: 2%;
+        padding-right: 2%;
+        margin-top: 30%;
+        font-size: 10px;
+    }
+}
+
+@media only screen and (min-width: 390px) and (max-width: 480px) {
+    .reg_div {
+        padding-left: 2%;
+        padding-right: 2%;
+        margin-top: 10%;
+        font-size: 10px;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .reg_div {
+        padding: 5%;
+        margin-top: 13%;
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .reg_div {
+        padding: 2%;
+        margin-top: 15%;
+        font-size: 14px;
+    }
+}
+
+
+
+/*File Uploads*/
+#AudioUploadTest {
+    display: flex;
+    justify-content: center;
+}
+
+/* === Upload Box === */
+.wrapper {
+    margin: 1px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    width: 415px;
+}
+
+.upload_test {
+    margin: 1px;
+    height: 5em;
+    border: 5px dashed #e6f5e9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.upload_test p {
+    margin-top: 12px;
+    line-height: 0;
+    font-size: 16px;
+    color: #0c3214;
+    letter-spacing: 1.5px;
+}
+
+.upload__button {
+    background-color: #e6f5e9;
+    border-radius: 10px;
+    padding: 0px 8px 0px 10px;
+}
+
+.upload__button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* === Uploaded Files === */
+.uploaded {
+    width: 375px;
+    margin: 10px;
+    background-color: #e6f5e9;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.file {
+    display: flex;
+    flex-direction: column;
+}
+
+.file__name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 300px;
+    line-height: 0;
+    color: #0c3214;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+}
+
+.fa-check {
+    color: green;
+}
+
+.fa-times {
+    color: red;
+}
+
+.fa-file-word {
+    padding: 15px;
+    font-size: 30px;
+    color: #0c3214;
+}
+
+
+/*Step by step upload test*/
+
+/*The background card*/
+.card {
+    z-index: 0;
+    border: none;
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+/*progressbar*/
+.progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+}
+
+.progressbar .active {
+    color: #000000;
+}
+
+.progressbar li {
+    list-style-type: none;
+    font-size: 11px;
+    width: 25%;
+    float: left;
+    position: relative;
+}
+
+/*Icons in the ProgressBar*/
+.progressbar .account:before {
+    font-family: FontAwesome;
+    content: "\f016";
+}
+
+.progressbar .personal:before {
+    font-family: FontAwesome;
+    content: "\f036";
+}
+
+.progressbar .payment:before {
+    font-family: FontAwesome;
+    content: "\f007";
+}
+
+.progressbar .confirm:before {
+    font-family: FontAwesome;
+    content: "\f00c";
+}
+
+/*ProgressBar before any progress*/
+.progressbar li:before {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    display: block;
+    font-size: 14px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px;
+}
+
+/*ProgressBar connectors*/
+.progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1;
+}
+
+/*Color number of the step and the connector before it*/
+.progressbar li.active:before, .progressbar li.active:after {
+    background: #50a858;
+}
+.progressbar li.active1:before, .progressbar li.active1:after {
+    background: #fa1240;
+}
+
+/*DataTable*/
+
+thead input {
+    width: 100%;
+    text-align: center;
+}
+
+th:nth-child(12), th:nth-child(13) {
+    border: none;
+}
+
+.filters .action-color {
+    color: transparent;
+}
+
+.subjectCard:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    background-color: #2977f8;
+    color: white;
+}
+
+.questionBoxCard:hover{
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    background-color: #1567f3;
+    color: white;
+}
+
+
+
+.pulse {
+  overflow: visible;
+  position: relative;
+}
+.pulse:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: inherit;
+  border-radius: inherit;
+  transition: opacity .3s, transform .3s;
+  animation: pulse-animation 1s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+	z-index: -1;
+}
+@keyframes pulse-animation {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}

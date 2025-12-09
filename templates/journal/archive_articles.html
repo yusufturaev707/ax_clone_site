@@ -1,0 +1,56 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Jurnallar arxivi" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Jurnallar arxivi" %}
+        </h2>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 15px;">
+                <table class="table table-hover table-fixed">
+
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "F.I.O" %}</strong></th>
+                        <th><strong>{% trans "E-mail" %}</strong></th>
+                        <th><strong>{% trans "Mavzu" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqt" %}</strong></th>
+                        <th><strong>{% trans "Fayl(.docx)" %}</strong></th>
+                        <th><strong>{% trans "Fayl(.pdf)" %}</strong></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if objects.count > 0 %}
+                        {% for object in objects %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ object.article.author.full_name }}</td>
+                                <td>{{ object.article.author.email }}</td>
+                                <td>{{ object.article.title }}</td>
+                                <td>{{ object.article.created_at|date }}</td>
+                                <td>
+                                    <a href="{{ object.article.file.file.url }}" type="button" download
+                                       class="btn btn-outline-info forshadow"><img src="{% static 'img/wordicon.png' %}" alt="" width="30"/></a>
+                                </td>
+                                <td>
+                                    <a href="{{ object.article.filePDF.url }}" target="_blank" class="btn btn-outline-danger forshadow"><i
+                                            class="fa fa-file-pdf fa-lg"></i></a>
+                                </td>
+                            <td>
+                                <a href="{% url 'archive_article_review' object.article.id %}" class="btn btn-primary btn-sm forshadow">{% trans "To'liq ma'lumot" %}</a>
+                            </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

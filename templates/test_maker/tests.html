@@ -1,0 +1,32 @@
+{% extends 'user_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Testlar soni{% endblock title %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body">
+            <div class="card-deck">
+                {% if objects.count > 0 %}
+                	{% for obj in objects %}
+                    <a href="{% url 'question_box' obj.id %}" style="text-decoration: none;">
+                        <div class="card" style="width: 15rem;">
+                            <div class="card-body">
+                                <h4 class="card-title text-center">{{ obj.subject.name }}</h4>
+                                <p class="text text-center text-success"
+                                   style="font-size: xx-large; font-weight: bold">{{ obj.count }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <p class="text text-center text-success"
+                               style="font-size: xx-large; font-weight: normal">Ma'lumot topilmadi</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

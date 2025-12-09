@@ -1,0 +1,43 @@
+{% extends 'user_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Savollar kitoblari{% endblock title %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body">
+        <h4 class="card-title">{{ subject.name }} fanidan savollar kitobi</h4>
+            <div class="card-deck">
+                {% if objects.count > 0 %}
+                    {% for obj in objects %}
+                        <a href="#" style="text-decoration: none;">
+                            <div class="card" style="width: 15rem;">
+                                <div class="card-body">
+                                    <p class="text text-center text-success"
+                                       style="font-size: xx-large; font-weight: bold">{{ obj.box_number }}</p>
+                                    <h4 class="card-title text-center">{{ obj.count_question }}</h4>
+                                </div>
+                                <div class="card-footer">
+                                    {% if obj.count_question == obj.limit_question %}
+                                    	<p class="text-success text-center" style="font-size: large">{{ obj.get_percent }} &nbsp;<i class="fa fa-percent"></i></p>
+                                        {% elif obj.count_question < obj.limit_question %}
+                                        <p class="text-danger text-center" style="font-size: large">{{ obj.get_percent }} &nbsp;<i class="fa fa-percent"></i></p>
+                                        {% else %}
+                                        <p class="text-danger text-center" style="font-size: large">Error</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="card" style="width: 15rem;">
+                        <div class="card-body">
+                            <p class="text text-center text-success"
+                               style="font-size: xx-large; font-weight: normal">Sizda <b>{{ subject.name }}</b> fanidan
+                                savollar kitobi mavjud emas!</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal modal-fullscreen fade viewArticleFont" id="view_question_info_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ question.test.number }}</h2>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-overflow">
+                    <tr>
+                        <td><b>{% trans "Savol turi:" %}</b></td>
+                        <td>{{ question.submission.type_test_upload.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan:" %}</b></td>
+                        <td>{{ question.submission.subject.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan tili:" %}</b></td>
+                        <td><span class="badge badge-info">{{ question.submission.lang.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Bob:" %}</b></td>
+                        <td>{{ question.submission.chapter.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Bo'lim:" %}</b></td>
+                        <td>{{ question.submission.section.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Mavzu/Qism:" %}</b></td>
+                        <td>
+                            {% if question.submission.type_test_upload.id == 1 %}
+                                {{ question.submission.part.name }}
+                            {% endif %}
+                            {% if question.submission.type_test_upload.id == 2 %}
+                                {{ question.submission.topic.name }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qiyinlik daraja:" %}</b></td>
+                        <td><span class="badge badge-primary">
+                            {% if question.submission.type_test_upload.id == 1 %}
+                                {{ question.submission.level_dn.name }}
+                            {% endif %}
+                            {% if question.submission.type_test_upload.id == 2 %}
+                                {{ question.submission.level_d.name }}
+                            {% endif %}
+                        </span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yuboruvchi:" %}</b></td>
+                        <td>{{ question.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qadam:" %}</b></td>
+                        <td><span class="badge badge-primary">{{ question.step.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Holat:" %}</b></td>
+                        <td>
+                            {% if question.status.code == 0 %}
+                                <span class="badge badge-danger">{{ question.status.name }}</span>
+                            {% elif question.status.code == 1 %}
+                                <span class="badge badge-success">{{ question.status.name }}</span>
+                            {% elif question.status.code == 2 %}
+                                <span class="badge badge-warning">{{ question.status.name }}</span>
+                            {% elif question.status.code == 3 %}
+                                <span class="badge badge-info">{{ question.status.name }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yuborilgan fayl:" %}</b></td>
+                        <td><a href="{{ question.test.file_word.url }}" type="button"
+                               class="btn btn-xs btn-outline-warning" download="download"><img
+                                src="{% static 'img/word.png' %}" width="40" alt="word"></a></td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yaratilgan vaqti:" %}</b></td>
+                        <td>{{ question.created_at|safe|slice:19 }}</td>
+                    </tr>
+                    {% if objects.count > 0 %}
+                        {% for object in objects %}
+                            <tr>
+                                <td><b>{% trans "Ekspert" %} {{ forloop.counter }}</b></td>
+                                <td>
+                                    <b>FIO:</b> {{ object.expert.user.full_name }} <br>
+                                    <b>Tekshirganmi:</b> {% if object.is_check %} <span class="badge badge-success">Ha</span> {% else %} <span class="badge badge-warning">Yo'q</span> {% endif %}
+                                    &nbsp; <b>Status:</b> <span class="badge badge-blue-grey">{{ object.status_test.name }}</span>
+                                    &nbsp;<b>Qadam:</b> <span class="badge badge-indigo">{{ object.step.name }}</span> <br>
+                                    <b>Kelgan vaqti:</b> {{ object.created_at|safe }} <br>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td><b>{% trans "Moderator" %}</b></td>
+                        <td>
+                            {% if moderator %}
+                                <b>FIO:</b> {{ moderator.moderator.user.full_name }} <br>
+                                <b>Holat:</b>
+                                    {% if moderator.status.key == 0 %}
+                                        <span class="badge badge-danger">{{ moderator.status.name }}</span>
+                                        {% elif moderator.status.key == 1 %}
+                                        <span class="badge badge-success">{{ moderator.status.name }}</span>
+                                    {% endif %} <br>
+                                <b>Kelgan vaqti:</b> {{ moderator.created_at|safe }} <br>
+                                {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

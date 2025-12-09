@@ -1,0 +1,66 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Jurnallar arxivi" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Jurnallar arxivi" %}
+        </h2>
+        <div class="panel-body forshadow"
+             style="background-color: #ffffff; border-radius: 5px; padding: 20px 15px 15px 15px">
+            {% if objects.count > 0 %}
+                {% for item in objects %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ forloop.counter }}-{% trans "Taqriz" %}</h4>
+                            <p><b>{% trans "Muharrir:" %}</b>&nbsp;{{ item.editor.user.full_name }}<br>
+                                <b>{% trans "E-mail:" %}</b>&nbsp;{{ item.editor.user.email }}</p>
+
+                            <p><b>{% trans "Taqrizchi:" %}</b>&nbsp;{{ item.reviewer.user.full_name }}<br>
+                                <b>{% trans "E-mail:" %}</b>&nbsp;{{ item.reviewer.user.email }}
+                            </p>
+
+                            <p><b>{% trans "Holati:" %}</b>&nbsp;{% if item.status.id == 3 %}
+                                <span class="badge badge-success">{{ item.status.name }}</span>
+                            {% elif item.status.id == 4 %}
+                                <span class="badge badge-danger">{{ item.status.name }}</span>
+                            {% else %}
+                                <span class="badge badge-warning">{{ item.status.name }}</span>
+                            {% endif %} <br></p>
+                            <p><b>{% trans "Yuborilgan vaqti:" %}</b>&nbsp;{{ item.created_at|date }}<br></p>
+                            <p><b>{% trans "Qo'shimcha taqrizchimi:" %}</b>&nbsp;{% if item.is_extra %}
+                                <span class="badge badge-success">{% trans "Ha" %}</span>
+                            {% else %}
+                                <span class="badge badge-danger">{% trans "Yo'q" %}</span>
+                            {% endif %} <br></p>
+                            <div id="accordion">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                                            {% trans "Taqriz bayoni" %}
+                                        </a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                                        <div class="card-body">
+                                            {{ item.comment|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="card">
+                    <div class="card-body text-center">
+                        <span style="font-size: medium; color: #b6b6b6">{% trans "Ma'lumot topilmadi" %}</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Ekspertlar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Ekspertlar ro'yxati" %}
+        </h2>
+        {% csrf_token %}
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-hover display" id="expertLists" style="width:100%">
+                    <thead style="background-color: #03b703" class="table forshadow">
+                    <tr class="dataGrid">
+                        <th>{% trans "ID" %}</th>
+                        <th>{% trans "Familiya" %}</th>
+                        <th>{% trans "Ism" %}</th>
+                        <th>{% trans "Otasini ismi" %}</th>
+                        <th>{% trans "Fan" %}</th>
+                        <th>{% trans "Til" %}</th>
+                        <th>{% trans "Daraja" %}</th>
+                        <th>{% trans "Sertifikat" %}</th>
+                        <th>{% trans "Ekspert3" %}</th>
+                        <th>{% trans "Amal" %}</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="expertList_div"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#expertLists').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'get_experts' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id"},
+                    {data: "user__last_name"},
+                    {data: "user__first_name"},
+                    {data: "user__middle_name"},
+                    {data: "subject__name"},
+                    {data: "lang_test__name"},
+                    {data: "level__name"},
+                    {data: "is_have_cert"},
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            let st = '';
+                            if (data['is_third_expert'] === false){
+                                st = '<i class="fa fa-times"></i>';
+                            } else if (data['is_third_expert'] === true) {
+                                 st = '<i class="fa fa-check"></i>';
+                            } else {
+                                 st = '<span class="badge badge-warning">No</span>';
+                            }
+                            return st;
+                        }
+                    },
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<button type="button" class="btn btn-outline-warning editThirdExpertBtn" data-id="' + data.id + '" data-url="{% url 'expert_list' %}"><i class="fa fa-edit" /></button>';
+                        }
+                    },
+                ],
+                serverSide: true,
+                ordering: true,
+                paging: true,
+                processing: true,
+                info: true,
+                bInfo: true,
+                bSort: true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+            });
+             $('#expertLists tbody').on('click', '.editThirdExpertBtn', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = $(this).data('url');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        if (response['result'] === 1) {
+                            swal({
+                                text: response.message,
+                                icon: 'success',
+                                timer: 3000,
+                            });
+                            window.location.reload();
+                        } else if (response['result'] === 0) {
+                            swal({
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3000,
+                            });
+                        } else {
+                            swal({
+                                text: `Xatolik yuz berdi`,
+                                icon: 'error',
+                                timer: 3000,
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

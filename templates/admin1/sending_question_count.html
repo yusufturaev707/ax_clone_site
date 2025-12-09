@@ -1,0 +1,141 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Qabul qilingan savollar statistikasi" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header">
+            {% trans "Qabul qilingan savollar soni bo'yicha hisobot" %}
+        </h2>
+        {% csrf_token %}
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-striped display styled-table dt-responsive compact nowrap" id="questionsSendingCount" style="width:100%">
+                    <thead class="table forshadow">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Sharif" %}</strong></th>
+                        <th><strong>{% trans "Jshshir" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Level" %}</strong></th>
+                        <th><strong>{% trans "Bo'lim" %}</strong></th>
+                        <th><strong>{% trans "Qism" %}</strong></th>
+                        <th><strong>{% trans "Soni" %}</strong></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Sharif" %}</strong></th>
+                        <th><strong>{% trans "Jshshir" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Level" %}</strong></th>
+                        <th><strong>{% trans "Bo'lim" %}</strong></th>
+                        <th><strong>{% trans "Qism" %}</strong></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="ViewIncomingQuestionAdmin1Div"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#questionsSendingCount').DataTable({
+                layout: {
+                    topFinish: {
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, ':visible']
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                autoFilter: true,
+                                sheetName: 'Exported data',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ]
+                    }
+                },
+               
+                destroy: true,
+                orderCellsTop: true,
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'load_sending_question_count_list' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id", },
+                    {data: "last_name", },
+                    {data: "first_name", },
+                    {data: "middle_name", },
+                    {data: "jshshr", },
+                    {data: "subject_name"},
+                    {data: "level_name"},
+                    {data: "section_name"},
+                    {data: "part_name"},
+                    {data: "count"},
+                ],
+                serverSide: true,
+                ordering: true,
+                paging: true,
+                processing: true,
+                searchDelay: 800,
+                info: true,
+                bInfo: true,
+                bSort: true,
+                order: [],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"],
+                ],
+                initComplete: function () {
+                    this.api().columns([0,1,2,3,4]).every(function (i) {
+                        let column = this;
+                        let title = column.footer().textContent;
+                        $('<input type="text" class="form-control" style="width:100%" placeholder="'+ title + '" />')
+                                .appendTo($(column.footer()).empty())
+                                .on('keyup change clear', function () {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                            });
+                    });
+
+                    this.api().columns([5,6,7,8]).every( function (i) {
+                        let column = this;
+                        let select = $('<select class="form-control" style="width:100%"><option value="">---</option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                let val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column.search($(this).val(), {exact: true}).draw();
+                            } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'" class="form-control" style="width:100%">'+d+'</option>' )
+                            } );
+                    } );
+
+                },
+                fixedHeader: {
+                footer: true
+                }
+            });
+        });
+    </script>
+{% endblock %}

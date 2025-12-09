@@ -1,0 +1,23 @@
+{% load i18n %}
+<div class="modal fade" id="delete_country_modal">
+    <div class="modal-dialog">
+        <form method="post" data-url="{% url 'delete_country' country.pk %}" id="delete_country_form">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans "Mamlakatni o'chirish" %}</h4>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <strong>{{ country.name }}</strong><br>
+                    <span style="font-size: small">{% trans "O'chirishga ishonchingiz komilmi?" %}</span>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yoq" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Ha" %}</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

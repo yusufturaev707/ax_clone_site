@@ -1,0 +1,149 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Kelib tushgan savollar" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header">
+            {% trans "Kelib tushgan savollar" %}
+        </h2>
+        {% csrf_token %}
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-striped display" id="questionInComingLists" style="width:100%">
+                    <thead class="table forshadow" style="background-color: #1c96e8">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "UploadId" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Bob" %}</strong></th>
+                        <th><strong>{% trans "Bo'lim" %}</strong></th>
+                        <th><strong>{% trans "Mavzu/Qism" %}</strong></th>
+                        <th><strong>{% trans "Qiyinlik Daraja" %}</strong></th>
+                        <th><strong>{% trans "Til" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Otasining ismi" %}</strong></th>
+                        <th><strong>{% trans "Qadam" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th><strong>{% trans "Tekshirish tugaganmi?" %}</strong></th>
+                        <th><strong>{% trans "Savol turi" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqt" %}</strong></th>
+                        <th><strong>{% trans "Amal" %}</strong></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="ViewIncomingQuestionDiv"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#questionInComingLists').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'load_incoming_questions' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id", },
+                    {data: "submission_id"},
+                    {data: "subject"},
+                    {data: "chapter"},
+                    {data: "section"},
+                    {data: "topic"},
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<span class="badge badge-green">' + data['level_d'] + '</span>';
+                        }
+                    },
+                    {data: "lang"},
+                    {data: "first_name"},
+                    {data: "last_name"},
+                    {data: "middle_name"},
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<span class="badge badge-info">' + data['step'] + '</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            let st = '';
+                            if (data['status_code'] === 0){
+                                st = '<span class="badge badge-danger">' + data['status'] + '</span>';
+                            } else if (data['status_code'] === 1) {
+                                 st = '<span class="badge badge-success">' + data['status'] + '</span>';
+                            } else if (data['status_code'] === 2) {
+                                 st = '<span class="badge badge-warning">' + data['status'] + '</span>';
+                            } else if (data['status_code'] === 3) {
+                                 st = '<span class="badge badge-indigo">' + data['status'] + '</span>';
+                            }
+                            return st;
+                        }
+                    },
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            let st = '';
+                            if (data['is_check_finish']) {
+                                st = '<span class="badge badge-success">Ha</span>';
+                            } else {
+                                 st = '<span class="badge badge-danger">Yo\'q</span>';
+                            }
+                            return st;
+                        }
+                    },
+                    {data: "test_type_name"},
+                    {data: "created_at"},
+                    {
+                        {#targets: 2,#}
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<button type="button" class="btn btn-outline-info viewQuestionInfo" data-id="' + data.id + '" data-url="{% url 'view_question_incoming' %}"><i class="fa fa-eye" /></button>';
+                        }
+                    },
+                ],
+                serverSide: true,
+                ordering: true,
+                {#responsive: true,#}
+                paging: true,
+                processing: true,
+                {#pageLength: 2,#}
+                info: true,
+                bInfo: true,
+                bSort: true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+            });
+            $('#questionInComingLists tbody').on('click', '.viewQuestionInfo', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = $(this).data('url');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        $('#ViewIncomingQuestionDiv').html(response);
+                        $('#view_question_info_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

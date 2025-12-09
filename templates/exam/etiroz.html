@@ -1,0 +1,66 @@
+{% load static %}
+<form method="post" id="appealForm" data-url="{% url 'appeal' question.id %}">
+    {% csrf_token %}
+    <div class="modal fade" id="appealModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Apellyasiya berish oynasi</h5>
+                    <i class="fa fa-times" data-bs-dismiss="modal" aria-label="Close"></i>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p><span class="badge rounded-pill bg-warning text-dark">{{ question.question.number }}</span> - raqamli savol uchun
+                            e'tirozim:
+                        </p>
+                        <label>
+                            <input type="number" name="pupil" value="{{ pupil.id }}" hidden="hidden">
+                        </label>
+                        <label>
+                            <input type="number" name="exam" value="{{ question.exam.id }}" hidden="hidden">
+                        </label>
+                        <label>
+                            <input type="number" name="question" value="{{ question.id }}" hidden="hidden">
+                        </label>
+                        <div class="row form-group m-b-10">
+                            <div class="col-md-12">
+                                {{ form.category }}
+                            </div>
+                        </div>
+                        <div class="row form-group m-b-10">
+                            <div class="col-md-12">
+                               {{ form.content }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Yuborish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('#appealForm').submit(function (e) {
+            e.preventDefault();
+            let url = $('#appealForm').data('url');
+            let formData = $('#appealForm').serialize();
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response['result'] === 2){
+                        $('#appealForm')[0].reset();
+                        $('#appealModal').modal('hide');
+                    } else if (response['result'] === 1) {
+                        alert(response.message);
+                    }
+                },
+            });
+        })
+    })
+</script>

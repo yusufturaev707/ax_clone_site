@@ -1,0 +1,60 @@
+{% load i18n %}
+{% load static %}
+<form method="post" data-url="{% url 'create_menu' %}" id="create_menu_form">
+    {% csrf_token %}
+    <div class="modal fade" id="create_menu_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Yangi menyu qo'shish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-striped table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Nomi" %}</th>
+                            <td class="text-nowrap">{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Url nomi" %}</th>
+                            <td class="text-nowrap">{{ form.url_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Url" %}</th>
+                            <td class="text-nowrap">{{ form.url }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Icon nomi" %}</th>
+                            <td class="text-nowrap">{{ form.icon_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Tartibi" %}</th>
+                            <td class="text-nowrap">{{ form.order }}</td>
+                        </tr>
+                         <tr>
+                            <th class="text-nowrap">{% trans "Turi" %}</th>
+                            <td class="text-nowrap">{{ form.type }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Ruxsat etilgan rollar" %}</th>
+                            <td class="text-nowrap">{{ form.allowed_roles }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Holat" %}</th>
+                            <td class="text-nowrap">{{ form.status }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>

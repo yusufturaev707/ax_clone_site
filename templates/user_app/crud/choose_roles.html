@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load static %}
+<form class="form-control" data-parsley-validate="true" method="post"
+      id="choose_role_form"
+      data-url="{% url 'create_article_file' article.id %}"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="choose_role_modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Taqrizchi formasi" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <select id="id_article" name="article" class="form-control" style="visibility: hidden">
+                        <option selected value="{{ article.id }}"></option>
+                    </select>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Fayl" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            <div class="input-group">
+                                <div class="input-group-prepend"></div>
+                                {{ form.file }}
+                                {% if message %}
+                                    <div class="invalid-feedback">{% trans "Ma'lumotlarni yuborishda xatolik yuz berdi!" %}</div>
+                                {% else %}
+                                    <div class="valid-feedback">{% trans "Fayllar yuborish uchun tayyor!" %}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="close btn btn-outline-info" id="createArticleFile_modal"
+                       data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary submitChooseRoleFormBtn"
+                            id="btn_createFile">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

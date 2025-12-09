@@ -1,0 +1,323 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Shaxsiy ma'lumotlarim" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <form method="POST" name="form-wizard" class="form-control-with-bg forshadow viewArticleFont editProfileForm"
+              data-url="{% url 'edit_profile' %}"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            <div id="wizard">
+                <div style="background-color: #f8f8f8; padding:2%;">
+                    <div id="step-1">
+                        <div class="row">
+                            <div class="col-lg-5" style="border: 1px solid #eaeaea; border-radius: 3px;">
+                                <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">{% trans "Shaxsiy ma'lumotlar" %}</legend>
+                                <button type="button" {% if user.is_get_ps_data %}
+                                	class="btn btn-success btn-sm forshadow"
+                                	{% else %}
+                                	class="btn btn-danger btn-sm forshadow"
+                                {% endif %} style="float: right" id="btnRefreshData"><i class="fa fa-user-check forshadow"></i>
+                                    &nbsp;{% trans "Shaxsiy ma'lumotlarni kiritish" %}</button>
+                                <br><br>
+                                <table class="table table-striped bordered table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {% if user.avatar %}
+                                                <img class="mr-2" src="{{ user.avatar }}" alt="Generic placeholder image" width="150" style="border: 1px solid #DFE3E7;border-radius: 5px;">
+                                                {% else %}
+                                                <img src="{% static 'img/no-image.png' %}" width="150" style="border: 1px solid #DFE3E7;border-radius: 5px;" alt="No image">
+                                            {% endif %}
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Pasport seriyasi va raqami" %}</td>
+                                        <td>
+                                            {% if user.pser or user.pnum %}
+                                                {{ user.pser }}{{ user.pnum }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Familiya" %}</td>
+                                        <td>
+                                            {% if user.last_name %}
+                                                 {{ user.last_name }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Ism" %}</td>
+                                        <td>
+                                            {% if user.first_name %}
+                                                 {{ user.first_name }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Sharif" %}</td>
+                                        <td>
+                                            {% if user.middle_name %}
+                                                 {{ user.middle_name }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Tug‘ilgan sanasi" %}</td>
+                                        <td>
+                                            {% if user.birthday %}
+                                                {{ user.birthday|date:"d.m.Y" }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "JSh ShIR" %}</td>
+                                        <td>
+                                            {% if user.jshshr %}
+                                                 {{ user.jshshr }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Jins" %}</td>
+                                        <td>
+                                            {% if user.gender %}
+                                                {{ user.gender }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Tuman" %}</td>
+                                        <td>
+                                            {% if user.district %}
+                                                {{ user.district.name }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Viloyat" %}</td>
+                                        <td>
+                                            {% if user.region %}
+                                                {{ user.region.name }}
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if user.is_out_expert %}
+                                        <tr>
+                                            <td><b>{% trans "Token" %}</b></td>
+                                            <td>
+                                                <p style="font-family: Calibri,serif">{{ teacher.token_for_pupil }}</p>
+                                                <p class="alert-info">Bu token orqali o'quvchilaringiz sizni testlaringizni yechaoladi</p>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-5" style="border: 1px solid #eaeaea; border-radius: 3px;">
+                                <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">{% trans "Qo'shimcha ma'lumotlar" %}</legend>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">{% trans "Foydalanuvchi nomi" %}
+                                        <span
+                                                class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        {{ form.username }}
+                                    </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">{% trans "E-mail" %}
+                                        <span
+                                                class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">{% trans "Telefon" %}
+                                        <span
+                                                class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">{% trans "Ilmiy darajangizni kiriting" %}</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        {{ form.sc_degree }}
+                                    </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">{% trans "Ish joyingiz" %}</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        {{ form.work }}
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <button type="submit"
+                                        class="btn btn-primary btn-sm btn-block forshadow editProfileBtn">
+                                    {% trans "O'zgarishlarni saqlash" %}
+                                </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2" style="border: 1px solid #eaeaea; border-radius: 3px;">
+                                <hr>
+                                <span class="text-center">{% trans "Sizga berilgan rollar:" %}</span>
+                                {% for item in user.roles.all %}
+                                    <span class="badge badge-pill badge-info">{{ item.name }}</span>
+                                {% endfor %}
+                                <hr>
+                             {% if user.is_admin or user.is_author or user.is_reviewer or user.is_editor %}
+                                <div class="widget-todolist widget-todolist-rounded m-b-30" data-id="widget"
+                                     id="list_reviewers">
+                                    <div class="widget-todolist-header">
+                                        <div class="widget-todolist-header-left">
+                                            <span class="text-center">{% trans "Taqrizchi rolini tanlash" %}</span>
+                                        </div>
+                                    </div>
+                                    <div class="widget-todolist-body" id="widget-todolist-body">
+                                        {% for role in roles %}
+                                            {% if role.id == 1 and role.id in user.get_roles %}
+                                                <div class="widget-todolist-item">
+                                                    <div class="widget-todolist-input">
+                                                        <div class="checkbox checkbox-css pt-0 checkbox-success">
+                                                            <input type="checkbox" id="role{{ role.id }}"
+                                                                   value="{{ role.id }}"
+                                                                   name="role"
+                                                                   {% if role.id in user.get_roles %}checked
+                                                                   disabled{% endif %}
+                                                            />
+                                                            <label for="role{{ role.id }}"
+                                                                   class="p-l-15">&nbsp;</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-todolist-content"><h4
+                                                            class="widget-todolist-title">{{ role.name }}</h4></div>
+                                                </div>
+                                            {% elif role.id == 2 and role.id in user.get_roles %}
+                                                <div class="widget-todolist-item">
+                                                    <div class="widget-todolist-input">
+                                                        <div class="checkbox checkbox-css pt-0 checkbox-success">
+                                                            <input type="checkbox" id="role{{ role.id }}"
+                                                                   value="{{ role.id }}"
+                                                                   name="role"
+                                                                   {% if role.id in user.get_roles %}checked
+                                                                   disabled{% endif %}
+                                                            />
+                                                            <label for="role{{ role.id }}"
+                                                                   class="p-l-15">&nbsp;</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-todolist-content"><h4
+                                                            class="widget-todolist-title">{{ role.name }}</h4></div>
+                                                </div>
+                                            {% elif role.id == 3 %}
+                                                <div class="widget-todolist-item">
+                                                    <div class="widget-todolist-input">
+                                                        <div class="checkbox checkbox-css pt-0 checkbox-danger">
+                                                            <input type="checkbox" id="role{{ role.id }}"
+                                                                   value="{{ role.id }}"
+                                                                   name="role"
+                                                                   {% if role.id in user.get_roles %}checked
+                                                                   disabled{% endif %}
+                                                                    {% if is_send_request %} checked disabled{% endif %}
+                                                            />
+                                                            <label for="role{{ role.id }}"
+                                                                   class="p-l-15">&nbsp;</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-todolist-content"><h4
+                                                            class="widget-todolist-title">{{ role.name }}</h4></div>
+                                                </div>
+                                            {% elif role.id == 4 and role.id in user.get_roles %}
+                                                <div class="widget-todolist-item">
+                                                    <div class="widget-todolist-input">
+                                                        <div class="checkbox checkbox-css pt-0 checkbox-success">
+                                                            <input type="checkbox" id="role{{ role.id }}"
+                                                                   value="{{ role.id }}"
+                                                                   name="role"
+                                                                   {% if role.id in user.get_roles %}checked
+                                                                   disabled{% endif %}
+                                                            />
+                                                            <label for="role{{ role.id }}"
+                                                                   class="p-l-15">&nbsp;</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-todolist-content"><h4
+                                                            class="widget-todolist-title">{{ role.name }}</h4></div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="widget-todolist-item">
+                                        <div class="widget-todolist-input">
+                                            <button type="button" disabled
+                                                    data-url="{% url 'choosen_reviewer_role' %}"
+                                                    id="choose-role-reviewer-btn"
+                                                    class="btn btn-outline-info btn-sm btn-block forshadow"
+                                                    style="float: right">{% trans "Yuborish" %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                             {% endif %}
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="choosen_reviewer_role_div"></div>
+    <script>
+        $(document).ready(function () {
+            $('#role3').click(function () {
+                if ($(this).is(":checked")) {
+                    $('#choose-role-reviewer-btn').removeAttr("disabled");
+                } else if ($(this).is(":not(:checked)")) {
+                    $('#choose-role-reviewer-btn').prop("disabled", true);
+                }
+            });
+        });
+        $('body').on('click', '#btnRefreshData', function (e) {
+            e.preventDefault();
+
+            let url = "{% url 'get_data_ps' %}".toString();
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#choosen_reviewer_role_div').html(response);
+                    $('#get_data_ps_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

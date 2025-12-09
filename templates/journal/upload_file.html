@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load static %}
+<form method="post" action="{% url 'upload_article_file' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="addUser">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Jurnalning yangi soni uchun shablonni tizimga yuklang" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-striped table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Fayl" %}</th>
+                            {{ form.file }}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

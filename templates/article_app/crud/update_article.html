@@ -1,0 +1,278 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Maqola bo'yicha ma'lumotlarni to'ldiring" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h3 class="page-header">{% trans "Maqola bo'yicha ma'lumotlarni to'ldiring" %}</h3>
+
+        <div class="panel panel-default forshadow">
+            <div class="panel-body">
+                <div class="card" style="margin-top: 1%; padding: 1%">
+                    <h5>{% trans "Taqrizchilar etirozlari" %}</h5>
+                    <table class="table table-bordered table-hover">
+                        {% for item in review_article %}
+                            <tr>
+                                <th colspan="4">{% trans "Taqrizchi" %}{{ forloop.counter }} <i class="fa fa-arrow-down"
+                                                                                              style="color: #00B0E8"></i>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text text-justify"><b>{% trans "Etiroz matni: " %}</b>{{ item.comment|safe }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="container">
+                    <form class="update_article_form" data-parsley-validate="true" method="post"
+                          data-url="{% url 'update_article' article.id %}">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="text-center"
+                                    style="color: green">{% trans "Quyidagi so'ralgan ma'lumotlarni to'ldiring" %}</h5>
+                                <div class="form-group row m-b-15" style="visibility: hidden;">
+                                    <label class="col-md-2 col-sm-2 col-form-label">{% trans "Muallif" %}
+                                        <span
+                                                class="text-danger">*</span></label>
+                                    <div class="col-md-10 col-sm-10">
+                                        <select id="id_author" name="author" class="form-control">
+                                            <option selected
+                                                    value="{{ article.author.id }}">{{ article.author.username }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if article.article_lang.key == 'uz' %}
+                                <div class="col-md-12">
+                                    <h6>{% trans "Mavzusi (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15"
+                                         style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                        <div class="col-md-12 col-sm-12">
+                                            {{ form.title|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if article.article_lang.key == 'en' %}
+                                <div class="col-md-12">
+                                    <h6>{% trans "Mavzusi (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15"
+                                         style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                        <div class="col-md-12 col-sm-12">
+                                            {{ form.title_en|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <div class="col-md-12">
+                                <button href="{% url 'add_author' article.id %}" data-toggle="modal"
+                                        style="margin-bottom: 1em; margin-top: 3em;"
+                                        class="addUser btn btn-outline-success btn-block btn-sm"><i
+                                        class="fa fa-plus mr-1"></i><strong>{% trans "Mualliflarni qo'shish" %}</strong>
+                                </button>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-response">
+                                        <thead>
+                                        <tr>
+                                            <th><b>{% trans "Tr" %}</b></th>
+                                            <th><b>{% trans "Familiyasi" %}</b></th>
+                                            <th><b>{% trans "Ismi" %}</b></th>
+                                            <th><b>{% trans "Sharifi" %}</b></th>
+                                            <th><b>{% trans "E-mail" %}</b></th>
+                                            <th><b>{% trans "Ilmiy darajasi" %}</b></th>
+                                            <th><b>{% trans "Ish joyi" %}</b></th>
+                                            <th width="100"><b></b></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="authors_table">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-6" style="margin-top: 3em;">
+                                <div class="form-group row m-b-15"
+                                     style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                    <label class="col-md-2 col-sm-2 col-form-label"> {% trans "Rukn" %}</label>
+                                    <div class="col-md-10 col-sm-10">
+                                        {{ form.section }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 3em;">
+                                <div class="form-group row m-b-15"
+                                     style="background-color: #eeeeee; padding: 10px; margin-left: 1px; border-radius: 5px;border: 1px solid #afafaf;">
+                                    <label class="col-md-2 col-sm-2 col-form-label"> {% trans "Davlat" %}</label>
+                                    <div class="col-md-10 col-sm-10">
+                                        {{ form.country }}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-6">
+                                <div class="form-group row m-b-15"
+                                     style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                    <label class="col-md-2 col-sm-2 col-form-label"> {% trans "Turi" %}</label>
+                                    <div class="col-md-10 col-sm-10">
+                                        {{ form.article_type }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row m-b-15"
+                                     style="background-color: #eeeeee; padding: 10px; margin-left: 1px; border-radius: 5px;border: 1px solid #d9d9d9;">
+                                    <label class="col-md-2 col-sm-2 col-form-label"> {% trans "Tili" %}</label>
+                                    <div class="col-md-10 col-sm-10">
+                                        {{ form.article_lang }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if article.article_lang.key == 'uz' %}
+                                <div class="col-md-12">
+                                    <h6>{% trans "Qisqacha mazmuni (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.abstract|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 1em">
+                                    <h6> {% trans "Kalit so'zlar (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.keywords|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h6>{% trans "Mavzusi (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15"
+                                         style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                        <div class="col-md-12 col-sm-12">
+                                            {{ form.title_en|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h6>{% trans "Qisqacha mazmuni (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.abstract_en|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h6>{% trans "Kalit so'zlar (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.keywords_en|safe }}
+                                    </div>
+                                </div>
+                            {% elif article.article_lang.key == 'en' %}
+                                <div class="col-md-12">
+                                    <h6>{% trans "Qisqacha mazmuni (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.abstract_en|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h6>{% trans "Kalit so'zlar (inglizcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.keywords_en|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h6>{% trans "Mavzusi (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15"
+                                         style="background-color: #eeeeee; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                        <div class="col-md-12 col-sm-12">
+                                            {{ form.title|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-12">
+                                    <h6>{% trans "Qisqacha mazmuni (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.abstract|safe }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 1em">
+                                    <h6> {% trans "Kalit so'zlar (o'zbekcha)" %}</h6>
+                                    <div class="form-group row m-b-15" style="border: 1px solid #d9d9d9">
+                                        {{ form.keywords|safe }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <div class="col-md-12">
+                                <div class="form-group row m-b-15"
+                                     style="background-color: #f3f3f3; padding: 10px; border-radius: 5px;border: 1px solid #afafaf;">
+                                    <p>{% trans "Maqola faylini yuklang (.doc, docx)" %}</p>
+                                    <div class="col-md-10 col-sm-10">
+                                        <button data-url="{% url 'create_article_file' article.id %}"
+                                                class="btn btn-primary btn-md create_articleFileBtn"><i
+                                                class="fa fa-file mr-1"></i>{% trans " Fayl" %}
+                                        </button>
+                                        <span id="article_file_name" style="margin-left: 1%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 1em">
+                            <div class="col-md-12 col-sm-12">
+                                <button type="submit" style="float: right;" id="submitButtonId"
+                                        class="btn btn-success btn-block forshadow"><i
+                                        class="fa fa-paper-plane mr-2"></i>{% trans "Yuborish" %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <div id="edit_author_div"></div>
+                    <div id="edit_article_form_error"></div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'get_article_authors' article.id %}",
+                success: function (response) {
+                    $("#authors_table").empty();
+                    let tr = 0;
+                    for (let item of response.authors) {
+                        tr++;
+                        let temp =
+                            "<tr>" +
+                            "<td>" + tr + "</td>" +
+                            "<td>" + item.lname + "</td>" +
+                            "<td>" + item.fname + "</td>" +
+                            "<td>" + item.mname + "</td>" +
+                            "<td>" + item.email + "</td>" +
+                            "<td>" + item.scientific_degree__name + "</td>" +
+                            "<td>" + item.work + "</td>" +
+                            "<td class='with-btn' nowrap>" +
+                            `<button type="button" class="btn btn-xs btn-warning edit-author" data-url="${response.edit_url}${item.id}/"><i class="fa fa-edit mr-1"></i>{% trans "O'zgartirish" %}</button>` +
+                            " " +
+                            `<button type="button" class="btn btn-xs btn-danger remove-author" id="remove-author${tr}" data-url="${response.delete_url}${item.id}/"><i class="fa fa-trash mr-1"></i>{% trans "O'chirish" %}</button>` +
+                            "</td>" +
+                            "</tr>";
+                        $("#authors_table").append(temp);
+                        $('#remove-author1').prop('disabled', true);
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+{% endblock %}

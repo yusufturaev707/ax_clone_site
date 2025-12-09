@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head style="position: relative;">
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static '/img/logo.ico' %}">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="{% static '/assets/css/google/app.min.css' %}" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="{% static '/assets/plugins/gritter/css/jquery.gritter.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style_exam.css' %}" rel="stylesheet"/>
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+</head>
+<body style="background-color: #fdfeff;">
+        {% block content %}
+
+        {% endblock content %}
+
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="{% static '/assets/js/app.min.js' %}"></script>
+<script src="{% static '/assets/js/theme/google.min.js' %}"></script>
+<!-- ================== END BASE JS ================== -->
+<script src="{% static 'pdf_viewer/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'pdf_viewer/pdf/pdf.js' %}"></script>
+
+</body>
+</html>

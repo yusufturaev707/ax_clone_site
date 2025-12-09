@@ -1,0 +1,53 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal fade modal-message viewArticleFont forshadow" id="view_criteria_info_modal">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{% trans "Ekspertlar tomonidan berilgan e'tirozlar" %}</h4>
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover">
+                <tr class="tex text-center" style="background-color: #6f9ff8">
+                    <th>{% trans "Tr" %}</th>
+                    <th>{% trans "Kriteriya" %}</th>
+                    <th>{% trans "Ha/Yo'q" %}</th>
+                    <th>{% trans "Izoh" %}</th>
+                </tr>
+                    {% for items, number, status, message in data %}
+                        <tr style="background-color: #dcdcdc"><th colspan="4"><i class="fa fa-user-edit" style="font-size: large"></i> {% trans "Ekspert" %}{{ number }} <i class="fa fa-arrow-down" style="color: #00B0E8"></i></th></tr>
+                         {% if message %}
+                            <tr><td colspan="4" class="text text-justify">{{ message|safe }}</td></tr>
+                        {% endif %}
+                        {% if items.count > 0 %}
+                            {% for item in items %}
+                    		<tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.control_sheet.description }}</td>
+                                <td><i class="fa fa-times"></i> {% trans "Yo'q" %}</td>
+                                <td>{{ item.comment }}</td>
+                            </tr>
+                    	    {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if data1 is not None %}
+                        <tr><th colspan="4">{% trans "Moderator" %}<i class="fa fa-arrow-down" style="color: #00B0E8"></i></th></tr>
+                    	{% for item in data1 %}
+                    	    <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.control_sheet.description }}</td>
+                                <td><i class="fa fa-times"></i> {% trans "Yo'q" %}</td>
+                                <td>{{ item.comment }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

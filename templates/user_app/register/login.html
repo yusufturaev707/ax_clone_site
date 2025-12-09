@@ -1,0 +1,65 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Kirish" %}
+{% endblock %}
+{% block base_content %}
+    <div id="page-container" class="fade">
+        <div class="login login-v1">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="brand">
+						<span class="logo" style="text-transform: uppercase;">
+							<span class="text-blue">Bilimni</span>
+							<span class="text-blue">&nbsp;baholash</span>
+							<span class="text-blue">&nbsp;agentligi</span>
+						</span>
+                        <b>{% trans "Tizimga kirish" %}</b>
+                    </div>
+                </div>
+                <div class="login-body">
+                    <div class="login-content">
+                        <form method="POST" class="margin-bottom-0 loginForm" data-url="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="form-group m-b-20">
+                                <input type="text" name="username"
+                                       class="form-control form-control-xs inverse-mode usernameLogin forshadow"
+                                       placeholder="{% trans 'Foydalanuvchi nomi' %}"/>
+                            </div>
+
+                            <div class="form-group m-b-20">
+                                <input type="password" name="password"
+                                       class="form-control form-control-xs inverse-mode passwordLogin forshadow"
+                                       placeholder="{% trans 'Parol' %}"/>
+                            </div>
+
+                            <div class="form-group m-b-20">
+                                {{ form.captcha.errors }}
+                                <i class="icon-refresh captcha forshadow" style="color: #246dea; font-size: large; font-weight: bold"></i>
+                                &nbsp;&nbsp;&nbsp;{{ form.captcha }}
+                                <input type="hidden" name="next" value="{{ next }}">
+                            </div>
+
+                            <div class="login-buttons">
+                                <button type="submit"
+                                        class="btn btn-primary btn-block btn-md loginBtn forshadow">{% trans "Kirish" %}</button>
+                            </div>
+                            <div class="m-t-20 m-b-20 p-b-20">
+                                {% trans "Tizimdan oldin ro'yxatdan o'tmagan bo'lsangiz. Bu linkga kiring" %} <a
+                                    href="{% url 'register' %}">{% trans "Ro'yxatdan o'tish" %}</a>
+                            </div>
+                            <div class="row d-flex justify-content-center" id="loginFormError"></div>
+                            <hr/>
+                            <p class="text-center text-grey-darker mb-0">
+                                &copy; Bilimni baholash agentligi
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% block title %}
+    Not Access
+{% endblock %}
+{% block base_content %}
+    <div class="error">
+        {#        <div class="error-code">Error</div>#}
+        <h2 class="warning"
+            style="font-family: Trebuchet MS, Verdana, sans-serif">{% trans "Kechirasiz, bu sahifaga sizga ruxsat yo'q." %}</h2>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><a class="btn btn-outline-primary"
+                                     href="{% url 'main_page' %}">{% trans "Bosh sahifa" %}</a></div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+{% endblock %}

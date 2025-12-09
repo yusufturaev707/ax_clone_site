@@ -1,0 +1,155 @@
+{% load i18n %}
+{% load static %}
+<form method="post" data-url="{% url 'upload_test' %}" data-parsley-validate="true"
+      id="createNewtestForm">
+    {% csrf_token %}
+    <div class="modal fade viewArticleFont" id="createNewTestModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Savol yuborish</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data" class="sendTestForm"
+                          data-url="{% url 'upload_test' %}" data-parsley-validate="true">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="form-group col-xl-12">
+                                <label for="id_type_test_upload"><b>{% trans "Savol qaysi turga tegishli?" %}</b></label>
+                                <select data-live-search="true" data-style="btn-white" id="id_type_test_upload"
+                                        name="type_test_upload" class="form-control selectpicker type_test_upload forshadow">
+                                    <option value="" style="color: #931c1c">{% trans "Tanlang" %}</option>
+                                    {% for item in type_uploads %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xl-6">
+                                <label for="subject-select1"><b>Fan</b></label>
+                                <select id="subject-select1" name="subject" class="form-control subject forshadow">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-xl-6">
+                                <label for="Lang"><b>Til</b></label>
+                                <select id="Lang" name="lang" class="form-control forshadow">
+
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary m-r-5 forshadow" id="submit_testBtn" style="float: right">
+                            <span>{% trans "Keyingi qadam" %} >></span>
+                        </button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_type_test_upload').change(function () {
+            let typeId = $(this).val();
+            if (typeId) {
+                $.ajax({
+                    url: '{% url "get_subject_by_typeid" %}',
+                    data: {
+                        'type_id': typeId
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                         let options = '<option value="">Fanni tanlang</option>';
+                            $.each(data, function (index, item) {
+                                console.log("1")
+                                options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                            });
+                            $('#subject-select1').html(options);
+                    }
+                });
+
+            }
+        });
+
+        $('#subject-select1').change(function () {
+            let subjectId = $(this).val();
+            if (subjectId) {
+                $.ajax({
+                    url: '{% url "get_lang_by_subject" %}',
+                    data: {
+                        'subject_id': subjectId
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.length === 1) {
+                            let option = `<option selected value="` + data[0]['id'] + `">` + data[0]['name'] + `</option>`;
+                            $('#Lang').html(option);
+                        } else {
+                            let options = '<option value="">Tilni tanlang</option>';
+                            $.each(data, function (index, item) {
+                                options += `<option value="` + item.id + `">` + item.name + `</option>`;
+                            });
+                            $('#Lang').html(options);
+                        }
+                    }
+                });
+
+            } else {
+                $('#id_topic').html('<option value="">Fan tanlanmadi</option>');
+            }
+        });
+
+
+    $('body').on('submit', '#createNewtestForm', function (e) {
+        e.preventDefault();
+        let $myForm = $('#createNewtestForm');
+
+        let $formData = $myForm.serialize();
+        let $thisURL = $myForm.attr('data-url')
+
+        $.ajax({
+            type: 'POST',
+            url: $thisURL,
+            data: $formData,
+            beforeSend: function () {
+                $('.submit_testBtn').prop('disabled', true);
+            },
+            success: function (response) {
+                if (response.result) {
+                    $('.createNewtestForm').trigger("reset");
+                    window.location.href = response.url;
+                } else {
+                    swal({
+                        title: 'Diqqat!',
+                        text: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                        buttons: {
+                            cancel: {
+                                text: 'Cancel',
+                                value: null,
+                                visible: true,
+                                className: 'btn btn-default',
+                                closeModal: true,
+                            },
+                        }
+                    });
+                }
+            },
+            complete: function (data) {
+                $('.submit_testBtn').prop('disabled', false);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+    });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>

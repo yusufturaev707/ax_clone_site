@@ -1,0 +1,180 @@
+{% extends "user_app/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Ekspertlikka so'rov" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content viewArticleFont">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                <div style="border: 1px solid green; border-radius: 50px; font-size: xx-large; width: 52px" class="text-center">1</div><br>
+                    <button type="button" data-url="{% url 'check_have_certificate' user.id %}"
+                            id="choose-role-expert-btn"
+                            class="btn btn-primary btn-md btn-block forshadow"
+                            style="font-size: 14px; font-weight: bold;">{% trans "Ekspertlikka so'rov yuborish" %}
+                    </button>
+                <br>
+                    <div class="alert alert-info" role="alert" style="display: none" id="info_get_certificate">
+                        <h5 class="alert-heading" style="font-family: Calibri,serif"><i class="fa fa-info-circle" style="color: #1c75c7"></i>
+                            &nbsp;{% trans "Sertifikat olish uchun!" %}</h5>
+                        <p style="font-family: Calibri,serif">{% trans "Bilim va malakalarni baholash agentligi huzuridagi Ilmiy-o'quv amaliy markazini malaka oshirish kurslarida o'qishingizni tavsiya etamiz!" %}
+                            <br>{% trans "Kurs uchun ro'yxatdan o'tish:" %} <a href="https://my.uzbmb.uz/ilmiy/service">my.uzbmb.uz</a>
+                        </p>
+                    </div>
+                    {% if user.is_expert %}
+                        {% if expert.certificate_training %}
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 mx-auto text-center">
+                                        <img src="{{ expert.certificate_training }}" alt="" class="forshadow" style="width: 70%; height: 90%">
+                                        <p>{% trans "Malaka oshirganlik haqida sertifikat" %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <hr>
+                        <div class="container">
+                            <div class="row bg-faded">
+                                <div class="col-12 mx-auto text-center">
+                                    <img src="//placehold.it/400" alt="">
+                                    <p>Sertifikat mavjud emas</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if user.is_expert %}
+                    {% if expert.is_lang_specialist %}
+                        <div class="col-lg-6">
+                        <div style="border: 1px solid green; border-radius: 50px; font-size: xx-large; width: 52px" class="text-center">2</div><br>
+                            <div class="container">
+                                <form id="uploadForm" enctype="multipart/form-data" method="post">
+                                    {% csrf_token %}
+                                    <span>
+                                    <span class="text">{% trans "Tilni bilish darajasi haqida sertifikatingiz bo'lsa, sertifikatingizni rasm faylini yuklang!" %}</span>
+                                    <input name="image_cer" class="form-control" type="file" id="certificateImage"
+                                           accept=".jpg,.jpeg,.png" onchange="validateFileType()"/></span>
+                                    <hr>
+                                    <script type="text/javascript">
+                                        function validateFileType() {
+                                            let fileName = document.getElementById("certificateImage").value;
+                                            let idxDot = fileName.lastIndexOf(".") + 1;
+                                            let extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                                            if (extFile === "jpg" || extFile === "jpeg") {
+                                                uploadImage();
+                                            } else {
+                                                $("#uploadForm").trigger('reset');
+                                                swal({
+                                                    title: 'Only jpg/jpeg files are allowed!',
+                                                    icon: 'error',
+                                                    timer: 2000,
+                                                });
+                                            }
+                                        }
+                                    </script>
+                                </form>
+                                {% if expert.certificate_assessment %}
+                                    <div class="row">
+                                        <div class="col-12 mx-auto text-center">
+                                            <img src="{{ expert.certificate_assessment.url }}" alt="" class="forshadow" style="width: 70%; height: 90%">
+                                            <p>{% trans "Chet tilini bilishi boyicha sertifikat" %}</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="row bg-faded">
+                                        <div class="col-12 mx-auto text-center">
+                                            <img src="//placehold.it/350x550" alt="">
+                                            <p>Sertifikat mavjud emas</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+     function uploadImage() {
+        let form = new FormData(document.getElementById('uploadForm'));
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'upload_certificate' %}",
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response['result'] === 1) {
+                    window.location.reload();
+                } else {
+                    console.error('Upload failed:', response.error);
+                }
+            },
+            error: function(error) {
+                console.error('AJAX request failed:', error);
+            }
+        });
+    }
+    $('body').on('click', '#choose-role-expert-btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    if (response.result) {
+                        swal({
+                            title: "Muvaffaqiyat!",
+                            text: response.message,
+                            icon: 'success',
+                            timer: 2000,
+                            buttons: {
+                                confirm: {
+                                    text: 'Success',
+                                    value: true,
+                                    visible: true,
+                                    className: 'btn btn-info',
+                                    closeModal: true
+                                }
+                            }
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: 'Kechirasiz!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 2000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-info',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                    if (response['is_info']) {
+                        setTimeout(myGreeting, 2500);
+
+                        function myGreeting() {
+                            $('#info_get_certificate').css('display', 'block');
+                        }
+
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+{% endblock content %}

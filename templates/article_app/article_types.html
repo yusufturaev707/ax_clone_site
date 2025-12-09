@@ -1,0 +1,55 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Maqola turlari" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Maqola turlari" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container">
+             <button type="button" style="float: left"
+                        data-url="{% url 'create_article_type' %}"
+                        class="btn btn-primary btn-sm create_article_type_btn"><i
+                        class="fa fa-plus mr-1"></i>{% trans "Yangi maqola turini yaratish" %}
+                </button>
+                <br>
+                <br>
+                <table class="table table-hover table-fixed table-responsive-lg">
+                    <thead>
+                    <tr>
+                       <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Nomi" %}</strong></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if objects.count > 0 %}
+                        {% for item in objects %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ item.name }}</td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit_article_type_btn"
+                                            data-url="{% url 'edit_article_type' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-edit"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm delete_article_type_btn"
+                                            data-url="{% url 'delete_article_type' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

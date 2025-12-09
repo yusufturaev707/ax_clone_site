@@ -1,0 +1,66 @@
+{% extends 'pupil/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Fanlar{% endblock title %}
+{% block content %}
+    <div id="content" class="content">
+        <div class="panel-body">
+            <div class="container">
+                <div class="row">
+                    {% if objects.count > 0 %}
+                        {% for obj in objects %}
+                            <div class="col-12 col-md-6 col-lg-3" style="margin-bottom: 1%;">
+                                <div class="card text-center subjectCard forshadow" data-url="{% url 'request_token' obj.id %}"
+                                     style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1%;">
+                                    <div class="img-fluid" style="padding-top: 1em;">
+                                        <img src="{{ obj.picture.url }}" alt="Image" class="card-img-top">
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="card-title text-center">{{ obj.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="card" style="width: 15rem;">
+                            <div class="card-body">
+                                <p class="text text-center text-success"
+                                   style="font-size: xx-large; font-weight: normal">Ma'lumot topilmadi</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="panel-body">
+            <div class="container viewArticleFont">
+                <h4>Variantlar</h4>
+                <div class="row" id="questionBox">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="subject-box"></div>
+    <script>
+        $('body').on('click', '.subjectCard', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#subject-box').html(response);
+                    $('#request_token_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+            return false;
+        });
+
+    </script>
+{% endblock %}

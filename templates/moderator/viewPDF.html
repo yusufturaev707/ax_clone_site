@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js"></script>
+        <title></title>
+    </head>
+    <body style="background-color: #858585">
+    <canvas id="my_canvas"></canvas>
+        <script>
+            pdfjsLib.getDocument('http://127.0.0.1:8000/media/questions/00000018/pdf/00000018.pdf').then(doc => {
+                doc.getPage(1).then(page => {
+                    var myCanvas = document.getElementById('my_canvas');
+                    var ctx = myCanvas.getContext('2d');
+                    var viewport = page.getViewport(1);
+                    myCanvas.width = viewport.width;
+                    myCanvas.height = viewport.height;
+
+                    page.render({
+                        canvasContext: ctx,
+                        viewport: viewport
+                    });
+                })
+            })
+        </script>
+    </body>
+</html>

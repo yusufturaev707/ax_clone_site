@@ -1,0 +1,1134 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    Maqolalarim
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h3 class="page-header">{% trans "Maqolalarim" %}</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#myqueue" data-toggle="tab" class="nav-link active" onclick="OnClickSubmissionTab()">
+                            <span class="d-sm-none">{% trans "Jarayonda" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Jarayonda" %} &nbsp;<span
+                                    class="badge badge-blue-grey">{{ myqueues_count }}</span></span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#archives" data-toggle="tab" class="nav-link" onclick="OnClickSubmissionTab()">
+                            <span class="d-sm-none">{% trans "Arxiv" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Arxiv" %} &nbsp;<span
+                                    class="badge badge-success">{{ myarchives_count }}</span></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="myqueue">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% if exmpl_file %}
+                                    <a href="{{ exmpl_file.template_file.url }}" download role="button"
+                                       style="float: right"
+                                       class="btn btn-outline-warning btn-sm template_word"><i
+                                            class="fa fa-download mr-1 forshadow"></i> {% trans "Maqolangiz uchun shablonni yuklab oling" %}
+                                    </a>
+                                {% else %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" data-id="create_article" style="float: right"
+                                        {% if not user.is_full_personal_data %} disabled {% endif %}
+                                        data-url="{% url 'create_article' %}"
+                                        class="btn btn-{% if not user.is_full_personal_data %}danger{% else %}success{% endif %} btn-sm btn-block create_article_btn">
+                                    <i class="fa fa-plus mr-1"></i>{% trans "Yangi maqola yuborish" %}
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                        {% if myqueues_count > 0 %}
+                            {% for article in myqueues %}
+                                <div class="card forshadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ article.id }}. &nbsp;{{ article.title }}</h5>
+                                        <p class="card-text" style="font-size: 12px">{% trans "Yuborilgan vaqt:" %}
+                                            &nbsp;{{ article.created_at }}</p>
+                                        <br>
+                                        <p class="card-text">{% trans "Holati:" %} &nbsp;
+                                            {% if article.article_status_id == 1 or article.article_status_id == 4 or article.article_status_id == 5 %}
+                                                <button class="btn btn-outline-warning btn-xs"
+                                                        style="border-radius: 20px;"><i
+                                                        class="fa fa-circle-notch mr-1"></i>{{ article.article_status.name }}
+                                                </button>
+                                            {% elif article.article_status_id == 6 or article.article_status_id == 7 or article.article_status_id == 8 %}
+                                                <button class="btn btn-outline-danger btn-xs"
+                                                        style="border-radius: 20px;"><i
+                                                        class="fa fa-circle-notch mr-1"></i>{{ article.article_status.name }}
+                                                </button>
+                                            {% elif article.article_status_id == 10 %}
+                                                <button class="btn btn-outline-info btn-xs"
+                                                        style="border-radius: 20px;"><i
+                                                        class="fa fa-circle-notch mr-1"></i>{{ article.article_status.name }}
+                                                </button>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-text">
+                                            {% if article.file %}
+                                                <a href='{{ article.filePDF.url }}' type="button" target="_blank"
+                                                   class="btn btn-outline-warning btn-sm forshadow"><span><i
+                                                        class="fas fa-fw m-r-5 fa-file"></i> {% trans "Fayl" %}</span></a>
+                                            {% endif %}
+                                            <button data-id="{{ article.id }}" type="button"
+                                                    id="view-article-messages-by-author_{{ article.id }}"
+                                                    data-url="{% url 'comment_author_vs_editor'  article.id %}"
+                                                    class="btn btn-outline-warning btn-sm view_message_btn forshadow">
+                                                <i
+                                                        class="fa fa-comment"></i> {% trans "Yozishmalar" %}
+                                            </button>
+                                            <button type="button" data-url="{% url 'update_article' article.id %}"
+                                                    class="btn btn-sm btn-outline-warning edit_article_btn"
+                                                    {% if article.article_status.id != 6 and article.article_status.id != 7 and article.article_status.id != 8 %}
+                                                    disabled
+                                                    {% endif %}
+                                            >
+                                                <i class="fa fa-edit"></i></button>
+                                            <button type="button" data-url="{% url 'delete_article' article.id %}"
+                                                    class="btn btn-sm btn-outline-danger remove_article_btn"
+                                                    {% if article.article_status.id != 6 %}
+                                                    disabled
+                                                    {% endif %}
+                                            ><i
+                                                    class="fa fa-trash"></i></button>
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{% trans "Taqriz holati" %}</p>
+                                        {% if article.article_status.id == 6 %}
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                1
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                2
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Maqolangiz ma'lumotlari to'liqmas" %}</span>
+
+                                        {% elif article.article_status.id == 1 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                2
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-success">&nbsp;{% trans "Muharrirga yuborildi" %}</span>
+
+                                        {% elif article.article_status.id == 4 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-warning-darker">&nbsp;{% trans "Taqrizchilarga yuborildi" %}</span>
+
+                                        {% elif article.article_status.id == 5 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-success">&nbsp; {% trans "Taqriz olindi" %}</span>
+
+                                        {% elif article.article_status.id == 2 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <span class="text-success">&nbsp;{% trans "Jarayon tugadi" %}</span>
+                                        {% elif article.article_status.id == 9 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Sizning maqolangiz muharrir tomonidan rad etildi" %}</span>
+                                        {% elif article.article_status.id == 8 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fas fa-sync fa-spin"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                        {% elif article.article_status.id == 7 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fas fa-sync fa-spin"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-warning-darker">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{% trans "Tayinlangan taqrizchilar" %}</p>
+                                        {% if article.review_article.count > 0 %}
+                                            {% for review in article.review_article.all %}
+                                                <p class="card-text">{% trans "Taqriz" %}{{ forloop.counter }}
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    {% trans "Status:" %} &nbsp;
+                                                    {% if review.status.id == 1 %}
+                                                        <span class="badge badge-info">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 2 %}
+                                                        <span class="badge badge-indigo">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 3 %}
+                                                        <span class="badge badge-success">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 4 %}
+                                                        <span class="badge badge-danger">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 5 %}
+                                                        <span class="badge badge-warning">{{ review.status.name }}</span>
+                                                    {% endif %}
+                                                </p>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div id="accordion">
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne">
+                                                                    <h5 class="mb-0">
+                                                                        <button class="btn btn-link"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseOne"
+                                                                                aria-expanded="true"
+                                                                                aria-controls="collapseOne">
+                                                                            {% trans "Taqriz" %}{{ forloop.counter }} {% trans "bayoni" %}
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseOne" class="collapse"
+                                                                     aria-labelledby="headingOne"
+                                                                     data-parent="#accordion">
+                                                                    <div class="card-body">
+                                                                        {{ review.comment|safe }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <p></p>
+                            {% endfor %}
+                        {% elif finished_article is not None %}
+                            <div class="card forshadow">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ finished_article.id }}.
+                                        &nbsp;{{ finished_article.title }}</h5>
+                                    <p class="card-text" style="font-size: 12px">{% trans "Yaratilgan vaqt:" %}
+                                        &nbsp;{{ finished_article.created_at }}</p>
+                                    <br>
+                                    <p class="card-text">{% trans "Holati:" %} &nbsp;
+                                        {% if finished_article.article_status_id == 3 or finished_article.article_status_id == 9 %}
+                                            <button class="btn btn-danger btn-xs"
+                                                    style="border-radius: 20px;"><i
+                                                    class="fa fa-circle-notch mr-1"></i>{{ finished_article.article_status.name }}
+                                            </button>
+                                        {% elif finished_article.article_status_id == 2 %}
+                                            <button class="btn btn-success btn-xs"
+                                                    style="border-radius: 20px;"><i
+                                                    class="fa fa-circle-notch mr-1"></i>{{ finished_article.article_status.name }}
+                                            </button>
+                                        {% endif %}
+                                        <!--                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State Review: &nbsp;-->
+                                        <!--                                            <button class="btn btn-outline-info btn-xs"-->
+                                        <!--                                                    style="border-radius: 20px;"><i-->
+                                        <!--                                                    class="fa fa-circle-notch mr-1"></i>{{ article.article_status.stage.name }}</button>-->
+                                    </p>
+                                    <p class="card-text">
+                                        {% if finished_article.file %}
+                                            <a href='{{ finished_article.file.file.url }}' download role='button'
+                                               class="btn btn-outline-warning btn-sm forshadow"><span><i
+                                                    class="fas fa-fw m-r-5 fa-file"></i> {% trans "Fayl" %}</span></a>
+                                        {% endif %}
+                                        <button data-id="{{ finished_article.id }}" type="button"
+                                                id="view-article-messages-by-author_{{ finished_article.id }}"
+                                                data-url="{% url 'comment_author_vs_editor'  finished_article.id %}"
+                                                class="btn btn-outline-warning btn-sm view_message_btn forshadow"><i
+                                                class="fa fa-comment"></i> {% trans "Yozishmalar" %}
+                                        </button>
+                                        <button type="button"
+                                                data-url="{% url 'update_article' finished_article.id %}"
+                                                class="btn btn-sm btn-outline-warning edit_article_btn"
+                                                {% if finished_article.article_status.id != 6 and finished_article.article_status.id != 7 and finished_article.article_status.id != 8 %}
+                                                disabled
+                                                {% endif %}
+                                        >
+                                            <i class="fa fa-edit"></i></button>
+                                        <button type="button"
+                                                data-url="{% url 'delete_article' finished_article.id %}"
+                                                class="btn btn-sm btn-outline-danger remove_article_btn"
+                                                {% if finished_article.article_status.id != 6 %}
+                                                disabled
+                                                {% endif %}
+                                        ><i class="fa fa-trash"></i></button>
+                                        {% if finished_article.is_publish_journal and finished_article.filePDF is not None %}
+                                            <a href="{{ finished_article.filePDF.url }}" target="_blank"
+                                               class="btn btn-outline-success btn-sm forshadow"><span><i
+                                                    class="fas fa-fw m-r-5 fa-file"></i> {% trans "Maqolangizni yuklab olish" %}</span></a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{% trans "Taqriz holati" %}</p>
+                                    {% if finished_article.article_status.id == 6 %}
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            1
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            2
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            3
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-danger">&nbsp;{% trans "Maqolangiz ma'lumotlari to'liqmas" %}</span>
+
+                                    {% elif finished_article.article_status.id == 1 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            2
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            3
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-success">&nbsp;{% trans "Muharrirga yuborildi" %}</span>
+
+                                    {% elif finished_article.article_status.id == 4 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            3
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-warning-darker">&nbsp;{% trans "Taqrizchilarga yuborildi" %}</span>
+
+                                    {% elif finished_article.article_status.id == 5 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-success">&nbsp; {% trans "Taqriz olindi" %}</span>
+
+                                    {% elif finished_article.article_status.id == 2 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <span class="text-success">&nbsp;{% trans "Jarayon tugadi" %}</span>
+                                    {% elif finished_article.article_status.id == 9 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            3
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-danger">&nbsp;{% trans "Sizni maqolangiz muharrir tomonidan rad etildi" %}</span>
+                                    {% elif finished_article.article_status.id == 8 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style="width: 50px; height: 50px;padding: 6px 0px; border-radius: 25px; text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fas fa-sync fa-spin"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-danger">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                    {% elif finished_article.article_status.id == 7 %}
+                                        <button type="button" class="btn btn-success btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            <i class="fas fa-sync fa-spin"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            3
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs"
+                                                style=" width: 150px; height: 5px;">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-circle"
+                                                style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                            4
+                                        </button>
+                                        <span class="text-warning-darker">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{% trans "Tayinlangan taqrizchilar" %}</p>
+                                    {% if finished_article.review_article.count > 0 %}
+                                        {% for review in finished_article.review_article.all %}
+                                            <p class="card-text">{% trans "Taqriz" %}{{ forloop.counter }} &nbsp;&nbsp;&nbsp;
+                                                Status: &nbsp;
+                                                {% if review.status.id == 1 %}
+                                                    <span class="badge badge-info">{{ review.status.name }}</span>
+                                                {% elif review.status.id == 2 %}
+                                                    <span class="badge badge-indigo">{{ review.status.name }}</span>
+                                                {% elif review.status.id == 3 %}
+                                                    <span class="badge badge-success">{{ review.status.name }}</span>
+                                                {% elif review.status.id == 4 %}
+                                                    <span class="badge badge-danger">{{ review.status.name }}</span>
+                                                {% elif review.status.id == 5 %}
+                                                    <span class="badge badge-warning">{{ review.status.name }}</span>
+                                                {% endif %}
+                                            </p>
+                                            {% if review.comment %}
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div id="accordion">
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne">
+                                                                    <h5 class="mb-0">
+                                                                        <button class="btn btn-link"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseOne"
+                                                                                aria-expanded="true"
+                                                                                aria-controls="collapseOne">
+                                                                            {% trans "Taqriz" %}{{ forloop.counter }} {% trans "bayoni" %}
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseOne" class="collapse"
+                                                                     aria-labelledby="headingOne"
+                                                                     data-parent="#accordion">
+                                                                    <div class="card-body">
+                                                                        {{ review.comment|safe }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            {% if not user.is_full_personal_data %}
+                                <div class="alert alert-warning" role="alert">
+                                    <h4 class="alert-heading">Kechirasiz!</h4>
+                                    <p>Shaxsiy ma'lumotlariz to'liq emas. Iltimos, shaxsiy ma'lumotlaringizni
+                                        to'ldiring!</p>
+                                    <br>
+                                    <p class="mb-0"><a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">O'zgartirish</a>
+                                    </p>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <h3 class="text-lg-center" style="color:#C8C8C8">{% trans "Ma'lumot mavjud emas" %}</h3>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="archives">
+                        <div class="row">
+                            <div class="col-md-6"><h5 class="m-t-10"> {% trans "Yuborilganlar arxivi" %}</h5>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                        <br>
+                        {% if myarchives.count > 0 %}
+                            {% for article in myarchives %}
+                                <div class="card forshadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ article.id }}. &nbsp;{{ article.title }}</h5>
+                                        <p class="card-text" style="font-size: 12px">{% trans "Yaratilgan vaqt:" %}
+                                            &nbsp;{{ article.created_at }}</p>
+                                        <br>
+                                        <p class="card-text">{% trans "Holati:" %} &nbsp;
+                                            {% if article.article_status_id == 3 or article.article_status_id == 9 %}
+                                                <button class="btn btn-danger btn-xs"
+                                                        style="border-radius: 20px;"><i
+                                                        class="fa fa-circle-notch mr-1"></i>{{ article.article_status.name }}
+                                                </button>
+                                            {% elif article.article_status_id == 2 %}
+                                                <button class="btn btn-success btn-xs"
+                                                        style="border-radius: 20px;"><i
+                                                        class="fa fa-circle-notch mr-1"></i>{{ article.article_status.name }}
+                                                </button>
+                                            {% endif %}
+                                            <!--                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State Review: &nbsp;-->
+                                            <!--                                            <button class="btn btn-outline-info btn-xs"-->
+                                            <!--                                                    style="border-radius: 20px;"><i-->
+                                            <!--                                                    class="fa fa-circle-notch mr-1"></i>{{ article.article_status.stage.name }}</button>-->
+                                        </p>
+                                        <p class="card-text">
+                                            {% if article.file %}
+                                                <a href='{{ article.file.file.url }}' download role='button'
+                                                   class="btn btn-outline-warning btn-sm forshadow"><span><i
+                                                        class="fas fa-fw m-r-5 fa-file"></i> {% trans "Fayl" %}</span></a>
+                                            {% endif %}
+                                            <button data-id="{{ article.id }}" type="button"
+                                                    id="view-article-messages-by-author_{{ article.id }}"
+                                                    data-url="{% url 'comment_author_vs_editor'  article.id %}"
+                                                    class="btn btn-outline-warning btn-sm view_message_btn forshadow"><i
+                                                    class="fa fa-comment"></i> {% trans "Yozishmalar" %}
+                                            </button>
+                                            <button type="button" data-url="{% url 'update_article' article.id %}"
+                                                    class="btn btn-sm btn-outline-warning edit_article_btn"
+                                                    {% if article.article_status.id != 6 and article.article_status.id != 7 and article.article_status.id != 8 %}
+                                                    disabled
+                                                    {% endif %}
+                                            >
+                                                <i class="fa fa-edit"></i></button>
+                                            <button type="button" data-url="{% url 'delete_article' article.id %}"
+                                                    class="btn btn-sm btn-outline-danger remove_article_btn"
+                                                    {% if article.article_status.id != 6 %}
+                                                    disabled
+                                                    {% endif %}
+                                            ><i
+                                                    class="fa fa-trash"></i></button>
+                                            {% if article.is_publish_journal %}
+                                                <a href='{{ article.filePDF.url }}' target="_blank"
+                                                   class="btn btn-outline-success btn-sm forshadow"><span><i
+                                                        class="fas fa-fw m-r-5 fa-file"></i> {% trans "Maqolangizni yuklab olish" %}</span></a>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{% trans "Taqriz holati" %}</p>
+                                        {% if article.article_status.id == 6 %}
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                1
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                2
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Maqolangiz ma'lumotlari to'liqmas" %}</span>
+
+                                        {% elif article.article_status.id == 1 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                2
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-success">&nbsp;{% trans "Muharrirga yuborildi" %}</span>
+
+                                        {% elif article.article_status.id == 4 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-warning-darker">&nbsp;{% trans "Taqrizchilarga yuborildi" %}</span>
+
+                                        {% elif article.article_status.id == 5 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-success">&nbsp; {% trans "Taqriz olindi" %}</span>
+
+                                        {% elif article.article_status.id == 2 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <span class="text-success">&nbsp;{% trans "Jarayon tugadi" %}</span>
+                                        {% elif article.article_status.id == 9 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Sizni maqolangiz muharrir tomonidan rad etildi" %}</span>
+                                        {% elif article.article_status.id == 8 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style="width: 50px; height: 50px;padding: 6px 0px; border-radius: 25px; text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fas fa-sync fa-spin"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-danger">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                        {% elif article.article_status.id == 7 %}
+                                            <button type="button" class="btn btn-success btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                <i class="fas fa-sync fa-spin"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                3
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    style=" width: 150px; height: 5px;">
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-circle"
+                                                    style=" width: 50px;height: 50px;padding: 6px 0px;border-radius: 25px;text-align: center;font-size: 14px;line-height: 1.42857;">
+                                                4
+                                            </button>
+                                            <span class="text-warning-darker">&nbsp;{% trans "Yozishmani o'qib, maqolangizni qayta yuboring" %}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{% trans "Tayinlangan taqrizchilar" %}</p>
+                                        {% if article.review_article.count > 0 %}
+                                            {% for review in article.review_article.all %}
+                                                <p class="card-text">{% trans "Taqriz" %}{{ forloop.counter }} &nbsp;&nbsp;&nbsp;
+                                                    Status: &nbsp;
+                                                    {% if review.status.id == 1 %}
+                                                        <span class="badge badge-info">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 2 %}
+                                                        <span class="badge badge-indigo">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 3 %}
+                                                        <span class="badge badge-success">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 4 %}
+                                                        <span class="badge badge-danger">{{ review.status.name }}</span>
+                                                    {% elif review.status.id == 5 %}
+                                                        <span class="badge badge-warning">{{ review.status.name }}</span>
+                                                    {% endif %}
+                                                </p>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div id="accordion">
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne">
+                                                                    <h5 class="mb-0">
+                                                                        <button class="btn btn-link"
+                                                                                data-toggle="collapse"
+                                                                                data-target="#collapseOne"
+                                                                                aria-expanded="true"
+                                                                                aria-controls="collapseOne">
+                                                                            {% trans "Taqriz" %}{{ forloop.counter }} {% trans "bayoni" %}
+                                                                        </button>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseOne" class="collapse"
+                                                                     aria-labelledby="headingOne"
+                                                                     data-parent="#accordion">
+                                                                    <div class="card-body">
+                                                                        {{ review.comment|safe }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <p></p>
+                            {% endfor %}
+                        {% else %}
+                            <h3 class="text-lg-center" style="color:#C8C8C8">{% trans "Ma'lumot mavjud emas" %}</h3>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="button" data-toggle="modal" data-target="#commentModal" id="modal_btn"
+                    hidden="hidden"></button>
+            <div class="modal fade" id="commentModal"
+                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">{% trans "Yozishmalar" %}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12 col-md-6" id="MessageBoxAuthor">
+                                <div class="widget-chat widget-chat-rounded m-b-30 forshadow" data-id="widget">
+                                    <div class="widget-chat-header">
+                                        <div class="widget-chat-header-icon">
+                                            <i class="fa fa-file width-30 height-30 f-s-20 bg-yellow text-inverse text-center rounded-corner"
+                                               style="line-height: 30px"></i><b>{% trans "Mavzu" %}</b>
+                                        </div>
+                                        <div class="widget-chat-header-content">
+                                            <h4 class="widget-chat-header-title"
+                                                id="article_title">{% trans "Ilmiy Markaz" %}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="widget-chat-body" data-scrollbar="true" data-height="400px"
+                                         id="user_chat_body">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="write_message_div_form"></div>
+    <div id="create_article_div"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function OnClickSubmissionTab() {
+            $('#MessageBox').css("display", "none");
+        }
+
+        function ClickedFile() {
+            alert("Maqolangizni shablonga joylashtirib, yuboring!");
+            $('.create_article_btn').prop('disabled', false);
+        }
+
+
+    </script>
+    <script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+    <script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal fade viewArticleFont" id="view_question_info_admin1_modal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ question.test.number }}</h2>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table class="table table-overflow">
+                    <tr>
+                        <td><b>{% trans "Savol turi:" %}</b></td>
+                        <td>{{ question.submission.type_test_upload.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Fan:" %}</b></td>
+                        <td>{{ question.submission.subject.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qiyinlik daraja:" %}</b></td>
+                        <td>{{ question.submission.level_dn.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Bo'lim:" %}</b></td>
+                        <td>{{ question.submission.part.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qism:" %}</b></td>
+                        <td>{{ question.submission.part_option.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Mavzu:" %}</b></td>
+                        <td>{{ question.submission.topic_n }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yuboruvchi:" %}</b></td>
+                        <td>{{ question.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Qadam:" %}</b></td>
+                        <td><span class="badge badge-primary">{{ question.step.name }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Holat:" %}</b></td>
+                        <td>
+                            {% if question.status.code == 0 %}
+                                <span class="badge badge-danger">{{ question.status.name }}</span>
+                            {% elif question.status.code == 1 %}
+                                <span class="badge badge-success">{{ question.status.name }}</span>
+                            {% elif question.status.code == 2 %}
+                                <span class="badge badge-grey">{{ question.status.name }}</span>
+                            {% elif question.status.code == 3 %}
+                                <span class="badge badge-info">{{ question.status.name }}</span>
+                            {% elif question.status.code == 4 %}
+                                <span class="badge badge-warning">{{ question.status.name }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{% trans "Yuborilgan fayl:" %}</b></td>
+                        <td><a href="{{ question.test.file_word.url }}" type="button"
+                               class="btn btn-xs btn-outline-warning" download="download"><img
+                                src="{% static 'img/word.png' %}" width="40" alt="word"></a>
+                        </td>
+                    </tr>
+                {% if question.submission.type_test_upload.id == 1 %}
+                        {% if question.submission.part.key == 'l' or test.submission_test.submission.part.key == 's' %}
+                            <tr>
+                                <td><b>{% trans "Audio:" %}</b></td>
+                                <td>
+                                    <audio controls>
+                                        <source src="{{ question.audio.audio.url }}" type="audio/mpeg">
+                                    </audio>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                    <tr>
+                        <td><b>{% trans "Yaratilgan vaqti:" %}</b></td>
+                        <td>{{ question.created_at|safe|slice:19 }}</td>
+                    </tr>
+                    {% if objects.count > 0 %}
+                        {% for array, job in data %}
+                            <tr>
+                                <td><b>{% trans "Ekspert" %} {{ forloop.counter }}</b></td>
+                                <td>
+                                    <b>{% trans "FIO:" %}</b> {{ job.expert.user.full_name }} <br>
+                                    <b>{% trans "Tekshirganmi:" %}</b> {% if job.is_check %} <span class="badge badge-success">{% trans "Ha" %}</span> {% else %} <span class="badge badge-warning">{% trans "Yo'q" %}</span> {% endif %}
+                                    &nbsp; <b>{% trans "Status:" %}</b> 
+                                {% if job.status_test.code == 0 %}
+                                	<span class="badge badge-danger">{{ job.status_test.name }}</span>
+                                {% elif job.status_test.code == 1 %}
+                                    <span class="badge badge-success">{{ job.status_test.name }}</span>
+                                {% elif job.status_test.code == 2 %}
+                                    <span class="badge badge-info">{{ job.status_test.name }}</span>
+                                {% elif job.status_test.code == 5 %}
+                                    <span class="badge badge-warning">{{ job.status_test.name }}</span>
+                                {% else %}
+                                    <span class="badge badge-info">{{ job.status_test.name }}</span>
+                                {% endif %} 
+                                    <br>
+                                    <b>{% trans "Olgan vaqti:" %}</b> {{ job.job_given_time|safe|slice:19 }} <br>
+                                </td>
+                            </tr>
+                            {% if job.is_check %}
+                            	{% if job.result == 0 or job.result == 2 %}
+                            		<tr><td colspan="2"><b>{% trans "Etiroz matni:" %}</b>{{ job.message|safe }}</td></tr>
+                            	{% endif %}
+                                <tr>
+                                <td colspan="2">
+                                    <div class="accordion" id="accordionExample{{ job.id }}">
+                                        <div class="card">
+                                            <div class="card-header" id="heading{{ job.id }}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-outline-primary btn-block btn-sm" type="button"
+                                                            data-toggle="collapse"
+                                                            data-target="#collapse{{ job.id }}" aria-expanded="true"
+                                                            aria-controls="collapse{{ job.id }}">
+                                                        {% trans "Taqrizni ko'rish" %}
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapse{{ job.id }}" class="collapse"
+                                                 aria-labelledby="heading{{ job.id }}"
+                                                 data-parent="#accordionExample{{ job.id }}">
+                                                <div class="card-body">
+                                                    <ul class="list-group">
+                                                        {% for item in array.0 %}
+                                                            {% if item.result == 0 %}
+                                                                <li class="list-group-item list-group-item-danger">
+                                                                    <div class="ms-2 me-auto">
+                                                                        <b>{{ forloop.counter }}. {{ item.control_sheet.description }}</b>
+                                                                        <br><b>{% trans "Izoh" %}:</b> {{ item.comment }}
+                                                                    </div>
+                                                                </li>
+                                                            {% elif item.result == 1 %}
+                                                                <li class="list-group-item list-group-item-success">
+                                                                    <div class="ms-2 me-auto">
+                                                                        {{ forloop.counter }}. {{ item.control_sheet.description }}
+                                                                    </div>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if moderator is not None %}
+                        <tr>
+                            <td><b>{% trans "Moderator" %}</b></td>
+                            <td>
+                                <b>{% trans "FIO:" %}</b> {{ moderator.moderator.user.full_name }} <br>
+                                <b>{% trans "Holat:" %}</b>
+                                {% if moderator.status.key == 0 %}
+                                    <span class="badge badge-danger">{{ moderator.status.name }}</span>
+                                {% elif moderator.status.key == 1 %}
+                                    <span class="badge badge-success">{{ moderator.status.name }}</span>
+                                {% endif %} <br>
+                                <b>{% trans "Olgan vaqti:" %}</b> {{ moderator.job_given_time|safe|slice:19 }} <br>
+                                <b>{% trans "Tugatgan vaqti:" %}</b> {{ moderator.job_finish_time|safe|slice:19 }} <br>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if moderator_job_controls.0.count > 0 %}
+                        <tr>
+                            <td colspan="2">
+                                <div class="accordion" id="accordionExampleModerator">
+                                    <div class="card">
+                                        <div class="card-header" id="headingModerator">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-outline-primary btn-block btn-sm" type="button"
+                                                        data-toggle="collapse"
+                                                        data-target="#collapseModerator" aria-expanded="true"
+                                                        aria-controls="collapseModerator">
+                                                    {% trans "Taqrizni ko'rish" %}
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseModerator" class="collapse"
+                                             aria-labelledby="headingModerator"
+                                             data-parent="#accordionExampleModerator">
+                                            <div class="card-body">
+                                                <ul class="list-group">
+                                                    {% for item in moderator_job_controls.0 %}
+                                                        {% if item.result == 0 %}
+                                                            <li class="list-group-item list-group-item-danger">
+                                                                <div class="ms-2 me-auto">
+                                                                    <b>{{ forloop.counter }}. {{ item.control_sheet.description }}</b>
+                                                                    <br><b>{% trans "Izoh" %}:</b> {{ item.comment }}
+                                                                </div>
+                                                            </li>
+                                                        {% elif item.result == 1 %}
+                                                            <li class="list-group-item list-group-item-success">
+                                                                <div class="ms-2 me-auto">
+                                                                    {{ forloop.counter }}. {{ item.control_sheet.description }}
+                                                                </div>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

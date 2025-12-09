@@ -1,0 +1,184 @@
+{% extends "user_app/base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans "Sahifalar boshqaruv paneli" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Sahifalar boshqaruv paneli" %}
+        </h2>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 15px">
+            <div class="container">
+                <div class="row">
+                    <hr>
+                    <div class="col-lg-12">
+                        <button type="button" style="float: right;"
+                                data-url="{% url 'create_page' %}"
+                                class="btn btn-success btn-sm forshadow create_page_btn"><i
+                                class="fa fa-plus mr-1"></i>{% trans "Yangi sahifa yaratish" %}
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <table class="table table-hover table-responsive-lg">
+
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Sarlavhasi" %}</strong></th>
+                        <th><strong>{% trans "Kalit so'z" %}</strong></th>
+                        <th><strong>{% trans "Nashr holati" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqti" %}</strong></th>
+                        <th><strong>{% trans "O'zgartirilgan vaqti" %}</strong></th>
+                        <th width="150"><strong>{% trans "Amallar" %}</strong></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if pages.count > 0 %}
+                        {% for page in pages %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ page.title }}</td>
+                                <td>{{ page.key }}</td>
+                                <td>
+                                    {% if page.is_publish %}
+                                        <span class='badge badge-success'>{% trans "Ha" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Yo'q" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ page.created_at }}</td>
+                                <td>{{ page.updated_at }}</td>
+                                <td>
+                                    <button type="button" data-url="{% url 'edit_page' page.id %}"
+                                            class="btn btn-outline-warning btn-sm edit_page_btn"><i
+                                            class="fa fa-pencil-alt"></i></button>
+                                    <button type="button" data-url="{% url 'delete_page' page.id %}"
+                                            class="btn btn-outline-danger btn-sm delete_page_btn"><i
+                                            class="fa fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10"><h3 class="text-lg-center text-danger">{% trans "Ma'lumot mavjud emas." %}</h3></td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div id="create_page_div"></div>
+    <div id="edit_page_div"></div>
+    <script type="text/javascript">
+        $('body').on('click', '.create_page_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#create_page_div').html(response);
+                    $('#create_page_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('click', '.edit_page_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#edit_page_div').html(response);
+                    $('#edit_page_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('click', '.delete_page_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#edit_page_div').html(response);
+                    $('#delete_page_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('submit', '.edit_page_form', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+            let formData = new FormData(this);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $('#edit_page_modal').modal('hide');
+                    swal({
+                        title: response.message,
+                        timer: 1500,
+                    })
+                    if (response.result) {
+                        window.location.reload();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('submit', '.delete_page_form', function (e) {
+            e.preventDefault();
+
+            const $formData = $('.delete_page_form');
+            let url = $('.delete_page_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $formData.serialize(),
+                success: function (response) {
+                    $('#delete_page_modal').modal('hide');
+
+                    swal({
+                        title: response.message,
+                        timer: 2000,
+                    });
+
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            return false;
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'article_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Jurnallar" %}
+{% endblock %}
+{% block content %}
+    <div class="row"
+         style="background-color: white; padding:10px; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;">
+        <div class="container">
+            <br>
+            <center><h4 class="title">{{ year }}{% trans "-yilda nashr etilgan jurnallar" %}</h4></center>
+            <br>
+            {% if journals.count > 0 %}
+                <div class="row">
+                    {% for item in journals %}
+                        <div class="col-xl-3 col-sm-6">
+                            <div class="card border-0">
+                                <img class="card-img-top" src="{{ item.image.url }}" alt=""/>
+                                <div class="card-body">
+                                    <center><a
+                                            href="{% url 'view_journal' item.id %}">{{ item.year }}№{{ item.number }}</a>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">
+                <div class="col-xl-12 col-sm-6">
+                    <p class="text-center" style="color: #a3a3a3">{% trans "Jurnal topilmadi." %}</p>
+                </div>
+            {% endif %}
+            <br>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock content %}

@@ -1,0 +1,85 @@
+{% load i18n %}
+{% load static %}
+<form class="edit_journal_number_form" method="post" data-url="{% url 'edit_journal_number' ob.id %}">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="modal fade" id="edit_journal_number_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Sonni o'zgartirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body forshadow">
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Son" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.number }}
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-md-3 col-sm-3 col-form-label">{% trans "Holati" %} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-9 col-sm-9">
+                            {{ form.status }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('.edit_journal_number_form').submit(function (e) {
+            e.preventDefault();
+
+            let year = $('.number').val();
+
+            if (year == "") {
+                $('.name').after('<span class="text-danger">To\'ldirilishi shart!</span>');
+            } else {
+
+                let formData = new FormData(this);
+
+                let url = $('.edit_journal_number_form').data('url');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.result) {
+                            $('#edit_journal_number_modal').modal('hide');
+                            swal({
+                                title: response.message,
+                                timer: 2000,
+                            });
+                            window.location.reload();
+                        } else {
+                            swal({
+                                title: response.message,
+                                timer: 2000,
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+

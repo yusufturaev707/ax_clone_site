@@ -1,0 +1,304 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Muharrirga kelgan maqolalar" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content editor_dashboard">
+        <h3 class="page-header">{% trans "Muharrirga kelgan maqolalar" %}</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#uncheck" data-toggle="tab" class="nav-link active">
+                            <span class="d-sm-none">{% trans "Yangi" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Yangi" %} &nbsp;<span
+                                    class="badge badge-grey" id="uncheck_count"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#checking" data-toggle="tab" class="nav-link">
+                            <span class="d-sm-none">{% trans "Jarayondagilar" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Jarayondagilar" %} &nbsp;<span
+                                    class="badge badge-warning" id="checking_count"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#check" data-toggle="tab" class="nav-link">
+                            <span class="d-sm-none">{% trans "Tekshirilganlar" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Tekshirilganlar" %} &nbsp;<span
+                                    class="badge badge-success" id="check_count"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#confirmed" data-toggle="tab" class="nav-link">
+                            <span class="d-sm-none">{% trans "Chop etilganlar" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Chop etilganlar" %} &nbsp;<span
+                                    class="badge badge-success" id="confirmed_count"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#rejected" data-toggle="tab" class="nav-link">
+                            <span class="d-sm-none">{% trans "Rad etilganlar" %}</span>
+                            <span class="d-sm-block d-none">{% trans "Rad etilganlar" %} &nbsp;<span
+                                    class="badge badge-danger" id="rejected_count"></span></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="uncheck">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <tbody id="editor_uncheck_notifications">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="checking">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <tbody id="editor_checking_notifications">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="check">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <tbody id="editor_checked_notifications">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="confirmed">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <tbody id="editor_confirmed_notifications">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="rejected">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tbody id="editor_rejected_notifications">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let url = '{% url 'editor_notifications' %}'.toString();
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+
+                    let data1 = response['new_notifications'];
+                    let data2 = response['checking_notifications'];
+                    let data3 = response['checked_notifications'];
+                    let data4 = response['published_articles'];
+                    let data5 = response['rejected_articles'];
+
+                    $('#uncheck_count').text(data1.length);
+                    $('#check_count').text(data3.length);
+                    $('#checking_count').text(data2.length);
+                    $('#confirmed_count').text(data4.length);
+                    $('#rejected_count').text(data5.length);
+
+                    $('#editor_uncheck_notifications').empty();
+                    $('#editor_checking_notifications').empty();
+                    $('#editor_checked_notifications').empty();
+                    $('#editor_confirmed_notifications').empty();
+                    $('#editor_rejected_notifications').empty();
+
+                    let data_new = response['new_notifications'];
+
+                    if (data_new.length > 0) {
+                        for (let item of data_new) {
+
+                            let time = new Date(item['created_at']);
+                            let time_string = time.toLocaleString();
+
+                            let uncheck = `<tr>` +
+                                `<td>` + item['id'] + `</td>` +
+                                `<td><b>` + item['article__author__email'] + `</b><br>` +
+                                item['article__title'].toString().slice(0, 100) + `</td>` +
+                                `<td>` + time_string + `</td>` +
+                                `<td>` + item['article__article_status__name'] + `</td>` +
+                                `<td id="view_notif_id${item['id']}"></td>` +
+                                `<td><button type="button" data-url="${response.url}${item['id']}/" class="btn btn-outline-primary btn-md article_view_editor forshadow" ` +
+                                `style="float: right"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                </button></td>`
+                                + `</tr>`;
+
+                            $('#editor_uncheck_notifications').append(uncheck);
+
+
+                            if (item['notification_status__id'] === 1) {
+                                $('#view_notif_id' + item['id']).html("<span class='badge badge-danger'>" + item['notification_status__name'] + "</span>");
+                            }
+
+                        }
+                    } else {
+                        let tr = `<tr>` +
+                            `<td><h3 class="text-center" style="color: green;">{% trans "Ma'lumot topilmadi." %}</h3></td>`
+                            + `</tr>`;
+                        $('#editor_uncheck_notifications').append(tr);
+                    }
+
+                    let data_checking = response['checking_notifications'];
+
+                    if (data_checking.length > 0) {
+                        for (let item of data_checking) {
+
+                            let time = new Date(item['created_at']);
+                            let time_string = time.toLocaleString();
+
+                            let checking = `<tr>` +
+                                `<td>` + item.id + `</td>` +
+                                `<td><b>` + item['article__author__email'] + `</b><br>` +
+                                item['article__title'].toString().slice(0, 100) + `</td>` +
+                                `<td>` + time_string + `</td>` +
+                                `<td><span class="badge badge-grey">` + item['article__article_status__name'] + `</span></td>` +
+                                `<td id="view_notif_cheking_id${item.id}"></td>` +
+                                `<td><button type="button" data-url="${response.url}${item.id}/" class="btn btn-outline-primary btn-md article_view_editor forshadow" ` +
+                                `style="float: right"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                </button></td>`
+                                + `</tr>`;
+
+                            $('#editor_checking_notifications').append(checking);
+
+
+                            $('#view_notif_cheking_id' + item.id).html("<span class='badge badge-warning'>" + item['notification_status__name'] + "</span>");
+
+
+                        }
+                    } else {
+                        let tr = `<tr>` +
+                            `<td><h3 class="text-center" style="color: green;">{% trans "Ma'lumot topilmadi." %}</h3></td>`
+                            + `</tr>`;
+                        $('#editor_checking_notifications').append(tr);
+                    }
+
+                    let data_checked = response['checked_notifications'];
+
+                    if (data_checked.length > 0) {
+                        for (let item of data_checked) {
+
+                            let time = new Date(item['created_at']);
+                            let time_string = time.toLocaleString();
+
+                            let checked = `<tr>` +
+                                `<td>` + item.id + `</td>` +
+                                `<td><b>` + item['article__author__email'] + `</b><br>` +
+                                item['article__title'].toString().slice(0, 100) + `</td>` +
+                                `<td>` + time_string + `</td>` +
+                                `<td><span class="badge badge-grey">` + item['article__article_status__name'] + `</span></td>` +
+                                `<td id="view_notif_checked_id${item.id}"></td>` +
+                                `<td><button type="button" data-url="${response.url}${item.id}/" class="btn btn-outline-primary btn-md article_view_editor forshadow" style="float: right"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                </button></td>`
+                                + `</tr>`;
+
+                            $('#editor_checked_notifications').append(checked);
+
+                            if (item['notification_status__id'] === 3) {
+                                $('#view_notif_checked_id' + item.id).html("<span class='badge badge-success'>" + item['notification_status__name'] + "</span>");
+                            }
+
+                        }
+                    } else {
+                        let tr = `<tr>` + `<td><h3 class="text-center" style="color: green;">{% trans "Ma'lumot topilmadi." %}</h3></td>` + `</tr>`;
+                        $('#editor_checked_notifications').append(tr);
+                    }
+
+
+                    let data_published = response['published_articles'];
+
+                    if (data_published.length > 0) {
+                        for (let item of data_published) {
+
+                            let time = new Date(item['created_at']);
+                            let time_string = time.toLocaleString();
+
+                            let checked = `<tr>` +
+                                `<td>` + item.id + `</td>` +
+                                `<td><b>` + item['article__author__email'] + `</b><br>` +
+                                item['article__title'].toString().slice(0, 100) + `</td>` +
+                                `<td>` + time_string + `</td>` +
+                                `<td><span class="badge badge-grey">` + item['article__article_status__name'] + `</span></td>` +
+                                `<td id="view_notif_confirmed_id${item.id}"></td>` +
+                                `<td><button type="button" data-url="${response.url}${item.id}/" class="btn btn-outline-primary btn-md article_view_editor forshadow" style="float: right"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                </button></td>`
+                                + `</tr>`;
+
+                            $('#editor_confirmed_notifications').append(checked);
+
+                            if (item['notification_status__id'] === 3) {
+                                $('#view_notif_confirmed_id' + item.id).html("<span class='badge badge-success'>" + item['notification_status__name'] + "</span>");
+                            }
+
+                        }
+                    } else {
+                        let tr = `<tr>` + `<td><h3 class="text-center" style="color: green;">{% trans "Ma'lumot topilmadi." %}</h3></td>` + `</tr>`;
+                        $('#editor_confirmed_notifications').append(tr);
+                    }
+
+
+                    let data_rejected = response['rejected_articles'];
+
+                    if (data_rejected.length > 0) {
+                        for (let item of data_rejected) {
+
+                            let time = new Date(item['created_at']);
+                            let time_string = time.toLocaleString();
+
+                            let checked = `<tr>` +
+                                `<td>` + item.id + `</td>` +
+                                `<td><b>` + item['article__author__email'] + `</b><br>` +
+                                item['article__title'].toString().slice(0, 100) + `</td>` +
+                                `<td>` + time_string + `</td>` +
+                                `<td><span class="badge badge-grey">` + item['article__article_status__name'] + `</span></td>` +
+                                `<td id="view_notif_rejected_id${item.id}"></td>` +
+                                `<td><button type="button" data-url="${response.url}${item.id}/" class="btn btn-outline-primary btn-md article_view_editor forshadow" style="float: right"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                </button></td>`
+                                + `</tr>`;
+
+                            $('#editor_rejected_notifications').append(checked);
+
+                            if (item['notification_status__id'] === 3) {
+                                $('#view_notif_rejected_id' + item.id).html("<span class='badge badge-success'>" + item['notification_status__name'] + "</span>");
+                            }
+
+                        }
+                    } else {
+                        let tr = `<tr>` + `<td><h3 class="text-center" style="color: green;">{% trans "Ma'lumot topilmadi." %}</h3></td>` + `</tr>`;
+                        $('#editor_rejected_notifications').append(tr);
+                    }
+
+                },
+                error: function (error) {
+                    {#console.log(error);#}
+                }
+            });
+        });
+    </script>
+{% endblock %}

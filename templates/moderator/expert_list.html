@@ -1,0 +1,73 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Ekspertlar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Ekspertlar ro'yxati" %}
+        </h2>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 15px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th><strong>{% trans "Tr" %}</strong></th>
+                            <th><strong>{% trans "F.I.O" %}</strong></th>
+                            <th><strong>{% trans "E-mail" %}</strong></th>
+                            <th><strong>{% trans "Fan" %}</strong></th>
+                            <th><strong>{% trans "Til" %}</strong></th>
+                            <th><strong>{% trans "Amallar" %}</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for submission in submissions %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ submission.expert.user.full_name }}</td>
+                                <td>{{ submission.expert.user.email }}</td>
+                                <td>{{ submission.expert.subjects }}</td>
+                                <td>
+                                    {% if submission.status.id == 1 %}
+                                        <span class='badge badge-warning'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                    {% if submission.status.id == 2 %}
+                                        <span class='badge badge-success'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                    {% if submission.status.id == 3 %}
+                                        <span class='badge badge-danger'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" onclick="OnClickViewExpert({{ submission.expert.id }})"
+                                            class="btn btn-md btn-outline-primary forshadow"><i
+                                            class="fas fa-fw m-r-5 fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="expert_submission_div"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function OnClickViewExpert(id) {
+            $.ajax({
+                type: "GET",
+                url: "/tests/expert_list/" + id + "/",
+                success: function (response) {
+                    $('#expert_submission_div').html(response);
+                    $('#expert_role_list_detail_modal').modal('show');
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+{% endblock %}

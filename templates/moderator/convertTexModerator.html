@@ -1,0 +1,378 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Test savollarini tex kodini yozish" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <div><b>{% trans "Fayl:" %}</b>&nbsp;<a href="{{ test.submission_test.test.file_word.url }}" type="button" class="btn btn-xs btn-outline-warning" download="download"><img src="{% static 'img/word.png' %}" width="40" alt="word"></a></div>
+        <br>
+        <div class="row">
+            <div class="col-md-6 col-md-4">
+                <div class="container">
+                    <form method="POST" enctype="multipart/form-data" class="TexForm"
+                          id="check_current_test_moderator_form" data-url="{% url 'pass_saving' test.id %}"
+                          data-parsley-validate="true">
+                        {% csrf_token %}
+                        {{ form.tex_code }}
+                        <br>
+                        <div class="row">
+                            <div class="spinner-grow text-primary checkSpinner" role="status"><span
+                                    class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-secondary checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-success checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-danger checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-warning checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-info checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-light checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <div class="spinner-grow text-dark checkSpinner" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+
+                        <div class="row" id="id_close_test">
+                            <label for="answer_open_question">{% trans "Yopiq test savol javob variantlarini kiriting:" %}</label>
+                            <div class="input-group m-b-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">A)</span>
+                                </div>
+                                <label for="id_answer_a"></label>
+                                {{ answer_form.a }}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><input type="checkbox" checked/></span>
+                                </div>
+                            </div>
+                            <div class="input-group m-b-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">B)</span>
+                                </div>
+                                <label for="id_answer_b"></label>
+                                {{ answer_form.b }}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><input type="checkbox" disabled/></span>
+                                </div>
+                            </div>
+                            <div class="input-group m-b-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">C)</span>
+                                </div>
+                                <label for="id_answer_c"></label>
+                                {{ answer_form.c }}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><input type="checkbox" disabled/></span>
+                                </div>
+                            </div>
+                            <div class="input-group m-b-10">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">D)</span>
+                                </div>
+                                <label for="id_answer_d"></label>
+                                {{ answer_form.d }}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><input type="checkbox" disabled/></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="form-group row m-b-10">
+                            <div class="col-md-12">
+                                <div class="radio radio-css radio-inline">
+                                    <input type="radio" name="radio_img" id="id_img_not_have" value="0"
+                                           class="test_image" {% if not test.submission_test.is_have_img %}
+                                           checked {% endif %}/>
+                                    <label for="id_img_not_have">Rasm mavjud emas</label>
+                                </div>
+                                <div class="radio radio-css radio-inline">
+                                    <input type="radio" name="radio_img" id="id_img_have" value="1" class="test_image"
+                                            {% if test.submission_test.is_have_img %} checked {% endif %}/>
+                                    <label for="id_img_have">Rasm mavjud</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" id="id_test_img"
+                                     {% if not test.submission_test.is_have_img %}style="display: none;"{% endif %}>
+                                    {{ img_form.images }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="img_card_id"
+                             {% if not test.submission_test.is_have_img %}style="display: none;"{% endif %}>
+                            <div id="small-img" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
+                                <ul style="list-style-type: none;">
+                                    {% if images.count > 0 %}
+                                        {% for image in images %}
+                                            <li style="width: 25%; float: left; padding: 2%">
+                                                <img src="{{ image.img.url }}" alt="user"
+                                                     style="border: 0 none; display: inline-block; height: 100px; max-width: 100%; vertical-align: middle;"
+                                                     class="img-responsive inline-block img-thumbnail forshadow">
+                                                <button type="button" data-url="{% url 'view_image_path' image.id %}"
+                                                        class="btn btn-success btn-icon btn-circle btn-xl viewImagePathBtn">
+                                                    <i
+                                                            class="fa fa-link"></i></button>
+                                                <button type="button" data-url="{% url 'delete_image' image.id %}"
+                                                        class="btn btn-danger btn-icon btn-circle btn-xl deleteImageBtn">
+                                                    <i
+                                                            class="fa fa-trash"></i></button>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <script>
+                            $("input[type='radio'].test_image").click(function () {
+                                if ($(this).is(':checked')) {
+                                    if ($(this).val() === '1') {
+                                        $('#id_test_img').css('display', 'block');
+                                        $('#img_card_id').css('display', 'block');
+                                    } else {
+                                        $('#id_test_img').css('display', 'none');
+                                        $('#img_card_id').css('display', 'none');
+                                    }
+                                }
+                            });
+                        </script>
+
+                        <button type="submit" class="btn btn-indigo btn-block m-r-5 passSavedModeratorBtn"
+                                data-url="{% url 'pass_saving' test.id %}">
+                            <span class="conTex_btn_text">{% trans "Natijani ko'rish" %}</span>
+                        </button>
+                        <button type="button"
+                                class="btn btn-success btn-block m-r-5 check_current_test_moderatorBtn"
+                                data-url="{% url 'convert_to_tex' test.id %}">{% trans "Saqlash" %}
+                        </button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-4">
+                <div id="div-container" style="z-index: 1">
+                    <canvas id="my_canvas" class="forshadow"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'pdf_viewer/pdf/pdf.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.3.2/dist/panzoom.min.js"></script>
+    <script type="text/javascript">
+        $('.checkSpinner').css('display', 'none');
+
+
+        let random = Math.floor(Math.random() * 10000001);
+        let url = '{{ base_url }}{{ full_url_pdf }}?r' + random + 'm';
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "{% static 'pdf_viewer/pdf/pdf.worker.js' %}";
+        let PDFRenderingInProgress = false;
+        let pdfDoc = null;
+        let canvas = document.getElementById('my_canvas');
+        let ctx = canvas.getContext('2d');
+        let container = document.getElementById("div-container");
+        let wheelTimeoutHandler = null;
+        let wheelTimeout = 250 //ms
+
+        function renderPage(scale) {
+            pdfDoc.getPage(1).then(function (page) {
+                let viewport = page.getViewport({scale: scale});
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                let renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                if (!PDFRenderingInProgress) {
+                    PDFRenderingInProgress = true
+                    let renderTask = page.render(renderContext);
+                    renderTask.promise.then(function () {
+                        PDFRenderingInProgress = false
+                    })
+                }
+            });
+        }
+
+        function zoomWithWheel(event) {
+            panzoom.zoomWithWheel(event)
+            clearTimeout(wheelTimeoutHandler);
+            wheelTimeoutHandler = setTimeout(function () {
+                canvas.style.transform = "scale(" + 1 / panzoom.getScale() + ")"
+                if (pdfDoc)
+                    renderPage(panzoom.getScale());
+            }, wheelTimeout)
+        }
+
+        pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            renderPage(1);
+        });
+
+        let panzoom = Panzoom(container)
+        container.parentElement.addEventListener('wheel', zoomWithWheel)
+
+
+        $('body').on('submit', '#check_current_test_moderator_form', function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let url = $(this).data('url');
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.checkSpinner').css('display', 'block');
+                    $('.passSavedModeratorBtn').prop('disabled', true);
+                },
+                success: function (response) {
+                    if (response.result) {
+                        view_btn_state = 1
+                        swal({
+                            title: 'Muvaffaqiyat!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                                confirm: {
+                                    text: 'Success',
+                                    value: true,
+                                    visible: true,
+                                    className: 'btn btn-success',
+                                    closeModal: true
+                                }
+                            }
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: 'Diqqat!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                },
+                complete: function (data) {
+                    $('.checkSpinner').css('display', 'none');
+                    $('.passSavedModeratorBtn').prop('disabled', false);
+                },
+                error: function (error) {
+                    console.log("Xatolik");
+                    console.log(error.message);
+                }
+            });
+
+        });
+        $('body').on('click', '.check_current_test_moderatorBtn', function (e) {
+            e.preventDefault();
+
+            let form = $('#check_current_test_moderator_form');
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.result) {
+                        window.location.href="{% url 'my_submit_tests' %}";
+                    } else {
+                        swal({
+                            title: 'Diqqat!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log("Xatolik");
+                    console.log(error.message);
+                }
+            });
+
+        });
+
+        $('body').on('click', '.viewImagePathBtn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#show_res').html(response);
+                    $('#viewImagePathModal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+
+
+        $('body').on('click', '.deleteImageBtn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

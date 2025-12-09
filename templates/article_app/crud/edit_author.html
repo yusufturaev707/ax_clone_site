@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load static %}
+<form class="edit-author-form" data-parsley-validate="true" method="post"
+      data-url="{% url 'edit_author' author.id %}"
+      id="edit_author_form">
+    {% csrf_token %}
+    <div class="modal fade" id="edit-author-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Muallif ma'lumotlarini o'zgartirish" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-striped table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr hidden>
+                            <td class="text-nowrap">
+                                <select id="id_article" name="article" class="form-control">
+                                    <option selected
+                                            value="{{ author.article.id }}">{{ author.article.title }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Familiyasi" %}</th>
+                            <td class="text-nowrap">{{ form.lname }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Ismi" %}</th>
+                            <td class="text-nowrap">{{ form.fname }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Sharifi" %}</th>
+                            <td class="text-nowrap">{{ form.mname }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "E-mail" %}</th>
+                            <td class="text-nowrap">{{ form.email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Ilmiy darajasi" %}</th>
+                            <td class="text-nowrap">{{ form.scientific_degree }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Ish joyi" %}</th>
+                            <td class="text-nowrap">{{ form.work }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a class="close btn btn-outline-info" id="edit_author_modal"
+                       data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary"
+                            id="btn_editing_author">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+</script>

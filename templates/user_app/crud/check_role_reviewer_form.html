@@ -1,0 +1,93 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade" id="reviewer_role_list_detail_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% trans "Talabgorni ma'lumotlari" %}</h5>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <table id="data-table-default"
+                       class="table table-striped table-td-valign-middle">
+                    <tbody>
+                    <tr>
+                        <th class="text-nowrap">{% trans "FIO" %}</th>
+                        <td class="text-nowrap">{{ reviewer.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "E-mail" %}</th>
+                        <td class="text-nowrap">{{ reviewer.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Telefon nomer" %}</th>
+                        <td class="text-nowrap">{{ reviewer.user.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Ilmiy Daraja" %}</th>
+                        <td class="text-nowrap">{{ reviewer.scientific_degree.name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">{% trans "Ish joyi" %}</th>
+                        <td class="text-nowrap">{{ reviewer.user.work }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans "Tanlangan ruknlar" %}</th>
+                    </tr>
+                    {% for foo in reviewer.section.all %}
+                        <tr>
+                            <th class="text-nowrap">{{ forloop.counter }}</th>
+                            <td class="text-nowrap">{{ foo.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th>{% trans "Yuborilgan fayllar" %}</th>
+                    </tr>
+                    {% for file in files %}
+                        <tr>
+                            <th class="text-nowrap">{{ forloop.counter }}</th>
+                            <td class="text-nowrap"><a href="{{ file.file.url }}">{{ file.file_name }}</a></td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                <form method="post" data-url="{% url 'reviewer_role_list_detail' reviewer.id %}" id="reviewer_role_list_detail_form">
+                    {% csrf_token %}
+                    <button type="button" onclick="OnClickIsReviewerBtn(0)" class="btn btn-danger btn-md">{% trans "Rad etish" %}
+                    </button>
+                    <button type="button" onclick="OnClickIsReviewerBtn(1)" class="btn btn-success btn-md">{%  trans "Tasdiqlash" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function OnClickIsReviewerBtn(value) {
+        let url = $('#reviewer_role_list_detail_form').data('url');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                "result": value,
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            dataType: 'json',
+            success: function (response) {
+                $('#reviewer_role_list_detail_modal').modal('hide');
+                swal({
+                    title: response.message,
+                    timer: 1500,
+                })
+                window.location.reload();
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+</script>

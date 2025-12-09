@@ -1,0 +1,114 @@
+<ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile"
+    data-sortable-id="index-2">
+    <li class="nav-item" id="in-progress-click">
+        <a href="#in-progress-test" data-toggle="tab" class="nav-link active">
+            <i class="fa fa-refresh fa-spin fa-fw fa-lg m-r-5" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">Jarayondagilar</span>
+            <span class="badge badge-warning" id="countOfProgress"
+                  style="font-size: 14px; float: right;"></span>
+        </a>
+    </li>
+    <li class="nav-item" id="denied-user-click">
+        <a href="#denied-user-test" data-toggle="tab" class="nav-link">
+            <i class="fa fa-times fa-lg m-r-5" aria-hidden="true"></i><span
+                class="d-none d-md-inline">Rad etilganlar</span>
+            <span class="badge badge-danger" id="countOfDenieds"
+                  style="font-size: 14px; float: right;"></span>
+        </a>
+    </li>
+</ul>
+<div class="tab-content" data-sortable-id="index-3">
+    <div class="tab-pane fade active show" id="in-progress-test">
+        {% for test in data %}
+            <div class="card forshadow">
+                <div class="row">
+                    <div class="card-body col-lg-4">
+                        <h5 class="card-title">{{ test.id }}.&nbsp;{{ test.submission.subject.name }}</h5>
+                        <div class="container-fluid" style="margin-left: 1em">
+                            <p class="card-text">
+                                {% if test.submission.type_test_upload.id == 1 %}
+                                    <b>Qism:</b>&nbsp; {{ test.submission.part.name }}
+                                    <br>
+                                {% elif test.submission.type_test_upload.id == 2 %}
+                                    <b>Mavzusi:</b>&nbsp; {{ test.submission.topic.name }}<br>
+                                {% endif %}
+                                <b>Til:</b>&nbsp;<span
+                                    class="badge badge-success">  {{ test.submission.lang.name }}  </span><br>
+                                <b>Qiyinlik darajasi:</b>&nbsp;<span
+                                    class="badge badge-blue">  {{ test.submission.level_d.name }}  </span><br>
+                                <b>Yuborilgan vaqti:</b><span
+                                    style="color: #656464">&nbsp;  {{ test.submission.created_at|date:"d.m.Y" }}  </span>
+                            </p>
+                            <p>
+                                <b>Holati:</b>&nbsp;
+                                {% if test.status.code == 1 %}
+                                    <span class="badge badge-success">{{ test.status.name }}</span>
+                                {% elif test.status.code == 0 %}
+                                    <span class="badge badge-danger">{{ test.status.name }}</span>
+                                {% else %}
+                                    <span class="badge badge-warning">{{ test.status.name }}</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-body col-lg-4">
+                        <ul class="progressbar text-center">
+                            {% if test.step.code >= 1 %}
+                                {% if test.status.code == 1 or test.status.code == 2 %}
+                                    <li class="account active"><strong>Yuborildi</strong></li>
+                                {% elif test.status.code == 0 %}
+                                    <li class="account active1"><strong>Yuborildi</strong></li>
+                                {% endif %}
+                            {% endif %}
+                            {% if test.step.code >= 2 %}
+                                {% if test.status.code == 1 or test.status.code == 2 %}
+                                    <li class="payment active"><strong>Expert</strong></li>
+                                {% elif test.status.code == 0 %}
+                                    <li class="payment active1"><strong>Expert</strong></li>
+                                {% endif %}
+                            {% endif %}
+                            {% if test.step.code >= 3 %}
+                                {% if test.status.code == 1 or test.status.code == 2 %}
+                                    <li class="confirm active"><strong>Yakunlandi</strong></li>
+                                {% elif test.status.code == 0 %}
+                                    <li class="confirm active1"><strong>Yakunlandi</strong></li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="card-body col-lg-4">
+                        <ul class="form-control text-center" style="font-size: 12px">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+        {% endfor %}
+    </div>
+</div>
+<div class="tab-pane fade" id="denied-user-test">
+    <div class="height-lg" data-scrollbar="true">
+        <table class="table table-bordered table-hover table-striped table-responsive-lg nowrap">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fan</th>
+                <th>Til</th>
+                <th>Qiyinlik daraja</th>
+                <th>Mavzu/Qism</th>
+                <th>Yuborilgan vaqti</th>
+                <th>Holat</th>
+            </tr>
+            </thead>
+            <tbody id="denied-user-test-table">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<nav class="pagination">
+    <ul class="pagination" id="testMakerPagination">
+
+    </ul>
+</nav>

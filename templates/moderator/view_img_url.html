@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade viewArticleFont" id="viewImagePathModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p style="font-size: 18px"><a href="#">{{ image_path }}</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark btn-xs"
+                        data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

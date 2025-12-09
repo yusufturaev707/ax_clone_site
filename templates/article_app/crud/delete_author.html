@@ -1,0 +1,57 @@
+{% load i18n %}
+<form class="delete_author_form" method="post" data-url="{% url 'delete_author' author.pk %}">
+    {% csrf_token %}
+<div class="modal fade" id="removeAuthor">
+    <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans "Muallifni o'chirish" %}</h4>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <b><i>{{ author.lname }} {{ author.fname }}</i></b><br>
+                    <hr>
+                    <span style="font-size: small">{% trans "Bu muallifni o'chirishga ishonchingiz komilmi?" %}</span>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yoq" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Ha" %}</button>
+                </div>
+            </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+
+    const $myForm = $('.delete_author_form');
+    $myForm.submit(function (e) {
+        e.preventDefault();
+
+        const $formData = $myForm.serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'delete_author' author.id %}",
+            data: $formData,
+            success: function (response) {
+                console.log(response);
+                if (response.result){
+                    swal({
+                        title: response.message,
+                        timer: 2000,
+                    });
+                } else {
+                    alert(response.message);
+                }
+                $('#removeAuthor').modal('hide');
+                window.location.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        return false;
+    });
+
+</script>

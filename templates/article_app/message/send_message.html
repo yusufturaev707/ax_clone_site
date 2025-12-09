@@ -1,0 +1,89 @@
+{% load i18n %}
+{% load static %}
+<form class="send-message-form" data-parsley-validate="true" method="post"
+      action="{% url 'send_message' article.id user_id %}">
+    {% csrf_token %}
+    <div class="modal fade" id="send-message-modal">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border: 1px solid black;">
+                <div class="modal-body" style="background-color: #eeeeee">
+                    <h5 class="modal-title">{% trans "Xabar yuborish" %}</h5>
+                    <table id="data-table-default"
+                           class="table table-striped table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr hidden>
+                            <td class="text-nowrap">
+                                <select id="id_article" name="article" class="form-control">
+                                    <option selected
+                                            value="{{ article.id }}">{{ article.id }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr hidden>
+                            <td class="text-nowrap">
+                                <select id="id_from_user" name="from_user" class="form-control">
+                                    <option selected
+                                            value="{{ from_user.id }}">{{ from_user.id }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr hidden>
+                            <td class="text-nowrap">
+                                <select id="id_to_user" name="to_user" class="form-control">
+                                    <option selected
+                                            value="{{ user_id }}">{{ user_id }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap">{{ form.message }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" style="padding-left: 2em; padding-right: 2em;">
+                    <div class="col-md-6">
+                        <a class="btn btn-white btn-block btn-sm forshadow"
+                           data-dismiss="modal">{% trans "Yopish" %}</a>
+                    </div>
+                        <div class="col-md-6">
+                        <button type="submit" class="btn btn-success btn-block btn-sm forshadow">{% trans "Yuborish" %}</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const $myForm = $('.send-message-form');
+        $myForm.submit(function (e) {
+            e.preventDefault();
+
+            const $formData = $myForm.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'send_message' article.id  user_id %}",
+                data: $formData,
+                success: function (response) {
+                    if (response.result) {
+                        $('#send-message-modal').modal('hide');
+
+                        $('#view-article-messages-admin').click();
+                        $('#view-article-messages-by-editor').click();
+                        $('#view-article-messages-by-reviewer').click();
+                        $('#view-article-messages-by-author_{{ article.id }}').click();
+
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+    });
+</script>

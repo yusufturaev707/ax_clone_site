@@ -1,0 +1,75 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Taqrizchi roliga davogar talabgorlar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header viewArticleFont">
+            {% trans "Taqrizchi roliga davogar talabgorlar ro'yxati" %}
+        </h2>
+
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 15px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th><strong>{% trans "Tr" %}</strong></th>
+                            <th><strong>{% trans "F.I.O" %}</strong></th>
+                            <th><strong>{% trans "E-mail" %}</strong></th>
+                            <th><strong>{% trans "Ilmiy daraja" %}</strong></th>
+                            <th><strong>{% trans "Holat" %}</strong></th>
+                            <th><strong>{% trans "Amallar" %}</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for submission in submissions %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ submission.reviewer.user.full_name }}</td>
+                                <td>{{ submission.reviewer.user.email }}</td>
+                                <td>{{ submission.reviewer.scientific_degree }}</td>
+                                <td>
+                                    {% if submission.status.id == 1 %}
+                                        <span class='badge badge-warning'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                    {% if submission.status.id == 2 %}
+                                        <span class='badge badge-success'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                    {% if submission.status.id == 3 %}
+                                        <span class='badge badge-danger'>{{ submission.status.name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" onclick="OnClickViewReviewer({{ submission.reviewer.id }})"
+                                            class="btn btn-md btn-outline-primary forshadow"><i class="fas fa-fw m-r-5 fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="reviewer_submission_div"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function OnClickViewReviewer(id) {
+            $.ajax({
+                type: "GET",
+                url: "/profile/choosen_reviewer_role_list/" + id + "/",
+                success: function (response) {
+                    $('#reviewer_submission_div').html(response);
+                    $('#reviewer_role_list_detail_modal').modal('show');
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% load i18n %}
+{% load static %}
+
+<div class="modal modal-fullscreen fade viewArticleFont" id="view_expert_info_admin1_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ expert.user.last_name }}  {{ expert.user.first_name }}  {{ expert.user.middle_name }}</h3>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 mx-auto text-center">
+                            <p style="font-size: 18px; font-family: Georgia,serif">{% trans "Malaka oshirganlik haqida sertifikat" %}</p>
+                            {% if expert.certificate_training %}
+                            	<img src="{{ expert.certificate_training }}" alt="" class="forshadow"
+                                 style="width: 380px; height: 550px">
+                            {% else %}
+                                <div class="row bg-faded">
+                                    <div class="mx-auto text-center">
+                                        <div class="card" style="background-color: #fdd970">
+                                            <div class="card-body">
+                                                {% trans "Rasm mavjud emas!" %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 mx-auto text-center">
+                            <p style="font-size: 16px; font-family: Georgia,serif">{% trans "Chet tilini bilishi boyicha sertifikat" %}</p>
+                            {% if expert.certificate_assessment %}
+                            <img src="{{ expert.certificate_assessment.url }}" alt="" class="forshadow"
+                                 style="width: 380px; height: 550px">
+                            {% else %}
+                                <div class="row bg-faded">
+                                    <div class="mx-auto text-center">
+                                        <div class="card" style="background-color: #fdd970">
+                                            <div class="card-body">
+                                                {% trans "Rasm mavjud emas!" %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                    </div>
+                    </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{% trans "Yopish" %}</button>
+            </div>
+        </div>
+    </div>
+</div>

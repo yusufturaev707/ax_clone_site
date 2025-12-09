@@ -1,0 +1,51 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade" id="UserModal">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data" action="{% url 'choose_role' %}">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "Saytga kim sifatida kirmoqchisiz?" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <table id="data-table-default"
+                           class="table table-bordered table-td-valign-middle">
+                        <tbody>
+                        <tr>
+                            <select id="id_user" name="user" class="form-control" style="visibility: visible">
+                                <option selected value="{{ user.id }}">{{ user.full_name }}</option>
+                            </select>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Rolni tanlang:" %}</th>
+                            <td class="text-nowrap"><label>Author
+                                <input type="checkbox" value="0">
+                            </label></td>
+                            <td class="text-nowrap"><label>Reviewer
+                                <input type="checkbox" value="1">
+                            </label></td>
+                        </tr>
+                        <hr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Rukn" %}</th>
+                            <td class="text-nowrap">{{ form.section }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap">{% trans "Fayl" %}</th>
+                            <td class="text-nowrap">{{ form.mfile }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="float: right">{% trans "Saqlash" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static '/assets/js/demo/form-plugins.demo.js' %}"></script>
+<script src="{% static '/assets/plugins/parsleyjs/dist/parsley.min.js' %}"></script>
+

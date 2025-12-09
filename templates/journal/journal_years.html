@@ -1,0 +1,115 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Yillar ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Yillar ro'yxati" %}
+        </h2>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 10px;">
+            <div class="container" style="padding: 15px;">
+                <button type="button" style="float: left"
+                        data-url="{% url 'create_journal_year' %}"
+                        class="btn btn-primary btn-sm create_year_btn"><i
+                        class="fa fa-plus mr-1"></i>{% trans "Yil qo'shish" %}
+                </button>
+                <br>
+                <br>
+                <table class="table table-hover table-fixed table-responsive-lg">
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Yil" %}</strong></th>
+                        <th><strong>{% trans "Holati" %}</strong></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if objects.count > 0 %}
+                        {% for item in objects %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ item.year }}</td>
+                                <td>
+                                    {% if item.status %}
+                                        <i class="fa fa-check"></i>
+                                    {% else %}
+                                        <i class="fa fa-ban"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit_journal_year_btn" data-url="{% url 'edit_journal_year' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-edit"></i></button>
+                                    <button class="btn btn-outline-danger btn-sm delete_journal_year_btn" data-url="{% url 'delete_journal_year' item.id %}"><i
+                                            class="far fa-lg fa-fw fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="box_year"></div>
+    </div>
+
+    <script type="text/javascript">
+        $('body').on('click', '.create_year_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#box_year').html(response);
+                    $('#create_journal_year_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log("Xatolik");
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('click', '.edit_journal_year_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#box_year').html(response);
+                    $('#edit_journal_year_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log("Xatolik");
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('click', '.delete_journal_year_btn', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#box_year').html(response);
+                    $('#delete_journal_year_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log("Xatolik");
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

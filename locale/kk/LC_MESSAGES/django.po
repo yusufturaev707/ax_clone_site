@@ -1,0 +1,2409 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-02 16:28+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+#: .\article_app\forms.py:52 .\article_app\forms.py:53
+#: .\article_app\forms.py:54 .\article_app\forms.py:55
+#: .\article_app\forms.py:171 .\article_app\forms.py:172
+#: .\article_app\forms.py:173 .\article_app\forms.py:174
+#: .\article_app\forms.py:225 .\templates\journal\journal_dashboard.html:59
+#: .\user_app\forms.py:111
+msgid "Tanlang"
+msgstr ""
+
+#: .\article_app\views.py:140 .\article_app\views.py:217
+#: .\article_app\views.py:294 .\article_app\views.py:381
+#: .\article_app\views.py:458 .\user_app\views.py:87 .\user_app\views.py:174
+#: .\user_app\views.py:251 .\user_app\views.py:328 .\user_app\views.py:405
+#: .\user_app\views.py:482
+msgid "Muvaffaqiyatli yaratildi!"
+msgstr ""
+
+#: .\article_app\views.py:145 .\article_app\views.py:170
+#: .\article_app\views.py:222 .\article_app\views.py:247
+#: .\article_app\views.py:299 .\article_app\views.py:324
+#: .\article_app\views.py:386 .\article_app\views.py:411
+#: .\article_app\views.py:463 .\article_app\views.py:488 .\user_app\views.py:92
+#: .\user_app\views.py:117 .\user_app\views.py:179 .\user_app\views.py:204
+#: .\user_app\views.py:256 .\user_app\views.py:281 .\user_app\views.py:333
+#: .\user_app\views.py:358 .\user_app\views.py:410 .\user_app\views.py:435
+#: .\user_app\views.py:487 .\user_app\views.py:512
+msgid "Ma'lumot to'liq emas!"
+msgstr ""
+
+#: .\article_app\views.py:165 .\article_app\views.py:242
+#: .\article_app\views.py:319 .\article_app\views.py:406
+#: .\article_app\views.py:483 .\user_app\views.py:112 .\user_app\views.py:199
+#: .\user_app\views.py:276 .\user_app\views.py:353 .\user_app\views.py:430
+#: .\user_app\views.py:507
+msgid "Muvaffaqiyatli o'zgartirildi!"
+msgstr ""
+
+#: .\article_app\views.py:189 .\article_app\views.py:266
+#: .\article_app\views.py:343 .\article_app\views.py:430
+#: .\article_app\views.py:507 .\user_app\views.py:136 .\user_app\views.py:223
+#: .\user_app\views.py:300 .\user_app\views.py:377 .\user_app\views.py:454
+#: .\user_app\views.py:531
+msgid "Muvaffaqiyatli o'chirildi!"
+msgstr ""
+
+#: .\article_app\views.py:557
+msgid "Forma to'ldirishda xatolik!"
+msgstr ""
+
+#: .\article_app\views.py:588
+msgid "Ilmiy daraja yoki ish joy kiritilmadi!"
+msgstr ""
+
+#: .\article_app\views.py:617
+msgid "Formani to'liq to'ldiring!"
+msgstr ""
+
+#: .\article_app\views.py:630
+msgid "Assalomu aleykum.Yangi maqolamni yubordim!"
+msgstr ""
+
+#: .\article_app\views.py:643
+msgid "Assalomu aleykum.Maqolamni to'g'irlab qayta yubordim!"
+msgstr ""
+
+#: .\article_app\views.py:649 .\article_app\views.py:704 .\journal\views.py:136
+#: .\journal\views.py:312 .\post\views.py:109 .\post\views.py:138
+#: .\post\views.py:160 .\post\views.py:172 .\user_app\views.py:786
+#: .\user_app\views.py:1298
+msgid "Omadli bajarildi!"
+msgstr ""
+
+#: .\article_app\views.py:656
+msgid "Forma to'liq to'ldirilmadi!"
+msgstr ""
+
+#: .\article_app\views.py:710
+msgid "Forma yaroqli emas!"
+msgstr ""
+
+#: .\article_app\views.py:760
+msgid "Maqolangiz muvaffaqiyatli o'chirildi!"
+msgstr ""
+
+#: .\article_app\views.py:806 .\article_app\views.py:811
+msgid "Mualliflar muvaffaqiyatli qo'shildi!"
+msgstr ""
+
+#: .\article_app\views.py:836
+msgid "Muallif muvaffaqiyatli tahrirlandi!"
+msgstr ""
+
+#: .\article_app\views.py:840 .\article_app\views.py:900 .\journal\views.py:209
+#: .\post\views.py:59 .\post\views.py:85 .\user_app\views.py:742
+#: .\user_app\views.py:1717
+msgid "Forma to'liq emas!"
+msgstr ""
+
+#: .\article_app\views.py:861
+msgid "Muvaffaqiyatli o'chirildi"
+msgstr ""
+
+#: .\article_app\views.py:896
+msgid "Xabar muvaffaqiyatli yuborildi!"
+msgstr ""
+
+#: .\article_app\views.py:902 .\user_app\views.py:1230 .\user_app\views.py:1266
+msgid "Sahifa topilmadi!"
+msgstr ""
+
+#: .\config\settings.py:119
+msgid "Uzbek"
+msgstr ""
+
+#: .\config\settings.py:120
+msgid "English"
+msgstr ""
+
+#: .\config\settings.py:121
+msgid "Russian"
+msgstr ""
+
+#: .\config\settings.py:122
+msgid "Qoraqalpoq"
+msgstr ""
+
+#: .\journal\models.py:15
+msgid "To'liq versiyasi"
+msgstr ""
+
+#: .\journal\models.py:19
+msgid "Jurnalni bosh qismi"
+msgstr ""
+
+#: .\journal\models.py:23
+msgid "Mundarija"
+msgstr ""
+
+#: .\journal\models.py:37
+msgid "Journal"
+msgstr ""
+
+#: .\journal\models.py:46 .\templates\article_app\crud\create_file.html:21
+#: .\templates\user_app\crud\choose_role.html:36
+#: .\templates\user_app\crud\choose_roles.html:20
+#: .\templates\user_app\register\add_reviewer_form.html:37
+#: .\templates\user_app\user_dashboard.html:68
+#: .\templates\user_app\user_dashboard.html:367
+#: .\templates\user_app\user_dashboard.html:683 .\user_app\models.py:135
+msgid "Fayl"
+msgstr ""
+
+#: .\journal\views.py:53
+#, python-brace-format
+msgid "{i}-maqolani tartibini tanlamadingiz!"
+msgstr ""
+
+#: .\journal\views.py:60
+msgid "Maqolani tartibini bir xil tanlamang!"
+msgstr ""
+
+#: .\journal\views.py:73
+msgid "Muvaffaqiyatli saqlandi."
+msgstr ""
+
+#: .\journal\views.py:89
+msgid "Maqolalar sonida xatolik!"
+msgstr ""
+
+#: .\journal\views.py:96
+msgid "Journal page count is less than last article end page number! "
+msgstr ""
+
+#: .\journal\views.py:105
+msgid "{i + 1}-article not entered!"
+msgstr ""
+
+#: .\journal\views.py:111
+msgid "{i + 1}-article page must be {start_page} < {end_page}!"
+msgstr ""
+
+#: .\journal\views.py:189
+msgid "Jurnal yaratishda xatolik yuz berdi!"
+msgstr ""
+
+#: .\journal\views.py:203
+msgid "Jurnal omadli yaratildi!"
+msgstr ""
+
+#: .\journal\views.py:225
+msgid "Jurnal ma'lumotlarida o'zgarish yo'q!"
+msgstr ""
+
+#: .\journal\views.py:318
+msgid "Fayl yuklashda yoki boshqa xatolik yuz berdi!"
+msgstr ""
+
+#: .\journal\views.py:352
+msgid "Omadli o'chirildi!"
+msgstr ""
+
+#: .\post\models.py:20
+msgid "BlankPage"
+msgstr ""
+
+#: .\post\models.py:21
+msgid "BlankPages"
+msgstr ""
+
+#: .\post\models.py:46
+msgid "Post"
+msgstr ""
+
+#: .\post\models.py:47
+msgid "Posts"
+msgstr ""
+
+#: .\post\views.py:53
+msgid "Omadli yaratildi!"
+msgstr ""
+
+#: .\post\views.py:79
+msgid "Sahifa omadli yaratildi!"
+msgstr ""
+
+#: .\post\views.py:103 .\post\views.py:132
+msgid "Ma'lumotlarda o'zgarish yo'q"
+msgstr ""
+
+#: .\post\views.py:115 .\post\views.py:144 .\user_app\views.py:612
+msgid "Xatolik yuz berdi!"
+msgstr ""
+
+#: .\templates\article_app\article_stages.html:4
+#: .\templates\article_app\article_stages.html:9
+msgid "Maqola holatini bosqichlari ro'yxati"
+msgstr ""
+
+#: .\templates\article_app\article_stages.html:17
+msgid "Yangi bosqich yaratish"
+msgstr ""
+
+#: .\templates\article_app\article_stages.html:24
+#: .\templates\article_app\article_status.html:24
+#: .\templates\article_app\article_types.html:24
+#: .\templates\article_app\notification_status.html:24
+#: .\templates\article_app\sections.html:25
+#: .\templates\journal\journal_dashboard.html:22
+#: .\templates\journal\journal_dashboard.html:119
+#: .\templates\post\page_dashboard.html:28
+#: .\templates\post\post_dashboard.html:28
+#: .\templates\user_app\reviewer_list_by_editor.html:18
+#: .\templates\user_app\reviewers_list.html:16
+#: .\templates\user_app\settings\country.html:25
+#: .\templates\user_app\settings\editors.html:18
+#: .\templates\user_app\settings\genders.html:25
+#: .\templates\user_app\settings\menus.html:25
+#: .\templates\user_app\settings\region.html:25
+#: .\templates\user_app\settings\roles.html:25
+#: .\templates\user_app\settings\scientific_degrees.html:25
+#: .\templates\user_app\settings\users.html:18
+msgid "Tr"
+msgstr ""
+
+#: .\templates\article_app\article_stages.html:25
+#: .\templates\article_app\article_status.html:25
+#: .\templates\article_app\article_types.html:25
+#: .\templates\article_app\crud\create_article_status.html:17
+#: .\templates\article_app\crud\create_article_type.html:17
+#: .\templates\article_app\crud\create_notification_status.html:17
+#: .\templates\article_app\crud\create_section.html:17
+#: .\templates\article_app\crud\create_stage.html:17
+#: .\templates\article_app\crud\edit_article_status.html:16
+#: .\templates\article_app\crud\edit_article_status.html:20
+#: .\templates\article_app\crud\edit_article_type.html:16
+#: .\templates\article_app\crud\edit_notification_status.html:16
+#: .\templates\article_app\crud\edit_section.html:16
+#: .\templates\article_app\crud\edit_stage.html:16
+#: .\templates\article_app\notification_status.html:25
+#: .\templates\article_app\sections.html:26
+#: .\templates\journal\create_journal.html:15
+#: .\templates\journal\edit_journal.html:15
+#: .\templates\journal\journal_dashboard.html:120
+#: .\templates\user_app\crud\create_country.html:17
+#: .\templates\user_app\crud\create_gender.html:17
+#: .\templates\user_app\crud\create_menu.html:17
+#: .\templates\user_app\crud\create_region.html:17
+#: .\templates\user_app\crud\create_role.html:17
+#: .\templates\user_app\crud\create_scientific_degree.html:17
+#: .\templates\user_app\crud\edit_country.html:17
+#: .\templates\user_app\crud\edit_district.html:17
+#: .\templates\user_app\crud\edit_gender.html:16
+#: .\templates\user_app\crud\edit_menu.html:17
+#: .\templates\user_app\crud\edit_region.html:16
+#: .\templates\user_app\crud\edit_role.html:16
+#: .\templates\user_app\crud\edit_scientific_degree.html:16
+#: .\templates\user_app\crud\edit_state.html:16
+#: .\templates\user_app\settings\country.html:26
+#: .\templates\user_app\settings\genders.html:26
+#: .\templates\user_app\settings\menus.html:26
+#: .\templates\user_app\settings\region.html:26
+#: .\templates\user_app\settings\roles.html:26
+#: .\templates\user_app\settings\scientific_degrees.html:26
+msgid "Nomi"
+msgstr ""
+
+#: .\templates\article_app\article_status.html:4
+#: .\templates\article_app\article_status.html:9
+msgid "Maqola holatlari ro'yxati"
+msgstr ""
+
+#: .\templates\article_app\article_status.html:17
+msgid "Yangi maqola holatini yaratish"
+msgstr ""
+
+#: .\templates\article_app\article_status.html:26
+msgid "Bosqich"
+msgstr ""
+
+#: .\templates\article_app\article_types.html:4
+#: .\templates\article_app\article_types.html:9
+msgid "Maqola turlari"
+msgstr ""
+
+#: .\templates\article_app\article_types.html:17
+msgid "Yangi maqola turini yaratish"
+msgstr ""
+
+#: .\templates\article_app\blank_page\about_journal.html:4
+msgid " Axborotnoma jurnali haqida"
+msgstr ""
+
+#: .\templates\article_app\blank_page\contact.html:5
+msgid "Bog'lanish"
+msgstr ""
+
+#: .\templates\article_app\blank_page\editor_board.html:4
+msgid "Tahririyat kengashi"
+msgstr ""
+
+#: .\templates\article_app\blank_page\guide_for_authors.html:5
+msgid "Mualliflar uchun qo'llanma"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:10
+#: .\templates\article_app\crud\update_article.html:59
+msgid "Mualliflarni qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:15
+#: .\templates\journal\split_pages.html:18
+#: .\templates\user_app\register\add_reviewer_form.html:14
+msgid "Maqola"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:24
+#: .\templates\article_app\crud\edit_author.html:27
+#: .\templates\article_app\crud\update_article.html:66
+msgid "Familiyasi"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:31
+#: .\templates\article_app\crud\edit_author.html:31
+#: .\templates\article_app\crud\update_article.html:67
+msgid "Ismi"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:38
+#: .\templates\article_app\crud\edit_author.html:35
+#: .\templates\article_app\crud\update_article.html:68
+msgid "Sharifi"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:45
+#: .\templates\article_app\crud\edit_author.html:39
+#: .\templates\article_app\crud\update_article.html:69
+#: .\templates\journal\journal_dashboard.html:23
+#: .\templates\user_app\crud\check_role_reviewer_form.html:19
+#: .\templates\user_app\crud\view_user.html:39
+#: .\templates\user_app\register\edit_profile.html:105
+#: .\templates\user_app\register\register.html:48
+#: .\templates\user_app\reviewer_list_by_editor.html:20
+#: .\templates\user_app\reviewers_list.html:18
+#: .\templates\user_app\settings\users.html:20
+msgid "E-mail"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:52
+#: .\templates\article_app\crud\edit_author.html:43
+#: .\templates\article_app\crud\update_article.html:70
+msgid "Ilmiy darajasi"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:59
+#: .\templates\article_app\crud\edit_author.html:47
+#: .\templates\article_app\crud\update_article.html:71
+#: .\templates\user_app\crud\check_role_reviewer_form.html:31
+#: .\templates\user_app\crud\view_user.html:68
+msgid "Ish joyi"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:68
+#: .\templates\article_app\crud\create_article.html:51
+#: .\templates\article_app\crud\create_article_status.html:28
+#: .\templates\article_app\crud\create_article_type.html:24
+#: .\templates\article_app\crud\create_file.html:38
+#: .\templates\article_app\crud\create_notification_status.html:24
+#: .\templates\article_app\crud\create_section.html:24
+#: .\templates\article_app\crud\create_stage.html:24
+#: .\templates\article_app\crud\edit_article_status.html:27
+#: .\templates\article_app\crud\edit_article_type.html:23
+#: .\templates\article_app\crud\edit_author.html:55
+#: .\templates\article_app\crud\edit_notification_status.html:23
+#: .\templates\article_app\crud\edit_section.html:23
+#: .\templates\article_app\crud\edit_stage.html:23
+#: .\templates\article_app\crud\update_article.html:178
+#: .\templates\article_app\message\send_message.html:46
+#: .\templates\journal\create_journal.html:51
+#: .\templates\journal\delete_journal.html:19
+#: .\templates\journal\edit_journal.html:65
+#: .\templates\journal\split_pages.html:41 .\templates\post\create_page.html:40
+#: .\templates\post\create_post.html:41 .\templates\post\delete_page.html:19
+#: .\templates\post\delete_post.html:19 .\templates\post\edit_page.html:43
+#: .\templates\post\edit_post.html:52
+#: .\templates\user_app\crud\check_role_reviewer_form.html:57
+#: .\templates\user_app\crud\choose_roles.html:37
+#: .\templates\user_app\crud\create_country.html:24
+#: .\templates\user_app\crud\create_gender.html:24
+#: .\templates\user_app\crud\create_menu.html:52
+#: .\templates\user_app\crud\create_region.html:24
+#: .\templates\user_app\crud\create_role.html:32
+#: .\templates\user_app\crud\create_scientific_degree.html:28
+#: .\templates\user_app\crud\edit_country.html:24
+#: .\templates\user_app\crud\edit_district.html:28
+#: .\templates\user_app\crud\edit_gender.html:23
+#: .\templates\user_app\crud\edit_menu.html:52
+#: .\templates\user_app\crud\edit_region.html:23
+#: .\templates\user_app\crud\edit_role.html:31
+#: .\templates\user_app\crud\edit_scientific_degree.html:27
+#: .\templates\user_app\crud\edit_state.html:27
+#: .\templates\user_app\crud\edit_user.html:48
+#: .\templates\user_app\crud\view_user.html:81
+#: .\templates\user_app\register\add_reviewer_form.html:47
+msgid "Yopish"
+msgstr ""
+
+#: .\templates\article_app\crud\add_authors.html:69
+#: .\templates\article_app\crud\create_article.html:53
+#: .\templates\article_app\crud\create_article_status.html:29
+#: .\templates\article_app\crud\create_article_type.html:25
+#: .\templates\article_app\crud\create_file.html:40
+#: .\templates\article_app\crud\create_notification_status.html:25
+#: .\templates\article_app\crud\create_section.html:25
+#: .\templates\article_app\crud\create_stage.html:25
+#: .\templates\article_app\crud\edit_article_status.html:28
+#: .\templates\article_app\crud\edit_article_type.html:24
+#: .\templates\article_app\crud\edit_author.html:57
+#: .\templates\article_app\crud\edit_notification_status.html:24
+#: .\templates\article_app\crud\edit_section.html:24
+#: .\templates\article_app\crud\edit_stage.html:24
+#: .\templates\journal\create_journal.html:52
+#: .\templates\journal\delete_journal.html:20
+#: .\templates\journal\edit_journal.html:66
+#: .\templates\journal\split_pages.html:42 .\templates\post\create_page.html:41
+#: .\templates\post\create_post.html:42 .\templates\post\edit_page.html:44
+#: .\templates\post\edit_post.html:53
+#: .\templates\user_app\crud\choose_role.html:43
+#: .\templates\user_app\crud\choose_roles.html:39
+#: .\templates\user_app\crud\create_country.html:25
+#: .\templates\user_app\crud\create_gender.html:25
+#: .\templates\user_app\crud\create_menu.html:53
+#: .\templates\user_app\crud\create_region.html:25
+#: .\templates\user_app\crud\create_role.html:33
+#: .\templates\user_app\crud\create_scientific_degree.html:29
+#: .\templates\user_app\crud\edit_country.html:25
+#: .\templates\user_app\crud\edit_district.html:29
+#: .\templates\user_app\crud\edit_gender.html:24
+#: .\templates\user_app\crud\edit_menu.html:53
+#: .\templates\user_app\crud\edit_region.html:24
+#: .\templates\user_app\crud\edit_role.html:32
+#: .\templates\user_app\crud\edit_scientific_degree.html:28
+#: .\templates\user_app\crud\edit_state.html:28
+#: .\templates\user_app\crud\edit_user.html:49
+#: .\templates\user_app\register\change_password.html:70
+msgid "Saqlash"
+msgstr ""
+
+#: .\templates\article_app\crud\comment.html:18
+#: .\templates\user_app\user_dashboard.html:72
+#: .\templates\user_app\user_dashboard.html:373
+#: .\templates\user_app\user_dashboard.html:689
+#: .\templates\user_app\user_dashboard.html:975
+msgid "Yozishmalar"
+msgstr ""
+
+#: .\templates\article_app\crud\comment.html:27
+#: .\templates\article_app\crud\create_article.html:43
+#: .\templates\journal\journal_article_view.html:13
+#: .\templates\user_app\user_dashboard.html:986
+msgid "Mavzu"
+msgstr ""
+
+#: .\templates\article_app\crud\comment.html:31
+#: .\templates\user_app\user_dashboard.html:990
+msgid "Ilmiy Markaz"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article.html:10
+msgid "Maqola qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article.html:15
+msgid "Mamlakat"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article.html:22
+msgid "Tur"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article.html:29
+msgid "Til"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article.html:36
+#: .\templates\article_app\crud\update_article.html:85
+#: .\templates\user_app\crud\choose_role.html:32
+msgid "Rukn"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article_status.html:9
+msgid "Yangi maqola holatini qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article_status.html:21
+msgid "Bosqichi"
+msgstr ""
+
+#: .\templates\article_app\crud\create_article_type.html:9
+msgid "Yangi maqola turini qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\create_file.html:12
+msgid "Fayl yuklash"
+msgstr ""
+
+#: .\templates\article_app\crud\create_file.html:28
+msgid "Fayl yuklashda xatolik mavjud!"
+msgstr ""
+
+#: .\templates\article_app\crud\create_file.html:30
+msgid "Fayl yuklash uchun tayyor!"
+msgstr ""
+
+#: .\templates\article_app\crud\create_notification_status.html:9
+msgid "Yangi xabar holatini qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\create_section.html:9
+msgid "Yangi rukn qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\create_stage.html:9
+msgid "Yangi bosqich qo'shish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article.html:8
+msgid "Maqolani o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article.html:14
+msgid "Bu maqolani o'chirishga ishonchingiz komilmi?"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article.html:17
+#: .\templates\article_app\crud\delete_article_status.html:16
+#: .\templates\article_app\crud\delete_article_type.html:16
+#: .\templates\article_app\crud\delete_author.html:17
+#: .\templates\article_app\crud\delete_notification_status.html:16
+#: .\templates\article_app\crud\delete_section.html:16
+#: .\templates\article_app\crud\delete_stage.html:16
+#: .\templates\user_app\crud\delete_country.html:16
+#: .\templates\user_app\crud\delete_district.html:16
+#: .\templates\user_app\crud\delete_gender.html:16
+#: .\templates\user_app\crud\delete_menu.html:16
+#: .\templates\user_app\crud\delete_region.html:16
+#: .\templates\user_app\crud\delete_role.html:16
+#: .\templates\user_app\crud\delete_scientific_degree.html:16
+#: .\templates\user_app\crud\delete_state.html:16
+#: .\templates\user_app\crud\delete_user.html:18
+msgid "Yoq"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article.html:18
+#: .\templates\article_app\crud\delete_article_status.html:17
+#: .\templates\article_app\crud\delete_article_type.html:17
+#: .\templates\article_app\crud\delete_author.html:18
+#: .\templates\article_app\crud\delete_notification_status.html:17
+#: .\templates\article_app\crud\delete_section.html:17
+#: .\templates\article_app\crud\delete_stage.html:17
+#: .\templates\journal\journal_dashboard.html:49
+#: .\templates\journal\journal_dashboard.html:150
+#: .\templates\journal\journal_dashboard.html:157
+#: .\templates\post\page_dashboard.html:47
+#: .\templates\post\post_dashboard.html:50
+#: .\templates\user_app\crud\delete_country.html:17
+#: .\templates\user_app\crud\delete_district.html:17
+#: .\templates\user_app\crud\delete_gender.html:17
+#: .\templates\user_app\crud\delete_menu.html:17
+#: .\templates\user_app\crud\delete_region.html:17
+#: .\templates\user_app\crud\delete_role.html:17
+#: .\templates\user_app\crud\delete_scientific_degree.html:17
+#: .\templates\user_app\crud\delete_state.html:17
+#: .\templates\user_app\crud\delete_user.html:20
+#: .\templates\user_app\crud\delete_user.html:22
+#: .\templates\user_app\reviewers_list.html:52
+#: .\templates\user_app\settings\editors.html:41
+msgid "Ha"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article_status.html:8
+msgid "Maqola holatini o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article_status.html:13
+#: .\templates\article_app\crud\delete_article_type.html:13
+#: .\templates\article_app\crud\delete_notification_status.html:13
+#: .\templates\article_app\crud\delete_section.html:13
+#: .\templates\article_app\crud\delete_stage.html:13
+#: .\templates\user_app\crud\delete_country.html:13
+#: .\templates\user_app\crud\delete_district.html:13
+#: .\templates\user_app\crud\delete_gender.html:13
+#: .\templates\user_app\crud\delete_menu.html:13
+#: .\templates\user_app\crud\delete_region.html:13
+#: .\templates\user_app\crud\delete_role.html:13
+#: .\templates\user_app\crud\delete_scientific_degree.html:13
+#: .\templates\user_app\crud\delete_state.html:13
+msgid "O'chirishga ishonchingiz komilmi?"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_article_type.html:8
+#: .\templates\article_app\crud\delete_notification_status.html:8
+msgid "Maqola turini o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_author.html:8
+msgid "Muallifni o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_author.html:14
+msgid "Bu muallifni o'chirishga ishonchingiz komilmi?"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_section.html:8
+msgid "Ruknni o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\delete_stage.html:8
+msgid "Bosqichni o'chirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_article_status.html:8
+msgid "Maqola holatini o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_article_type.html:8
+msgid "Maqola turini o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_author.html:11
+msgid "Muallif ma'lumotlarini o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_notification_status.html:8
+msgid "Xabar holatini o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_section.html:8
+msgid "Ruknni o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\edit_stage.html:8
+msgid "Bosqichni o'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:5
+#: .\templates\article_app\crud\update_article.html:9
+msgid "Maqola bo'yicha ma'lumotlarni to'ldiring"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:23
+msgid "Quyidagi so'ralgan ma'lumotlarni to'ldiring"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:25
+msgid "Muallif"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:38
+#: .\templates\journal\journal_dashboard.html:24
+msgid "Maqola mavzusi"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:94
+msgid "Davlat"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:104
+#: .\templates\user_app\crud\create_menu.html:37
+#: .\templates\user_app\crud\edit_menu.html:37
+msgid "Turi"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:113
+msgid "Tili"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:120
+#: .\templates\journal\journal_article_view.html:21
+msgid "Kalit so'zlar"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:135
+#: .\templates\journal\journal_article_view.html:19
+msgid "Qisqacha mazmuni"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:150
+msgid "Adabiyotlar ro'yxati"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:158
+msgid "Maqola faylini yuklang (.doc, docx)"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:162
+msgid " Fayl"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:175
+msgid "Saqlash va yuborish"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:214
+#: .\templates\user_app\crud\edit_country.html:9
+msgid "O'zgartirish"
+msgstr ""
+
+#: .\templates\article_app\crud\update_article.html:216
+#: .\templates\post\delete_page.html:20 .\templates\post\delete_post.html:20
+msgid "O'chirish"
+msgstr ""
+
+#: .\templates\article_app\includes\banner.html:7
+msgid "Axborotnoma jurnali"
+msgstr ""
+
+#: .\templates\article_app\includes\left_sidebar.html:6
+msgid "Qo'llanmalar"
+msgstr ""
+
+#: .\templates\article_app\includes\navbar.html:103
+#: .\templates\user_app\includes\sidebar.html:25
+msgid "Shaxsiy kabinet"
+msgstr ""
+
+#: .\templates\article_app\includes\navbar.html:104
+#: .\templates\user_app\includes\header.html:84
+msgid "Chiqish"
+msgstr ""
+
+#: .\templates\article_app\includes\right_sidebar.html:6
+msgid "E'lonlar"
+msgstr ""
+
+#: .\templates\article_app\main.html:5 .\templates\user_app\not_access.html:14
+#: .\templates\user_app\settings\home.html:5
+#: .\templates\user_app\settings\home.html:9
+msgid "Bosh sahifa"
+msgstr ""
+
+#: .\templates\article_app\main.html:17
+msgid "Batafsil"
+msgstr ""
+
+#: .\templates\article_app\message\send_message.html:10
+msgid "Xabar yuborish"
+msgstr ""
+
+#: .\templates\article_app\message\send_message.html:49
+#: .\templates\user_app\check_article_by_editor.html:150
+#: .\templates\user_app\register\add_reviewer_form.html:48
+#: .\templates\user_app\register\edit_profile.html:219
+msgid "Yuborish"
+msgstr ""
+
+#: .\templates\article_app\notification_status.html:4
+#: .\templates\article_app\notification_status.html:9
+msgid "Xabar holatlari ro'yxati"
+msgstr ""
+
+#: .\templates\article_app\notification_status.html:17
+msgid "Yangi xabar holatini yaratish"
+msgstr ""
+
+#: .\templates\article_app\sections.html:4
+#: .\templates\article_app\sections.html:9
+msgid "Ruknlar"
+msgstr ""
+
+#: .\templates\article_app\sections.html:17
+msgid "Yangi rukn yaratish"
+msgstr ""
+
+#: .\templates\journal\create_journal.html:10
+#: .\templates\journal\journal_dashboard.html:110
+msgid "Yangi jurnal yaratish"
+msgstr ""
+
+#: .\templates\journal\create_journal.html:22
+#: .\templates\journal\edit_journal.html:22
+#: .\templates\journal\journal_dashboard.html:121
+msgid "Yili"
+msgstr ""
+
+#: .\templates\journal\create_journal.html:29
+msgid "Soni"
+msgstr ""
+
+#: .\templates\journal\delete_journal.html:10
+msgid "Jurnali o'chirish"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:10
+msgid "Jurnalni o'zgartirish"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:29
+#: .\templates\journal\journal_dashboard.html:122
+msgid "Nomeri"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:36
+msgid "Jurnalni bosh qismini yuklang"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:43
+#: .\templates\post\create_post.html:34 .\templates\post\edit_post.html:36
+#: .\templates\post\post_dashboard.html:31
+#: .\templates\user_app\crud\view_user.html:72
+msgid "Rasm"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:50
+#: .\templates\journal\journal_dashboard.html:127
+msgid "Holati"
+msgstr ""
+
+#: .\templates\journal\edit_journal.html:57
+#: .\templates\journal\journal_dashboard.html:27
+#: .\templates\journal\journal_dashboard.html:126
+#: .\templates\post\edit_page.html:35 .\templates\post\edit_post.html:44
+#: .\templates\post\page_dashboard.html:31
+msgid "Nashr holati"
+msgstr ""
+
+#: .\templates\journal\journal_article_view.html:25
+#: .\templates\post\edit_post.html:29
+msgid "To'liq matni"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:5
+#: .\templates\journal\journal_dashboard.html:10
+msgid "Jurnal boshqaruv paneli"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:14
+msgid "Tasdiqlangan maqolalar ro'yxati"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:25
+#: .\templates\journal\journal_dashboard.html:124
+#: .\templates\post\page_dashboard.html:32
+#: .\templates\post\post_dashboard.html:33
+msgid "Yaratilgan vaqti"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:26
+msgid "Tasdiq holati"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:28
+msgid "Maqola matni"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:29
+msgid "Maqola tartibini tanlang"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:42
+msgid "Tasdiqlangan"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:44
+msgid "Tasdiqlanmagan"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:51
+#: .\templates\journal\journal_dashboard.html:152
+#: .\templates\journal\journal_dashboard.html:159
+#: .\templates\post\page_dashboard.html:49
+#: .\templates\post\post_dashboard.html:52
+#: .\templates\user_app\reviewers_list.html:54
+#: .\templates\user_app\settings\editors.html:43
+msgid "Yo'q"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:78
+msgid "Nashr etish uchun maqolalar topilmadi."
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:90
+msgid "Maqolalar uchun tayinlangan tartiblarni saqlash"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:104
+msgid "Bosh shablonni yuklab oling"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:125
+#: .\templates\post\page_dashboard.html:33
+msgid "O'zgartirilgan vaqti"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:128
+msgid "Mundarija fayl"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:129
+msgid "Asosiy fayl"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:130
+#: .\templates\post\page_dashboard.html:34
+#: .\templates\user_app\reviewer_list_by_editor.html:23
+msgid "Amallar"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:166
+msgid "Mundarija tayyor"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:173
+#: .\templates\journal\split_pages.html:14
+msgid "Jurnal"
+msgstr ""
+
+#: .\templates\journal\journal_dashboard.html:195
+msgid "Jurnal mavjud emas."
+msgstr ""
+
+#: .\templates\journal\journal_detail.html:20
+msgid "Umumiy fayl"
+msgstr ""
+
+#: .\templates\journal\journals.html:5
+msgid "Jurnallar"
+msgstr ""
+
+#: .\templates\journal\journals.html:11
+msgid "Jurnallar ro'yxati"
+msgstr ""
+
+#: .\templates\journal\split_pages.html:9
+msgid "Jurnal sahiflarini muallifga tegishli betlarini bo'lish"
+msgstr ""
+
+#: .\templates\journal\split_pages.html:25
+msgid "Birinchi sahifa nomeri"
+msgstr ""
+
+#: .\templates\journal\split_pages.html:30
+msgid "Oxirgi sahifa nomeri"
+msgstr ""
+
+#: .\templates\post\create_page.html:10
+msgid "Sahifa yaratish"
+msgstr ""
+
+#: .\templates\post\create_page.html:15 .\templates\post\create_post.html:15
+#: .\templates\post\edit_page.html:15 .\templates\post\edit_post.html:15
+#: .\templates\post\page_dashboard.html:29
+#: .\templates\post\post_dashboard.html:29
+msgid "Sarlavhasi"
+msgstr ""
+
+#: .\templates\post\create_page.html:21 .\templates\post\edit_page.html:22
+#: .\templates\post\page_dashboard.html:30
+msgid "Kalit so'z"
+msgstr ""
+
+#: .\templates\post\create_page.html:27 .\templates\post\edit_page.html:28
+msgid "Matn"
+msgstr ""
+
+#: .\templates\post\create_page.html:33
+msgid "Nashr holari"
+msgstr ""
+
+#: .\templates\post\create_post.html:10
+msgid "E'lon yaratish"
+msgstr ""
+
+#: .\templates\post\create_post.html:22 .\templates\post\edit_post.html:22
+#: .\templates\post\post_dashboard.html:30
+msgid "Teg"
+msgstr ""
+
+#: .\templates\post\create_post.html:28
+msgid "To‘liq matn"
+msgstr ""
+
+#: .\templates\post\delete_page.html:10
+msgid "Sahifani o'chirish"
+msgstr ""
+
+#: .\templates\post\delete_post.html:10
+msgid "E'lonni o'chirish"
+msgstr ""
+
+#: .\templates\post\edit_page.html:10
+msgid "Sahifani o'zgartirish"
+msgstr ""
+
+#: .\templates\post\edit_post.html:10
+msgid "E'lonni o'zgartirish"
+msgstr ""
+
+#: .\templates\post\page_dashboard.html:4
+#: .\templates\post\page_dashboard.html:9
+msgid "Sahifalar boshqaruv paneli"
+msgstr ""
+
+#: .\templates\post\page_dashboard.html:19
+msgid "Yangi sahifa yaratish"
+msgstr ""
+
+#: .\templates\post\page_dashboard.html:66
+#: .\templates\post\post_dashboard.html:69
+msgid "Ma'lumot mavjud emas."
+msgstr ""
+
+#: .\templates\post\post_dashboard.html:4
+#: .\templates\post\post_dashboard.html:9
+msgid "E'lonlar boshqaruv paneli"
+msgstr ""
+
+#: .\templates\post\post_dashboard.html:19
+msgid "Yangi e'lon yaratish"
+msgstr ""
+
+#: .\templates\post\post_dashboard.html:32
+msgid "Nashr qilinganmi"
+msgstr ""
+
+#: .\templates\post\post_dashboard.html:34
+msgid "O‘zgartirilgan vaqti"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:10
+#: .\templates\user_app\users_page.html:10
+msgid "Bosh Sahifa"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:11
+msgid "Adminlar"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:13
+msgid "Adminlar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:35
+#: .\templates\user_app\crud\view_user.html:15
+#: .\templates\user_app\register\register.html:32
+#: .\templates\user_app\users_page.html:36
+msgid "Familiya"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:36
+#: .\templates\user_app\crud\view_user.html:19
+#: .\templates\user_app\register\register.html:36
+#: .\templates\user_app\users_page.html:37
+msgid "Ism"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:37
+#: .\templates\user_app\crud\view_user.html:23
+#: .\templates\user_app\users_page.html:38
+msgid "Otasini ismi"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:38
+msgid "Tug'ilgan kun"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:39
+msgid "Pasport"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:40
+#: .\templates\user_app\crud\view_user.html:35
+#: .\templates\user_app\settings\editors.html:21
+#: .\templates\user_app\settings\users.html:21
+#: .\templates\user_app\users_page.html:39
+msgid "Telefon"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:41
+#: .\templates\user_app\users_page.html:40
+msgid "Email"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:42
+msgid "Tuman"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:43
+#: .\templates\user_app\crud\edit_district.html:21
+#: .\templates\user_app\crud\view_user.html:51
+msgid "Viloyat"
+msgstr ""
+
+#: .\templates\user_app\admins_page.html:44
+msgid "Role"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:4
+#: .\templates\user_app\check_article_by_reviewer.html:4
+msgid "Maqola tekshirish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:15
+#: .\templates\user_app\check_article_by_reviewer.html:12
+#: .\templates\user_app\check_article_by_reviewer.html:80
+msgid "Mavzu:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:19
+#: .\templates\user_app\check_article_by_reviewer.html:15
+msgid "Rukn:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:26
+msgid "Muallif:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:30
+#: .\templates\user_app\check_article_by_reviewer.html:19
+msgid "Qisqacha mazmuni:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:36
+#: .\templates\user_app\check_article_by_reviewer.html:25
+msgid "Kalit so'zlar:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:43
+#: .\templates\user_app\check_article_by_reviewer.html:32
+msgid "Fayl:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:45
+#: .\templates\user_app\check_article_by_reviewer.html:35
+msgid "To'liq ko'rish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:52
+msgid ""
+"Muallifga taqrizchilarga yuborishdan oldin qayta yuborishi yoki rad etish "
+"sababini kiriting:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:62
+msgid "Muallifga yuborish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:70
+msgid "Maqola jurnalga to'g'ri kelmaydi"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:84
+#: .\templates\user_app\check_article_by_reviewer.html:46
+#: .\templates\user_app\check_article_by_reviewer.html:54
+msgid "Xabarlar"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:95
+msgid "Muallif va taqrizchilar bilan yozishmalar"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:111
+msgid "Taqrizchilarni tanlash"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:120
+msgid "Taqrizchini ixtiyoriy tanlash"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:130
+msgid "Taqrizchini tasodifiy tanlash"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:139
+msgid "Taqrizchilar soni"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:166
+msgid "Taqrizchilar"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:183
+msgid "Tanlangan taqrizchilarga yuborish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:198
+msgid "Taqrizchilar maqolani ko'rib chiqish holatlari"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:208
+#: .\templates\user_app\check_article_by_editor.html:222
+#: .\templates\user_app\check_article_by_editor.html:236
+#: .\templates\user_app\check_article_by_editor.html:250
+msgid "Yuborilgan"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:212
+#: .\templates\user_app\check_article_by_editor.html:226
+#: .\templates\user_app\check_article_by_editor.html:240
+#: .\templates\user_app\check_article_by_editor.html:254
+msgid "Ko'rilmoqda"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:216
+#: .\templates\user_app\check_article_by_editor.html:230
+#: .\templates\user_app\check_article_by_editor.html:244
+#: .\templates\user_app\check_article_by_editor.html:262
+msgid "Tugatildi"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:258
+#: .\templates\user_app\check_article_by_editor.html:294
+msgid "Qayta yuborish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:270
+#: .\templates\user_app\check_article_by_reviewer.html:82
+msgid "Taqrizchi:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:271
+#: .\templates\user_app\crud\create_menu.html:45
+#: .\templates\user_app\crud\edit_menu.html:45
+#: .\templates\user_app\crud\edit_state.html:20
+#: .\templates\user_app\reviewer_list_by_editor.html:22
+#: .\templates\user_app\settings\menus.html:32
+msgid "Holat"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:281
+#: .\templates\user_app\user_dashboard.html:343
+#: .\templates\user_app\user_dashboard.html:659
+msgid "Yaratilgan vaqt:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:282
+#: .\templates\user_app\check_article_by_editor.html:284
+msgid "Hali tayyor emas!"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:283
+msgid "Yangilangan vaqt:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:307
+msgid "Taqriz bayoni:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:309
+#: .\templates\user_app\reviewers_list.html:37
+#: .\templates\user_app\reviewers_list.html:44
+msgid "Mavjud emas"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:327
+msgid "Tadiqlash"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:353
+msgid "Muallifga qayta yuborish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_editor.html:366
+msgid "Boshqa taqrizchiga maqolani yuborish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:64
+msgid "Muharrir bilan yozishmalar"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:81
+msgid "Muharrir:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:91
+msgid "Yuborilgan vaqti:"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:108
+msgid "Taqriz bayonini kiriting"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:122
+#: .\templates\user_app\crud\check_role_reviewer_form.html:60
+msgid "Rad etish"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:126
+msgid "Muallif maqolani qayta yuborsin"
+msgstr ""
+
+#: .\templates\user_app\check_article_by_reviewer.html:131
+#: .\templates\user_app\crud\check_role_reviewer_form.html:62
+#: .\templates\user_app\settings\editors.html:50
+msgid "Tasdiqlash"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:7
+msgid "Talabgorni ma'lumotlari"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:15
+#: .\templates\user_app\settings\editors.html:19
+#: .\templates\user_app\settings\users.html:19
+msgid "FIO"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:23
+msgid "Telefon nomer"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:27
+msgid "Ilmiy Daraja"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:35
+msgid "Tanlangan ruknlar"
+msgstr ""
+
+#: .\templates\user_app\crud\check_role_reviewer_form.html:44
+msgid "Yuborilgan fayllar"
+msgstr ""
+
+#: .\templates\user_app\crud\choose_role.html:9
+msgid "Saytga kim sifatida kirmoqchisiz?"
+msgstr ""
+
+#: .\templates\user_app\crud\choose_role.html:22
+msgid "Rolni tanlang:"
+msgstr ""
+
+#: .\templates\user_app\crud\choose_roles.html:12
+msgid "Taqrizchi formasi"
+msgstr ""
+
+#: .\templates\user_app\crud\choose_roles.html:27
+msgid "Ma'lumotlarni yuborishda xatolik yuz berdi!"
+msgstr ""
+
+#: .\templates\user_app\crud\choose_roles.html:29
+msgid "Fayllar yuborish uchun tayyor!"
+msgstr ""
+
+#: .\templates\user_app\crud\create_country.html:9
+msgid "Yangi mamlakat qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\create_gender.html:9
+msgid "Yangi jins qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:9
+msgid "Yangi menyu qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:21
+#: .\templates\user_app\crud\edit_menu.html:21
+#: .\templates\user_app\settings\menus.html:28
+msgid "Url nomi"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:25
+#: .\templates\user_app\crud\edit_menu.html:25
+msgid "Url"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:29
+#: .\templates\user_app\crud\edit_menu.html:29
+msgid "Icon nomi"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:33
+#: .\templates\user_app\crud\edit_menu.html:33
+#: .\templates\user_app\settings\menus.html:29
+msgid "Tartibi"
+msgstr ""
+
+#: .\templates\user_app\crud\create_menu.html:41
+#: .\templates\user_app\crud\edit_menu.html:41
+#: .\templates\user_app\settings\menus.html:31
+msgid "Ruxsat etilgan rollar"
+msgstr ""
+
+#: .\templates\user_app\crud\create_region.html:9
+msgid "Yangi viloyat qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\create_role.html:9
+msgid "Yangi rol qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\create_role.html:21
+#: .\templates\user_app\crud\edit_role.html:20
+#: .\templates\user_app\settings\roles.html:27
+msgid "Kod nomi"
+msgstr ""
+
+#: .\templates\user_app\crud\create_role.html:25
+#: .\templates\user_app\crud\create_scientific_degree.html:21
+#: .\templates\user_app\crud\edit_role.html:24
+#: .\templates\user_app\crud\edit_scientific_degree.html:20
+#: .\templates\user_app\settings\roles.html:28
+msgid "Darajasi"
+msgstr ""
+
+#: .\templates\user_app\crud\create_scientific_degree.html:9
+msgid "Yangi ilmiy daraja qo'shish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_country.html:8
+msgid "Mamlakatni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_district.html:8
+msgid "Tumanni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_gender.html:8
+msgid "Jinsni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_menu.html:8
+#: .\templates\user_app\crud\delete_role.html:8
+msgid "Rolni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_region.html:8
+msgid "Viloyatni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_scientific_degree.html:8
+msgid "Ilmiy darajani o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_state.html:8
+msgid "Holatni o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_user.html:8
+msgid "Foydalanuvchini o'chirish"
+msgstr ""
+
+#: .\templates\user_app\crud\delete_user.html:15
+msgid "Bu foydalanuvchini o'chirishga ishonchingiz komilmi?"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_district.html:9
+msgid "Tumanni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_gender.html:8
+msgid "Jinsni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_menu.html:9
+msgid "menyuni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_region.html:8
+msgid "Viloyatni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_role.html:8
+msgid "Rolni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_scientific_degree.html:8
+msgid "Ilmiy darajani o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_state.html:8
+msgid "Holatni o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_user.html:9
+msgid "Foydalanuvchiga rol tayinlash"
+msgstr ""
+
+#: .\templates\user_app\crud\edit_user.html:18
+#: .\templates\user_app\settings\users.html:24
+msgid "Rollar"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:6
+msgid "Foydalanuvchi"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:27
+msgid "Tug'ilgan sana"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:31
+msgid "Jins"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:43
+msgid "Pasport Seriya"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:47
+msgid "Pasport Raqam"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:55
+msgid "Rol"
+msgstr ""
+
+#: .\templates\user_app\crud\view_user.html:64
+msgid "Oxirgi kirgan vaqti"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:5
+#: .\templates\user_app\editor_dashboard.html:9
+msgid "Muharrirga kelgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:16
+#: .\templates\user_app\editor_dashboard.html:17
+msgid "Tekshirilmaganlar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:23
+#: .\templates\user_app\editor_dashboard.html:24
+msgid "Jarayondagilar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:30
+#: .\templates\user_app\editor_dashboard.html:31
+msgid "Tugallanganlar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:39
+msgid "Tekshirish kerak bo'lgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:54
+msgid "Jarayondagi maqolalar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:69
+msgid "Tekshirish jarayoni tugagan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\editor_dashboard.html:132
+#: .\templates\user_app\editor_dashboard.html:163
+#: .\templates\user_app\editor_dashboard.html:192
+#: .\templates\user_app\reviewer_dashboard.html:110
+#: .\templates\user_app\reviewer_dashboard.html:137
+msgid "Ma'lumot topilmadi."
+msgstr ""
+
+#: .\templates\user_app\includes\header.html:24
+msgid "Onlayn axborotnoma jurnal"
+msgstr ""
+
+#: .\templates\user_app\includes\header.html:82
+msgid "Asosiy sahifaga o'tish"
+msgstr ""
+
+#: .\templates\user_app\not_access.html:10
+msgid "Kechirasiz, bu sahifaga sizga ruxsat yo'q."
+msgstr ""
+
+#: .\templates\user_app\register\add_reviewer_form.html:9
+msgid "Hurmatli talabgor formani to'ldiring"
+msgstr ""
+
+#: .\templates\user_app\register\add_reviewer_form.html:23
+msgid "Ruknni tanlang"
+msgstr ""
+
+#: .\templates\user_app\register\add_reviewer_form.html:30
+msgid "Ilmiy darajangiz"
+msgstr ""
+
+#: .\templates\user_app\register\add_reviewer_form.html:40
+msgid "Chop etilgan ilmiy ishlaringiz ro‘yxatini yuklang"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:6
+msgid "Parolni o‘zgartirish"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:19
+msgid "Parol o'zgartirish"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:23
+#: .\templates\user_app\register\change_password.html:32
+msgid "Eski parol"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:37
+#: .\templates\user_app\register\change_password.html:46
+msgid "Yangi parol"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:52
+#: .\templates\user_app\register\change_password.html:61
+msgid "Yangi parolni takrorlang"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:88
+msgid "Ogohlantirish!"
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:90
+msgid "Siz kiritgan joriy parolni to'g'ri kiriting."
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:91
+msgid "Siz kiritgan yangi parollar bir - biriga mos kelishi kerak."
+msgstr ""
+
+#: .\templates\user_app\register\change_password.html:92
+msgid "Kamida 8 ta belgidan iborat bo'lsin."
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:4
+#: .\templates\user_app\register\edit_profile.html:7
+msgid "Shaxsiy ma'lumotlarim"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:20
+msgid "Shaxsiy ma'lumotlaringiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:24
+msgid "Familiyangiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:31
+msgid "Ismingiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:38
+msgid "Otangizning ismi"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:45
+msgid "Tug‘ilgan kuningiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:52
+msgid "Viloyatingiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:59
+msgid "Jinsingiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:67
+msgid "Rasmingizni yuklang"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:86
+msgid "Bog‘lanish uchun ma'lumotlar"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:90
+#: .\templates\user_app\register\login.html:32
+#: .\templates\user_app\register\register.html:44
+msgid "Foydalanuvchi nomi"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:98
+msgid "Telefon raqamingiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:114
+msgid "Passport ma'lumotlaringiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:120
+msgid "Ish joyingiz"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:128
+msgid "Sizga berilgan rollar:"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:137
+msgid "Taqrizchi rolini tanlash"
+msgstr ""
+
+#: .\templates\user_app\register\edit_profile.html:234
+msgid "O'zgarishlarni saqlash"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:5
+#: .\templates\user_app\register\login.html:42
+#: .\templates\user_app\register\register.html:66
+msgid "Kirish"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:19
+msgid "Tizimga kirish"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:20
+#: .\templates\user_app\register\register.html:20
+msgid "Onlayn axborotnoma jurnali"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:37
+#: .\templates\user_app\register\register.html:52
+msgid "Parol"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:45
+msgid "Tizimdan oldin ro'yxatdan o'tmagan bo'lsangiz. Bu linkga kiring"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:45
+#: .\templates\user_app\register\register.html:5
+#: .\templates\user_app\register\register.html:19
+#: .\templates\user_app\register\register.html:62
+msgid "Ro'yxatdan o'tish"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:46
+msgid "here"
+msgstr ""
+
+#: .\templates\user_app\register\login.html:46
+msgid "to reset password."
+msgstr ""
+
+#: .\templates\user_app\register\password_reset.html:6
+msgid "Reset Password"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset.html:8
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: .\templates\user_app\register\password_reset.html:17
+msgid "Send email"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_complete.html:5
+msgid "Password reset complete"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_complete.html:7
+msgid "Your password has been set. You may go ahead and log in now."
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_complete.html:8
+msgid "Log in"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_confirm.html:5
+msgid "Password Reset Confirm"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_confirm.html:7
+msgid "Please enter your new password."
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_confirm.html:20
+msgid "Reset password"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_done.html:5
+msgid "Password reset sent"
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_done.html:7
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: .\templates\user_app\register\password_reset_done.html:8
+msgid ""
+"If you don't receive an email, please make sure you've entered the  address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\templates\user_app\register\register.html:40
+msgid "Otangizni ismi"
+msgstr ""
+
+#: .\templates\user_app\register\register.html:57
+msgid "Parolni takror kiriting"
+msgstr ""
+
+#: .\templates\user_app\register\register.html:65
+msgid "Siz oldin ro'yxatdan o'tgan bo'lsangiz."
+msgstr ""
+
+#: .\templates\user_app\reviewer_dashboard.html:5
+#: .\templates\user_app\reviewer_dashboard.html:9
+msgid "Taqrizchiga kelgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\reviewer_dashboard.html:16
+#: .\templates\user_app\reviewer_dashboard.html:17
+msgid "Tekshirilmagan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\reviewer_dashboard.html:23
+#: .\templates\user_app\reviewer_dashboard.html:24
+msgid "Tekshirish tugatilgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\reviewer_dashboard.html:32
+msgid "Tekshirilishi kerak bo'lgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\reviewer_dashboard.html:47
+msgid "Tekshirilgan maqolalar"
+msgstr ""
+
+#: .\templates\user_app\reviewer_list_by_editor.html:4
+#: .\templates\user_app\reviewer_list_by_editor.html:9
+msgid "Taqrizchi roliga davogar talabgorlar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\reviewer_list_by_editor.html:19
+#: .\templates\user_app\reviewers_list.html:17
+msgid "F.I.O"
+msgstr ""
+
+#: .\templates\user_app\reviewer_list_by_editor.html:21
+msgid "Ilmiy daraja"
+msgstr ""
+
+#: .\templates\user_app\reviewers_list.html:4
+#: .\templates\user_app\reviewers_list.html:8
+msgid "Taqrizchilar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\reviewers_list.html:19
+msgid "Telefon nomeri"
+msgstr ""
+
+#: .\templates\user_app\reviewers_list.html:20
+msgid "Tug'ilgan kuni"
+msgstr ""
+
+#: .\templates\user_app\reviewers_list.html:21
+msgid "Ilmiy Darajasi"
+msgstr ""
+
+#: .\templates\user_app\reviewers_list.html:22
+msgid "Taqrizchimi"
+msgstr ""
+
+#: .\templates\user_app\settings\country.html:4
+#: .\templates\user_app\settings\country.html:9
+msgid "Mamlakatlar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\country.html:17
+msgid "Yangi mamlakat yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\editors.html:4
+#: .\templates\user_app\settings\editors.html:9
+msgid "Muharrirlar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\editors.html:22
+msgid "Pasport ser"
+msgstr ""
+
+#: .\templates\user_app\settings\editors.html:23
+msgid "Pasport nomer"
+msgstr ""
+
+#: .\templates\user_app\settings\editors.html:24
+msgid "Muharrirmi ?"
+msgstr ""
+
+#: .\templates\user_app\settings\genders.html:4
+msgid "Genders"
+msgstr ""
+
+#: .\templates\user_app\settings\genders.html:9
+msgid "Jinslar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\genders.html:17
+msgid "Yangi jins yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:17
+msgid "CHOP ETILGAN MAQOLALAR SONI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:26
+msgid "NASHR ETILGAN JURNALLAR SONI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:35
+msgid "CHOP ETISHGA TAYYOR MAQOLALAR SONI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:44
+msgid "JARAYONDAGI MAQOLALAR SONI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:57
+msgid "FOYDALANUVCHILAR STATISTIKASI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:64
+msgid "SONI"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:69
+msgid "FOYDALANUVCHILAR"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:76
+msgid "MUHARRIRLAR"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:83
+msgid "TAQRIZCHILAR"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:90
+msgid "TAQRIZCHI BO'LMOQCHILAR"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:98
+msgid "ADMINLAR"
+msgstr ""
+
+#: .\templates\user_app\settings\home.html:105
+msgid "ONLAYNDAGILAR"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:4
+#: .\templates\user_app\settings\menus.html:9
+msgid "Menyular ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:17
+msgid "Yangi menyu yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:27
+msgid "Belgi nomi"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:30
+msgid "Menyu turi"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:48
+msgid "-"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:61
+msgid "Aktiv"
+msgstr ""
+
+#: .\templates\user_app\settings\menus.html:63
+msgid "Aktiv emas"
+msgstr ""
+
+#: .\templates\user_app\settings\region.html:4
+#: .\templates\user_app\settings\region.html:9
+msgid "Viloyatlar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\region.html:17
+msgid "Yangi viloyat yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\roles.html:4
+#: .\templates\user_app\settings\roles.html:9
+msgid "Rollar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\roles.html:17
+msgid "Yangi rol yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\scientific_degrees.html:4
+#: .\templates\user_app\settings\scientific_degrees.html:9
+msgid "Ilmiy darajalar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\scientific_degrees.html:17
+msgid "Yangi ilmiy daraja yaratish"
+msgstr ""
+
+#: .\templates\user_app\settings\scientific_degrees.html:27
+msgid "Level"
+msgstr ""
+
+#: .\templates\user_app\settings\users.html:4
+#: .\templates\user_app\users_page.html:5
+#: .\templates\user_app\users_page.html:11
+msgid "Foydalanuvchilar"
+msgstr ""
+
+#: .\templates\user_app\settings\users.html:9
+#: .\templates\user_app\users_page.html:13
+msgid "Foydalanuvchilar ro'yxati"
+msgstr ""
+
+#: .\templates\user_app\settings\users.html:22
+msgid "Seriya"
+msgstr ""
+
+#: .\templates\user_app\settings\users.html:23
+msgid "Raqam"
+msgstr ""
+
+#: .\templates\user_app\settings\users.html:31
+msgid "Umumiy:"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:9
+msgid "Maqolalarim"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:16
+#: .\templates\user_app\user_dashboard.html:17
+msgid "Jarayonda"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:24
+#: .\templates\user_app\user_dashboard.html:25
+msgid "Arxiv"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:37
+msgid "Maqolangiz uchun shablonni yuklab oling"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:44
+msgid "Yangi maqola yuborish"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:54
+msgid "Yuborilgan vaqt:"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:91
+#: .\templates\user_app\user_dashboard.html:394
+#: .\templates\user_app\user_dashboard.html:713
+msgid "Taqriz holati"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:118
+#: .\templates\user_app\user_dashboard.html:421
+#: .\templates\user_app\user_dashboard.html:740
+msgid "Maqolangiz ma'lumotlari to'liqmas"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:146
+#: .\templates\user_app\user_dashboard.html:449
+#: .\templates\user_app\user_dashboard.html:768
+msgid "Muharrirga yuborildi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:174
+#: .\templates\user_app\user_dashboard.html:477
+#: .\templates\user_app\user_dashboard.html:796
+msgid "Taqrizchilarga yuborildi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:202
+#: .\templates\user_app\user_dashboard.html:505
+#: .\templates\user_app\user_dashboard.html:824
+msgid "Taqriz olindi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:230
+#: .\templates\user_app\user_dashboard.html:533
+#: .\templates\user_app\user_dashboard.html:852
+msgid "Jarayon tugadi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:257
+msgid "Sizning maqolangiz muharrir tomonidan rad etildi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:284
+#: .\templates\user_app\user_dashboard.html:311
+#: .\templates\user_app\user_dashboard.html:587
+#: .\templates\user_app\user_dashboard.html:614
+#: .\templates\user_app\user_dashboard.html:906
+#: .\templates\user_app\user_dashboard.html:933
+msgid "Yozishmani o'qib, maqolangizni qayta yuboring"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:315
+#: .\templates\user_app\user_dashboard.html:618
+#: .\templates\user_app\user_dashboard.html:937
+msgid "Tayinlangan taqrizchilar"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:318
+#: .\templates\user_app\user_dashboard.html:621
+#: .\templates\user_app\user_dashboard.html:940
+msgid "Taqriz"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:346
+#: .\templates\user_app\user_dashboard.html:662
+msgid "Holati:"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:389
+#: .\templates\user_app\user_dashboard.html:708
+msgid "Maqolangizni yuklab olish"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:560
+#: .\templates\user_app\user_dashboard.html:879
+msgid "Sizni maqolangiz muharrir tomonidan rad etildi"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:642
+#: .\templates\user_app\user_dashboard.html:962
+msgid "Ma'lumot mavjud emas"
+msgstr ""
+
+#: .\templates\user_app\user_dashboard.html:647
+msgid "Yuborilganlar arxivi"
+msgstr ""
+
+#: .\templates\user_app\users_page.html:41
+msgid "Action"
+msgstr ""
+
+#: .\user_app\models.py:42
+msgid "Username"
+msgstr ""
+
+#: .\user_app\models.py:43
+msgid "Surname"
+msgstr ""
+
+#: .\user_app\models.py:45
+msgid "Middle Name"
+msgstr ""
+
+#: .\user_app\models.py:46
+msgid "Birthday"
+msgstr ""
+
+#: .\user_app\models.py:48
+msgid "Avatar"
+msgstr ""
+
+#: .\user_app\models.py:51
+msgid "Email address"
+msgstr ""
+
+#: .\user_app\models.py:53 .\user_app\models.py:54
+msgid "Passport "
+msgstr ""
+
+#: .\user_app\utils.py:19
+msgid "Bu foydalanuvchi nomi mavjud!"
+msgstr ""
+
+#: .\user_app\utils.py:25
+#, python-brace-format
+msgid ""
+"Foydalanuvchi nomingiz {USERNAME_MIN_LENGTH} ta belgidan kam bo'lmasligi "
+"kerak!"
+msgstr ""
+
+#: .\user_app\utils.py:42
+msgid "Bu E-mail mavjud!"
+msgstr ""
+
+#: .\user_app\utils.py:44
+msgid "E-mail talabga javob bermaydi!"
+msgstr ""
+
+#: .\user_app\utils.py:46
+msgid "E-mailingizni kiriting!"
+msgstr ""
+
+#: .\user_app\views.py:624 .\user_app\views.py:674
+msgid "Login yoki parol to'g'ri kiritilmad!"
+msgstr ""
+
+#: .\user_app\views.py:641
+msgid "Kiritgan parolaringiz bir-biriga mos emas!"
+msgstr ""
+
+#: .\user_app\views.py:666
+msgid "Bilim va malakalarni baholash agentligi online axborotnoma jurnali."
+msgstr ""
+
+#: .\user_app\views.py:677
+msgid "Iltimos familiyangizni kiriting"
+msgstr ""
+
+#: .\user_app\views.py:679
+msgid "Iltimos ismingizni kiriting"
+msgstr ""
+
+#: .\user_app\views.py:681
+msgid "Iltimos otangizning ismini kiriiting"
+msgstr ""
+
+#: .\user_app\views.py:683
+msgid "Iltimos username ni kiriting"
+msgstr ""
+
+#: .\user_app\views.py:685
+msgid "Iltimos E-mailni kiriting"
+msgstr ""
+
+#: .\user_app\views.py:714
+msgid "Ruknni yarating!"
+msgstr ""
+
+#: .\user_app\views.py:716
+msgid "Ilmiy darajangizni kiriting!"
+msgstr ""
+
+#: .\user_app\views.py:718
+msgid "Iltimos faylni yuklang!"
+msgstr ""
+
+#: .\user_app\views.py:740
+msgid "Omadli yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:808
+msgid "Quyidagi xatoni tuzating."
+msgstr ""
+
+#: .\user_app\views.py:842
+msgid "Yaroqsiz sarlavha topildi."
+msgstr ""
+
+#: .\user_app\views.py:1226
+msgid "Muvaffaqiyatli maqola tasdiqlandi!"
+msgstr ""
+
+#: .\user_app\views.py:1262
+msgid "Maqolani qayta yuborish muvaffaqiyatli amalga oshirildi!"
+msgstr ""
+
+#: .\user_app\views.py:1302 .\user_app\views.py:1334
+msgid "Sahifa topilmadi"
+msgstr ""
+
+#: .\user_app\views.py:1324
+msgid "Hurmatli taqrizchi sizga maqola qayta yuborildi"
+msgstr ""
+
+#: .\user_app\views.py:1330
+msgid "Taqrizchiga qayta yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:1353 .\user_app\views.py:1529
+msgid ""
+"O'zbekiston respublikasi, oliy ta'lim, fan va innovatsiyalar vazirligi "
+"huzuridagi bilim va malakalarni baholash agentligi online axborotnoma "
+"jurnali."
+msgstr ""
+
+#: .\user_app\views.py:1370
+msgid "Maqola omadli tasdiqlandi!"
+msgstr ""
+
+#: .\user_app\views.py:1384 .\user_app\views.py:1537
+msgid "Maqola Rad Etildi!"
+msgstr ""
+
+#: .\user_app\views.py:1400
+msgid "Muallifga maqolani qayta yuborish uchun  yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:1432
+#, python-brace-format
+msgid "Bu maqolaga ilmiy darajasi({degree.name})ga teng taqrizchi topilmadi!"
+msgstr ""
+
+#: .\user_app\views.py:1441 .\user_app\views.py:1663
+#, python-brace-format
+msgid "{article_section.name} sohasini tekshiradigan taqrizchilar topilmadi!"
+msgstr ""
+
+#: .\user_app\views.py:1453 .\user_app\views.py:1571 .\user_app\views.py:1675
+msgid "Hurmatli taqrizchi sizga maqola yuborildi"
+msgstr ""
+
+#: .\user_app\views.py:1470
+msgid "Taqrizchiga muvaffaqiyatli yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:1509
+msgid "Maqola muallifga to'g'irlash uchun yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:1541
+msgid "Bunday buyruq yo'q"
+msgstr ""
+
+#: .\user_app\views.py:1586
+msgid "Bu taqrizchiga oldin yuborilgan!"
+msgstr ""
+
+#: .\user_app\views.py:1595 .\user_app\views.py:1693
+msgid "Taqrizchilarga muvaffaqiyatli yuborildi!"
+msgstr ""
+
+#: .\user_app\views.py:1601 .\user_app\views.py:1699
+msgid "Taqrizchilarni to'liq tanlang!"
+msgstr ""
+
+#: .\user_app\views.py:1646
+#, python-brace-format
+msgid ""
+"Bu maqolaga ilmiy darajasi({degree.name})ga teng taqrizchilar topilmadi!"
+msgstr ""
+
+#: .\user_app\views.py:1657
+msgid ""
+"Topilgan taqrizchilar soni {len(reviewers_id)} ga teng. Siz izlagan son "
+"{number} ga teng!"
+msgstr ""
+
+#: .\user_app\views.py:1711
+msgid "Forma ma'lumotlarida o'zgarish yo'q!"
+msgstr ""
+
+#: .\user_app\views.py:1715
+msgid "Ma'lumotlariz muvaffaqiyatli saqlandi."
+msgstr ""
+
+#: .\user_app\views.py:1796
+msgid "Bu foydalanuvchi omadli o'chirildi!"
+msgstr ""
+
+#: .\user_app\views.py:1822
+msgid "Bu muharrir omadli tasdiqlandi!"
+msgstr ""
+
+#: .\user_app\views.py:1828
+msgid "Xatolik!"
+msgstr ""

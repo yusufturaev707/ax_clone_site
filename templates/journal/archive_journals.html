@@ -1,0 +1,38 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Jurnallar arxivi" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Jurnallar arxivi" %}
+        </h2>
+        <div class="panel-body"
+             style="background-color: #EEEEEE; border-radius: 5px; padding: 20px 15px 15px 15px">
+            {% if objects.count > 0 %}
+                <div class="row">
+                    {% for object in objects %}
+                        <div class="col-xs-3">
+                            <a href="{% url 'archive_journals_numbers' object.year %}">
+                                <div class="card forshadow">
+                                    <div class="card-body text-center">
+                                        <span style="font-size: x-large">{{ object.year }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card-body text-center">
+                        <span style="font-size: medium; color: #b6b6b6">{% trans "Jurnal topilmadi" %}</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+{% endblock %}

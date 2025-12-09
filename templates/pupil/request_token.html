@@ -1,0 +1,99 @@
+{% load i18n %}
+{% load static %}
+<form class="request_token_form" method="post" data-url="{% url 'request_token' subject.id %}">
+    {% csrf_token %}
+    <div class="modal fade" id="request_token_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans "O'qituvchi tokeni" %}</h5>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body forshadow">
+                    <div class="form-group row m-b-15">
+                        <div class="col-md-12 col-sm-12">
+                            <label> <b>{{ subject.name }}</b> fani o'qituvchingizning tokenini kiriting:
+                                <input type="text" name="teacher_token" id="teacherToken" placeholder="Tokenni kiriting" class="form-control">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Kirish" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function loadVariants(boxes) {
+        $('#questionBox').empty();
+        let card = '';
+        for (item of boxes) {
+            card += `<div class="col-md-3"><div class="card questionBoxCard"><div class="card-body text-center"><h2 class="card-title">${item['box_number']}</h2><p class="card-text">${item['subject_box__subject__name']}</p><a href="/exam/test_detail/${item['id']}/" class="btn btn-outline-info btn-block btn-sm"><i class="fa fa-arrow-right fa-lg"></i></a></div></div></div>`;
+        }
+        $('#questionBox').append(card);
+    }
+    $(document).ready(function () {
+        $('.request_token_form').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            let url = $('.request_token_form').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#request_token_modal').modal('hide');
+                    if (response.result === 1) {
+                        loadVariants(response['question_boxes']);
+                    } else if (response.result === 2){
+                        $('#questionBox').empty();
+                        swal({
+                        title: response.message,
+                        icon: 'error',
+                        timer: 3000,
+                        buttons: {
+                            cancel: {
+                                text: 'Cancel',
+                                value: null,
+                                visible: true,
+                                className: 'btn btn-default',
+                                closeModal: true,
+                            },
+                        }
+                    });
+                    } else {
+                        $('#questionBox').empty();
+                        swal({
+                            title: 'Xatolik yuz berdi!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 3000,
+                            buttons: {
+                                cancel: {
+                                    text: 'Cancel',
+                                    value: null,
+                                    visible: true,
+                                    className: 'btn btn-default',
+                                    closeModal: true,
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+

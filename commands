@@ -1,0 +1,12 @@
+python manage.py update_translation_fields
+django-admin makemessages -l en -e html
+django-admin makemessages -l ru -e html
+django-admin makemessages -l uz -e html
+django-admin makemessages -l qq -e html
+django-admin compilemessages --all
+
+# Extracts strings from python code and templates
+django-admin makemessages -l en-us
+
+# Extracts strings from JS scripts
+django-admin makemessages -d djangojs -l en

@@ -1,0 +1,20 @@
+{% extends 'article_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans 'Bosh sahifa' %}
+{% endblock %}
+{% block content %}
+    <div class="row"
+         style="background-color: white; padding:10px; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;;">
+        <div class="container">
+            <br>
+            {% if post %}
+                <center><h4 class="title">{{ post.title }}</h4></center>
+                <p>{{ post.desc|safe }}</p>
+{#                <a href="{{ post.get_absolute_url }}" class="btn btn-outline-success">{% trans 'Batafsil' %}>></a>#}
+            {% endif %}
+        </div>
+    </div>
+    <br>
+{% endblock %}

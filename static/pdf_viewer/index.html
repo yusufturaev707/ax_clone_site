@@ -1,0 +1,880 @@
+<head>
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <meta http-equiv="Expires" content="-1">
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <meta charset="UTF-8">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+  <style>
+    #pdf-example {
+      /* border: 1px solid black;*/
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+      display: inline-block;
+    }
+
+    input[type="radio"][id^="cb"] {
+      display: none;
+    }
+
+    label {
+      position: relative;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    label:before {
+      background-color: white;
+      color: white;
+      content: " ";
+      display: block;
+      border-radius: 50%;
+      border: 1px solid grey;
+      position: absolute;
+      left: 18px;
+      top: 25px;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      line-height: 25px;
+      transition-duration: 0.4s;
+      transform: scale(0);
+    }
+
+    label img {
+      height: 100px;
+      width: 100px;
+      transition-duration: 0.2s;
+      transform-origin: 50% 50%;
+    }
+
+    :checked+label {
+      border-color: #ddd;
+    }
+
+    :checked+label:before {
+      content: "\2713";
+      background-color: #2ea1cc;
+      transform: scale(2.5);
+      font-size: 15px;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, serif;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .pagination {
+      padding: 10px 0;
+    }
+
+    .pagination ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .pagination a {
+      display: inline-block;
+      padding: 10px 18px;
+      color: #222;
+      border: 1px solid;
+      border-radius: 15px;
+      border-color: gainsboro;
+    }
+
+    /* THREE */
+
+    .p3 .is-active {
+      background-color: #2ea1cc;
+      color: #fff;
+      border-radius: 15px;
+    }
+
+    td {
+
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    tr {
+
+      text-align: center;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="#"><i class="fa fa-user" aria-hidden="true"></i> Ochilov Nizomiddin Najmiddin
+        o'g'li</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      </div>
+
+
+      <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i
+          class="fa fa-flag-checkered" aria-hidden="true"></i> Yakunlash</button>
+
+    </div>
+  </nav>
+  <br>
+
+  <div class="container">
+    <div class="row">
+      <center>
+        <h4>
+          <p id="demo"></p>
+        </h4>
+      </center>
+    </div>
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="padding-left: 25%;">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link " id="pills-fan1-tab" data-bs-toggle="pill" data-bs-target="#pills-fan1" type="button"
+          role="tab" aria-controls="pills-fan1" aria-selected="true">Matematika</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-fan2-tab" data-bs-toggle="pill" data-bs-target="#pills-fan2" type="button"
+          role="tab" aria-controls="pills-fan2" aria-selected="false">Kimyo</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-fan3-tab" data-bs-toggle="pill" data-bs-target="#pills-fan3" type="button"
+          role="tab" aria-controls="pills-fan3" aria-selected="false">Chet tili</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-fan4-tab" data-bs-toggle="pill" data-bs-target="#pills-fan4" type="button"
+          role="tab" aria-controls="pills-fan4" aria-selected="false">Ona tili va adabiyot</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-fan5-tab" data-bs-toggle="pill" data-bs-target="#pills-fan5" type="button"
+          role="tab" aria-controls="pills-fan5" aria-selected="false">O'zbekiston tarixi</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade" id="pills-fan1" role="tabpanel" aria-labelledby="pills-fan1-tab">
+
+        <div class="container">
+
+          <div class="pagination p3">
+            <ul>
+              <a href="#" class="is-active position-relative">
+                <li>1</li><span
+                  class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">!</span>
+              </a>
+              <a href="#" class="position-relative">
+                <li>2</li><span
+                  class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-warning">!</span>
+              </a>
+              <a href="#">
+                <li>3</li>
+              </a>
+              <a href="#">
+                <li>4</li>
+              </a>
+              <a href="#">
+                <li>5</li>
+              </a>
+              <a href="#">
+                <li>6</li>
+              </a>
+              <a href="#">
+                <li>7</li>
+              </a>
+              <a href="#">
+                <li>8</li>
+              </a>
+              <a href="#">
+                <li>9</li>
+              </a>
+              <a href="#">
+                <li>10</li>
+              </a>
+              <a href="#">
+                <li>11</li>
+              </a>
+              <a href="#">
+                <li>12</li>
+              </a>
+              <a href="#">
+                <li>13</li>
+              </a>
+              <a href="#">
+                <li>14</li>
+              </a>
+              <a href="#">
+                <li>15</li>
+              </a>
+              <a href="#">
+                <li>16</li>
+              </a>
+              <a href="#">
+                <li>17</li>
+              </a>
+              <a href="#">
+                <li>18</li>
+              </a>
+              <a href="#">
+                <li>19</li>
+              </a>
+              <a href="#">
+                <li>20</li>
+              </a>
+            </ul>
+          </div>
+
+        </div>
+        <div class="row ">
+          <div class="col">
+
+            <button class="btn btn-info" id="prev" style="display: none;"><i class="fa fa-chevron-left"
+                aria-hidden="true"></i> Oldingi sahifa</button>
+
+            <button class="btn btn-info" id="next" style="display: none;">Keyingi sahifa <i class="fa fa-chevron-right"
+                aria-hidden="true"></i></button>
+
+            <span style="display: none;"><b>Sahifalar: <span id="page_num"></span> / <span
+                  id="page_count"></span></b></span>
+
+            <canvas id="pdf-example"></canvas>
+
+            <div class="col">
+
+              <center>
+
+                <ul style="font-size: 50px;">
+                  <li><input type='radio' name='test1' id='cb11' value="A" />
+                    <label for='cb11'><span
+                        style="border: 1px solid; padding: 1px 12px; border-radius: 50px;">A</span></label>
+                  </li>
+                  <li><input type='radio' name='test1' id='cb12' value="B" />
+                    <label for='cb12'><span
+                        style="border: 1px solid; padding: 1px 12px; border-radius: 50px;">B</span></label>
+                  </li>
+                  <li><input type='radio' name='test1' id='cb13' value="C" />
+                    <label for='cb13'><span
+                        style="border: 1px solid; padding: 1px 12px; border-radius: 50px;">C</span></label>
+                  </li>
+                  <li><input type='radio' name='test1' id='cb14' value="D" />
+                    <label for='cb14'><span
+                        style="border: 1px solid; padding: 1px 12px; border-radius: 50px;">D</span></label>
+                  </li>
+
+                </ul>
+
+                <div>
+                  <input class="form-control form-control-lg" type="number"
+                    placeholder="Bu yerga javobni son ko'rinishida yozing (masalan: 1, 2 va 0.5)..."
+                    aria-label=".form-control-lg example">
+                </div>
+              </center>
+
+            </div>
+          </div>
+          <div class="col">
+
+
+            <div class="row">
+              <button class="btn alert-info" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+                style="margin-bottom: 10px; margin-top:50px;"><i class="fa fa-question" aria-hidden="true"></i> Test
+                topshiruvchi uchun eslatma</button>
+              <a class="btn btn-warning btn-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                style="margin-bottom: 10px;"><span><i class="fa fa-pencil-square-o" aria-hidden="true"
+                    style="color: red;"></i> Savolga e'tirozim mavjud</span></a>
+              <button class="btn btn-block btn-info">Keyingisi <i class="fa fa-angle-double-right"
+                  aria-hidden="true"></i> </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-fan2" role="tabpanel" aria-labelledby="pills-fan3-tab">
+        <div class="container">
+          <div class="pagination p3">
+            <ul>
+              <a href="#">
+                <li>1</li>
+              </a>
+              <a href="#">
+                <li>2</li>
+              </a>
+              <a href="#">
+                <li>3</li>
+              </a>
+              <a href="#">
+                <li>4</li>
+              </a>
+              <a href="#">
+                <li>5</li>
+              </a>
+              <a href="#">
+                <li>6</li>
+              </a>
+              <a href="#">
+                <li>7</li>
+              </a>
+              <a href="#">
+                <li>8</li>
+              </a>
+              <a href="#">
+                <li>9</li>
+              </a>
+              <a href="#">
+                <li>10</li>
+              </a>
+              <a href="#">
+                <li>11</li>
+              </a>
+              <a href="#">
+                <li>12</li>
+              </a>
+              <a href="#">
+                <li>13</li>
+              </a>
+              <a href="#">
+                <li>14</li>
+              </a>
+              <a href="#">
+                <li>15</li>
+              </a>
+              <a href="#">
+                <li>16</li>
+              </a>
+              <a href="#">
+                <li>17</li>
+              </a>
+              <a href="#">
+                <li>18</li>
+              </a>
+              <a href="#">
+                <li>19</li>
+              </a>
+              <a href="#">
+                <li>20</li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-fan3" role="tabpanel" aria-labelledby="pills-fan3-tab">
+        <div class="container">
+          <div class="pagination p3">
+            <ul>
+              <a href="#">
+                <li>1</li>
+              </a>
+              <a href="#">
+                <li>2</li>
+              </a>
+              <a href="#">
+                <li>3</li>
+              </a>
+              <a href="#">
+                <li>4</li>
+              </a>
+              <a href="#">
+                <li>5</li>
+              </a>
+              <a href="#">
+                <li>6</li>
+              </a>
+              <a href="#">
+                <li>7</li>
+              </a>
+              <a href="#">
+                <li>8</li>
+              </a>
+              <a href="#">
+                <li>9</li>
+              </a>
+              <a href="#">
+                <li>10</li>
+              </a>
+              <a href="#">
+                <li>11</li>
+              </a>
+              <a href="#">
+                <li>12</li>
+              </a>
+              <a href="#">
+                <li>13</li>
+              </a>
+              <a href="#">
+                <li>14</li>
+              </a>
+              <a href="#">
+                <li>15</li>
+              </a>
+              <a href="#">
+                <li>16</li>
+              </a>
+              <a href="#">
+                <li>17</li>
+              </a>
+              <a href="#">
+                <li>18</li>
+              </a>
+              <a href="#">
+                <li>19</li>
+              </a>
+              <a href="#">
+                <li>20</li>
+              </a>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-fan4" role="tabpanel" aria-labelledby="pills-fan4-tab">
+        <div class="container">
+          <div class="pagination p3">
+            <ul>
+              <a href="#">
+                <li>1</li>
+              </a>
+              <a href="#">
+                <li>2</li>
+              </a>
+              <a href="#">
+                <li>3</li>
+              </a>
+              <a href="#">
+                <li>4</li>
+              </a>
+              <a href="#">
+                <li>5</li>
+              </a>
+              <a href="#">
+                <li>6</li>
+              </a>
+              <a href="#">
+                <li>7</li>
+              </a>
+              <a href="#">
+                <li>8</li>
+              </a>
+              <a href="#">
+                <li>9</li>
+              </a>
+              <a href="#">
+                <li>10</li>
+              </a>
+              <a href="#">
+                <li>11</li>
+              </a>
+              <a href="#">
+                <li>12</li>
+              </a>
+              <a href="#">
+                <li>13</li>
+              </a>
+              <a href="#">
+                <li>14</li>
+              </a>
+              <a href="#">
+                <li>15</li>
+              </a>
+              <a href="#">
+                <li>16</li>
+              </a>
+              <a href="#">
+                <li>17</li>
+              </a>
+              <a href="#">
+                <li>18</li>
+              </a>
+              <a href="#">
+                <li>19</li>
+              </a>
+              <a href="#">
+                <li>20</li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-fan5" role="tabpanel" aria-labelledby="pills-fan5-tab">
+        <div class="container">
+          <div class="pagination p3">
+            <ul>
+              <a href="#">
+                <li>1</li>
+              </a>
+              <a href="#">
+                <li>2</li>
+              </a>
+              <a href="#">
+                <li>3</li>
+              </a>
+              <a href="#">
+                <li>4</li>
+              </a>
+              <a href="#">
+                <li>5</li>
+              </a>
+              <a href="#">
+                <li>6</li>
+              </a>
+              <a href="#">
+                <li>7</li>
+              </a>
+              <a href="#">
+                <li>8</li>
+              </a>
+              <a href="#">
+                <li>9</li>
+              </a>
+              <a href="#">
+                <li>10</li>
+              </a>
+              <a href="#">
+                <li>11</li>
+              </a>
+              <a href="#">
+                <li>12</li>
+              </a>
+              <a href="#">
+                <li>13</li>
+              </a>
+              <a href="#">
+                <li>14</li>
+              </a>
+              <a href="#">
+                <li>15</li>
+              </a>
+              <a href="#">
+                <li>16</li>
+              </a>
+              <a href="#">
+                <li>17</li>
+              </a>
+              <a href="#">
+                <li>18</li>
+              </a>
+              <a href="#">
+                <li>19</li>
+              </a>
+              <a href="#">
+                <li>20</li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal apellyasiya-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Apellyasiya berish oynasi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <p><span class="badge rounded-pill bg-warning text-dark">8000899</span> - raqamli savol uchun e'tirozim:
+              </p>
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Quyidagilardan birini tanlang</option>
+                <option value="1">Savolda to'g'ri javob keltirilmagan</option>
+                <option value="2">Savol noto'g'ri tuzilgan</option>
+                <option value="3">Boshqa</option>
+              </select>
+
+              <textarea placeholder="Mazmunini yozing..." style="margin-top: 10px;"></textarea>
+              <p><i>* Izoh:</i> <br><span class="badge rounded-pill bg-danger">!</span> - Savolda to'g'ri javob
+                keltirilmagan <br>
+                <span class="badge rounded-pill bg-warning">!</span> - Savol noto'g'ri tuzilgan
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-success">Yuborish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Yakuniy hisobot</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table caption-top table-striped table-hover">
+              <thead class="table-success">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Matematika</th>
+                  <th scope="col">Kimyo</th>
+                  <th scope="col">Chet tili</th>
+                  <th scope="col">Ona tili va adabiyot</th>
+                  <th scope="col">O'zbekiston tarixi</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td><span class="badge rounded-pill bg-danger">!</span></td>
+                  <td><span class="badge rounded-pill bg-primary">A</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                  <td><span class="badge rounded-pill bg-primary">D</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td><span class="badge rounded-pill bg-warning">!</span></td>
+                  <td><span class="badge rounded-pill bg-primary">A</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                  <td><span class="badge rounded-pill bg-primary">D</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td><span class="badge rounded-pill bg-primary">2.3</span></td>
+                  <td><span class="badge rounded-pill bg-primary">A</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                  <td><span class="badge rounded-pill bg-primary">D</span></td>
+                  <td><span class="badge rounded-pill bg-primary">C</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <p><i>* Izoh:</i> &nbsp; <span class="badge rounded-pill bg-danger">!</span> - Savolda to'g'ri javob
+              keltirilmagan &nbsp; <span class="badge rounded-pill bg-warning">!</span> - Savol noto'g'ri tuzilgan</p>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-success">Tanishdim</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ofcanvas -->
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+      id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+      <div class="offcanvas-header alert-info">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel"><i class="fa fa-question" aria-hidden="true"></i> Test
+          topshiruvchi uchun eslatma</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+
+        <figure class="text-center">
+          <blockquote class="blockquote">
+            <p><b> Quyidagi hollarda abiturient test sinovlari jarayonidan chetlashtiriladi va natijalari
+                chiqarilmasligiga asos bo‘ladi: </b></p>
+          </blockquote>
+
+        </figure>
+
+        <ul class="list-group list-group-flush" style="text-align: justify; font-size:12px;">
+          <li class="list-group-item"><i class="fa fa-hand-o-right" aria-hidden="true"></i> test sinovlari
+            o‘tkaziladigan hududga yoki binoga kirishda mikrokalkulator, lug‘at, jadval, kitob, uyali telefon,
+            kompyuter, telekommunikatsiya qurilmalari va boshqa vositalar, shpargalkalar olib kirishga harakat qilsa,
+            olib kirgan bo‘lsa yoki ulardan test sinovlari davomida foydalansa;
+          </li>
+          <li class="list-group-item"><i class="fa fa-hand-o-right" aria-hidden="true"></i> test materiallarini boshqa
+            abiturientga uzatsa yoki ularga yordam bersa;</li>
+          <li class="list-group-item"><i class="fa fa-hand-o-right" aria-hidden="true"></i> materiallarini binodan
+            tashqariga chiqarsa, test topshiriqlari kitobi varag‘ini yirtsa;</li>
+          <li class="list-group-item"><i class="fa fa-hand-o-right" aria-hidden="true"></i> test sinovlari uchun
+            ajratilgan vaqt tugaganda test materiallarini topshirishdan bosh tortsa;</li>
+          <li class="list-group-item"><i class="fa fa-hand-o-right" aria-hidden="true"></i> test sinovlari jarayonida
+            videokuzatuvlar orqali abiturientning tartib va qoidalarga amal qilmaganligi aniqlansa.</li>
+        </ul>
+        <div class="col" style="margin-top: 20px;">
+
+          <div class="card">
+            <div class="card-body">
+              <div class="alert alert-warning" role="alert">
+                <center> <i class="fa fa-camera" aria-hidden="true"></i> Video kuzatuv </center>
+              </div>
+              <div class="row">
+                <video id="local-video" autoplay></video>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <center>
+          <p style="margin-top: 5px;"><span class="badge bg-light text-dark"><i class="fa fa-copyright"
+                aria-hidden="true"></i> Davlat test markazi - 2022</span></p>
+        </center>
+      </div>
+
+
+    </div>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel">
+
+
+
+    </div>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="pdf/pdf.js"></script>
+    <script>
+      var random = Math.floor(Math.random() * 10000001);
+
+      var url = 'http://localhost/pdf_viewer/books/8000899.pdf?r' + random + 'm';
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf/pdf.worker.js';
+      var pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.5,
+        canvas = document.getElementById('pdf-example'),
+        ctx = canvas.getContext('2d');
+
+
+      function renderPage(num) {
+        pageRendering = true;
+
+        pdfDoc.getPage(num).then(function (page) {
+          var viewport = page.getViewport({ scale: scale });
+          canvas.height = "350";
+          canvas.width = viewport.width;
+
+          var renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+          };
+          var renderTask = page.render(renderContext);
+
+          renderTask.promise.then(function () {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+              renderPage(pageNumPending);
+              pageNumPending = null;
+            }
+          });
+        });
+
+        document.getElementById('page_num').textContent = num;
+      }
+
+
+      function queueRenderPage(num) {
+        if (pageRendering) {
+          pageNumPending = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      /**
+       * show previous page
+       */
+      function onPrevPage() {
+        if (pageNum > 1) {
+          pageNum--;
+          queueRenderPage(pageNum);
+        }
+      }
+
+      document.getElementById('prev').addEventListener('click', onPrevPage);
+
+      /**
+       * show next page
+       */
+      function onNextPage() {
+        if (pageNum < pdfDoc.numPages) {
+          pageNum++;
+          queueRenderPage(pageNum);
+        }
+      }
+
+      document.getElementById('next').addEventListener('click', onNextPage);
+
+      /**
+       * PDF async "download".
+       */
+      pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+        //Set loaded PDF to main pdfDoc variable
+        pdfDoc = pdfDoc_;
+
+        //Show number of pages in document
+        document.getElementById('page_count').textContent = pdfDoc.numPages;
+
+        renderPage(pageNum);
+      });
+    </script>
+    <script>
+      // Set the date we're counting down to
+      var countDownDate = new Date("March 25, 2027 18:38:25").getTime();
+
+      // Update the count down every 1 second
+      var x = setInterval(function () {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+        // Display the result in the element with id="demo"
+        document.getElementById("demo").innerHTML = "<i class='fa fa-clock-o' aria-hidden='true'></i> " + hours + " : "
+          + minutes + " : <text style='color:red;'>" + seconds + "</text>";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("demo").innerHTML = "<text style='color:red;'><i class='fa fa-clock-o' aria-hidden='true'></i> Vaqt yakunlandi</text>";
+        }
+      }, 1000);
+    </script>
+    <script>
+      var video = document.querySelector("#local-video");
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+
+          })
+          .catch(function (err0r) {
+
+            console.log("kamera bn  xatolik!");
+
+          });
+      }
+    </script>
+</body>

@@ -1,0 +1,426 @@
+{% extends "user_app/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    {% trans "Jurnal boshqaruv paneli" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h2 class="page-header viewArticleFont">
+            {% trans "Jurnal boshqaruv paneli" %}
+        </h2>
+        <div class="panel-body forshadow"
+             style="background-color: #ffffff; border-radius: 5px; padding: 20px 15px 0 15px">
+            <h5>{% trans "Tasdiqlangan maqolalar ro'yxati" %}</h5>
+            <hr>
+            <form action="" method="post" class="select_oreder_article"
+                  data-url="{% url 'select_article_orders' %}">
+                {% csrf_token %}
+                <table class="table table-hover table-responsive-lg">
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "E-mail" %}</strong></th>
+                        <th><strong>{% trans "Maqola mavzusi" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqti" %}</strong></th>
+                        <th><strong>{% trans "Tasdiq holati" %}</strong></th>
+                        <th><strong>{% trans "Nashr holati" %}</strong></th>
+                        <th><strong>{% trans "Yili" %}</strong></th>
+                        <th><strong>{% trans "Soni" %}</strong></th>
+                        <th><strong>{% trans "Wordi" %}</strong></th>
+                        <th><strong>{% trans "Tartibi" %}</strong></th>
+                        <th><i class="fa fa-edit mr-1"></i></th>
+                        <th><strong>{% trans "Pdf yuklang" %}</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if articles.count > 0 %}
+                        {% for article in articles %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ article.author.email }}</td>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.created_at }}</td>
+                                <td>
+                                    {% if article.is_publish %}
+                                        <span class='badge badge-success'>{% trans "Tasdiqlangan" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Tasdiqlanmagan" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if article.is_publish_journal %}
+                                        <span class='badge badge-success'>{% trans "Ha" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Yo'q" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <label id="select_year" style="border: 1px solid #777777">
+                                        <select class="form-control selectpicker forshadow"
+                                                name="select_year_{{ forloop.counter }}">
+                                            <option value="">{% trans "Tanlang" %}</option>
+                                            {% for item in years %}
+                                                <option value="{{ article.id }},{{ item.year }}"
+                                                        {% if article.year != 0 and article.year == item.year %}
+                                                        selected="selected"
+                                                        {% endif %} >{{ item.year }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label id="select_number" style="border: 1px solid #777777">
+                                        <select class="form-control selectpicker forshadow"
+                                                name="select_number_{{ forloop.counter }}">
+                                            <option value="">{% trans "Tanlang" %}</option>
+                                            {% for item in numbers %}
+                                                <option value="{{ article.id }},{{ item.number }}"
+                                                        {% if article.order_page != 0 and article.number == item.number %}
+                                                        selected="selected"
+                                                        {% endif %} >{{ item.number }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a href="{{ article.file.file.url }}" type="button" download
+                                       class="btn btn-outline-info forshadow"><img src="{% static 'img/wordicon.png' %}" alt="" width="40"/></a>
+                                </td>
+                                <td>
+                                    <label id="select_order" style="border: 1px solid #777777">
+                                        <select class="form-control selectpicker forshadow"
+                                                name="select_{{ forloop.counter }}">
+                                            <option value="">{% trans "Tanlang" %}</option>
+                                            {% for item in articles %}
+                                                <option value="{{ article.id }},{{ forloop.counter }}"
+                                                        {% if article.order_page != 0 and article.order_page == forloop.counter %}
+                                                        selected="selected"
+                                                        {% endif %} >{{ forloop.counter }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                </td>
+                            <td>
+                                <button data-id="{{ article.id }}"
+                                            data-url="{% url 'update_checked_article' article.id %}"
+                                            class="btn btn-outline-primary btn-sm UpdateCheckedArticleBtn"><i
+                                            class="fa fa-edit mr-1"></i>
+                                    </button>
+                            </td>
+                                <td>
+                                    <button data-id="{{ article.id }}"
+                                            data-url="{% url 'upload_checked_file' article.id %}"
+                                            class="btn btn-outline-warning btn-md UploadCheckedArticleFileBtn"><i
+                                            class="fa fa-file-upload mr-1"></i> {% trans "Yuklang" %}
+                                    </button>
+                                    &nbsp;
+                                    &nbsp;
+                                    {% if article.is_checked_upload_file %}<i class="fa fa-check"></i>{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10"><h5
+                                    class="text-lg-center text-danger">{% trans "Nashr etish uchun maqolalar topilmadi." %}</h5>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                <br>
+                {% if articles.count > 0 %}
+                    <label>
+                        <input type="number" value="{{ articles.count }}" name="article_count" hidden="hidden"/>
+                    </label>
+                    <button type="submit"
+                            class="btn btn-md btn-block btn-info forshadow">{% trans "Maqolalar uchun tayinlangan tartiblarni saqlash" %}</button>
+                {% endif %}
+            </form>
+            <br>
+        </div>
+        <br>
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 15px">
+            <div class="container">
+                <div class="row">
+                    <hr>
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-info btn-sm forshadow upload_template_btn"
+                                style="float: left;" data-url="{% url 'upload_template' %}"><i
+                                class="fa fa-upload mr-1"></i>&nbsp;1.{% trans "Yangi son uchun shablonni tizimga yuklang" %}
+                        </button>
+                        <a href="{{ head_template.template_file.url }}" type="button" download
+                           style="margin-left: 16px;"
+                           class="btn btn-indigo btn-sm forshadow"><i
+                                class="fa fa-download mr-1"></i>&nbsp;2.{% trans "Bosh shablonni yuklab oling" %}
+                        </a>
+                        <button type="button" style="float: right;"
+                                data-url="{% url 'create_journal' %}"
+                                {% if articles.count == 0 %} disabled {% endif %}
+                                class="btn btn-success btn-sm forshadow create_journal_btn"><i
+                                class="fa fa-plus mr-1"></i>{% trans "Yangi jurnal yaratish" %}
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <table class="table table-hover table-responsive-lg">
+                    <thead>
+                    <tr>
+                        <th><strong>{% trans "Tr" %}</strong></th>
+                        <th><strong>{% trans "Nomi" %}</strong></th>
+                        <th><strong>{% trans "Yili" %}</strong></th>
+                        <th><strong>{% trans "Nomeri" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqti" %}</strong></th>
+                        <th><strong>{% trans "O'zgartirilgan vaqti" %}</strong></th>
+                        <th><strong>{% trans "Nashr holati" %}</strong></th>
+                        <th><strong>{% trans "Holati" %}</strong></th>
+                        <th><strong>{% trans "Mundarija fayl" %}</strong></th>
+                        <th><strong>{% trans "Asosiy fayl" %}</strong></th>
+                        <th width="150"><strong>{% trans "Amallar" %}</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if journals.count > 0 %}
+                        {% for journal in journals %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ journal.name }}</td>
+                                <td>{{ journal.year }}</td>
+                                <td>{{ journal.number }}</td>
+                                <td>{{ journal.created_at }}</td>
+                                <td>{{ journal.updated_at }}</td>
+
+                                <td>
+                                    {% if journal.is_publish %}
+                                        <span class='badge badge-success'>{% trans "Aktiv" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Aktiv emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if journal.status %}
+                                        <span class='badge badge-success'>{% trans "Aktiv" %}</span>
+                                    {% else %}
+                                        <span class='badge badge-danger'>{% trans "Aktiv emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if journal.file_mundarija %}
+                                        <a href="{{ journal.file_mundarija.url }}" download role="button"
+                                           class="btn btn-outline-warning btn-sm"><i
+                                                class="fa fa-file"></i>&nbsp;{% trans "Mundarija tayyor" %}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if journal.file_pdf %}
+                                        <a href="{{ journal.file_pdf.url }}" target="_blank"
+                                           class="btn btn-outline-primary btn-sm"><i
+                                                class="fa fa-file"></i>&nbsp;{% trans "Jurnal" %}</a>
+                                    {% else %}
+                                        <span class="text-center"
+                                              style="color: #b6b6b6">{% trans "Mavjud emas" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" data-url="{% url 'edit_journal' journal.id %}"
+                                            class="btn btn-outline-warning btn-sm edit_journal_btn"><i
+                                            class="fa fa-pencil-alt"></i></button>
+                                    <button type="button" data-url="{% url 'delete_journal' journal.id %}"
+                                            class="btn btn-outline-danger btn-sm delete_journal_btn"><i
+                                            class="fa fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10"><h5
+                                    class="text-lg-center text-danger">{% trans "Jurnal mavjud emas." %}</h5></td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="create_journal_div"></div>
+    <div id="edit_journal_div"></div>
+    <script type="text/javascript">
+        $('body').on('click', '.UploadCheckedArticleFileBtn', function (e) {
+            e.preventDefault();
+
+            let article_id = parseInt($(this).data('id'));
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#create_journal_div').html(response);
+                    $('#CreateCheckedArticleFileModal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+
+        $('body').on('click', '.UpdateCheckedArticleBtn', function (e) {
+            e.preventDefault();
+
+            let article_id = parseInt($(this).data('id'));
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#create_journal_div').html(response);
+                    $('#UpdateCheckedArticleModal').modal({backdrop: 'static', keyboard: false}, 'show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+
+        $('body').on('click', '.upload_template_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#create_journal_div').html(response);
+                    $('#upload_template_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('click', '.edit_journal_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#edit_journal_div').html(response);
+                    $('#edit_journal_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('click', '.delete_journal_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#edit_journal_div').html(response);
+                    $('#delete_journal_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('click', '.split_journal_btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    $('#edit_journal_div').html(response);
+                    $('#split_journal_modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+        $('body').on('submit', '.edit_journal_form', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+            let formData = new FormData(this);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('#edit-journal-btn-spinner').css('display', 'block');
+                    $('#btn-text-edit').css('display', 'none');
+                    $('.edit-journal-btn').prop('disabled', true);
+                },
+                success: function (response) {
+                    $('#edit_journal_modal').modal('hide');
+                    swal({
+                        title: response.message,
+                        timer: 1500,
+                    })
+                    if (response.result) {
+                        window.location.reload();
+                    }
+                },
+                complete: function (data) {
+                    $('#edit-journal-btn-spinner').css('display', 'none');
+                    $('#btn-text-edit').css('display', 'block');
+                    $('.edit-journal-btn').prop('disabled', false);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('body').on('submit', '.select_oreder_article', function (e) {
+            e.preventDefault();
+
+            let formData = $('.select_oreder_article').serialize();
+            let url = $('.select_oreder_article').data('url');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function (response) {
+                    if (response.result) {
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: response.message,
+                            timer: 2000,
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            return false;
+        });
+    </script>
+{% endblock %}

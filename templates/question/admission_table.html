@@ -1,0 +1,102 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Qabul uchun test savollari ro'yxati" %}{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+
+        <h2 class="page-header">
+            {% trans "Qabul uchun test savollari ro'yxati" %}
+        </h2>
+        {% csrf_token %}
+        <div class="panel-body forshadow" style="background-color: #ffffff; border-radius: 5px; padding: 2em;">
+            <div class="table-responsive">
+                <table class="table table-striped display" id="questionALists" style="width:100%">
+                    <thead class="table forshadow" style="background-color: #03b703">
+                    <tr class="dataGrid">
+                        <th><strong>{% trans "ID" %}</strong></th>
+                        <th><strong>{% trans "Raqam" %}</strong></th>
+                        <th><strong>{% trans "SavolID" %}</strong></th>
+                        <th><strong>{% trans "Familiya" %}</strong></th>
+                        <th><strong>{% trans "Ism" %}</strong></th>
+                        <th><strong>{% trans "Otasini ismi" %}</strong></th>
+                        <th><strong>{% trans "Fan" %}</strong></th>
+                        <th><strong>{% trans "Til" %}</strong></th>
+                        <th><strong>{% trans "Mavzu" %}</strong></th>
+                        <th><strong>{% trans "Daraja" %}</strong></th>
+                        <th><strong>{% trans "Holat" %}</strong></th>
+                        <th><strong>{% trans "Yaratilgan vaqt" %}</strong></th>
+                        <th><strong>{% trans "Amal" %}</strong></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="ViewQabulQuestion"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let table = $('#questionALists').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: "{% url 'get_admission_questions' %}",
+                    data: {
+                        csrfmiddlewaretoken: getCookie('csrftoken')
+                    },
+                    datatype: "json",
+                },
+                columns: [
+                    {data: "id"},
+                    {data: "number"},
+                    {data: "submission_test_id"},
+                    {data: "user__last_name"},
+                    {data: "user__first_name"},
+                    {data: "user__middle_name"},
+                    {data: "subject__name"},
+                    {data: "language__name"},
+                    {data: "theme__name"},
+                    {data: "level__name"},
+                    {data: "status__name"},
+                    {data: "created_at"},
+                    {
+                        data: null,
+                        bSortable: false,
+                        render: function (data, type, row) {
+                            return '<button type="button" class="btn btn-outline-warning viewQuestionAd" data-id="' + data.id + '" data-url="{% url 'view_question_a' %}"><i class="fa fa-eye" /></button>';
+                        }
+                    },
+                ],
+                serverSide: true,
+                ordering: true,
+                {#responsive: true,#}
+                paging: true,
+                processing: true,
+                {#pageLength: 2,#}
+                info: true,
+                bInfo: true,
+                bSort: true,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+            });
+
+            $('#questionALists tbody').on('click', '.viewQuestionAd', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let url = $(this).data('url');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '' + url + id + '/',
+                    success: function (response) {
+                        $('#ViewQabulQuestion').html(response);
+                        $('#view_question_qabul_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

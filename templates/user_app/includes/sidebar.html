@@ -1,0 +1,151 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% with request.resolver_match.url_name as url_name %}
+    <div id="sidebar" class="sidebar"
+         style="box-shadow: rgba(0, 0, 0, 0.25) 0 54px 55px, rgba(0, 0, 0, 0.12) 0 -12px 30px,
+     rgba(0, 0, 0, 0.12) 0 4px 6px, rgba(0, 0, 0, 0.17) 0 12px 13px,
+     rgba(0, 0, 0, 0.09) 0 -3px 5px;">
+        <div data-scrollbar="true" data-height="100%">
+            <ul class="nav">
+                <li class="nav-profile">
+                    <a href="javascript:;" data-toggle="nav-profile">
+                        <div class="cover with-shadow"></div>
+                        <div class="image">
+                            {% if request.user.avatar %}
+                                <img src="{{ request.user.avatar }}" alt="" width="150"/>
+                                {% else %}
+                                <img src="{% static 'img/no-image.png' %}" alt=""/>
+                            {% endif %}
+                        </div>
+                        <div class="info">
+                            <b>{{ request.user.full_name }}</b>
+                            {% for role in request.user.roles.all %}
+                                {% if role.level != 7 %}
+                                    <small>{{ role.name }}</small>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-header"></li>
+            </ul>
+            <ul class="nav" id="menu_sidebar"></ul>
+            <br>
+            <br>
+        </div>
+    </div>
+    <div class="sidebar-bg"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        $('body').ready(function () {
+            let url = '{% url 'load_menus' %}'.toString();
+            let base_url = "{{ url_name }}";
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (response) {
+                    let lang = response.lang;
+                    $('#menu_sidebar').empty();
+
+                    if (response['menus1'].length > 0){
+                        $('#menu_sidebar').append(`<li class="text-center"><a style="color: #D3D3D3">MAQOLALAR TIZIMI</a></li>`);
+                    }
+
+                    for (let item of response['menus1']) {
+                        let link = "/" + lang + item.url;
+                        if (lang === 'uz') {
+                            link = item.url;
+                        }
+                        let temp1 = `<li id="menu_${item.id}">` +
+                            `<a href="${link}"><span id="badge_${item.id}" style="font-size: 14px; background-color: #4DA704; color: white;"></span>` +
+                            `<i class="material-icons">${item['icon_name']}</i><span>${item.name}</span>` + `</a></li>`;
+                        $('#menu_sidebar').append(temp1);
+
+                        if (base_url === item['url_name'].toString()) {
+                            $('#menu_' + item.id).addClass("active");
+                        }
+                    }
+
+                    if (response['menus2'].length > 0) {
+                        $('#menu_sidebar').append(`<li class="text-center"><a style="color: #D3D3D3">TEST TIZIMI</a></li>`);
+                    }
+                    for (let item of response['menus2']) {
+                        let link = "/" + lang + item.url;
+                        if (lang === 'uz') {
+                            link = item.url;
+                        }
+
+                        let temp2 = `<li id="menu_${item.id}">` +
+                            `<a href="${link}"><span id="badge_${item.id}" style="font-size: 14px; background-color: #F3B304; color: white;"></span>` +
+                            `<i class="material-icons">${item['icon_name']}</i><span>${item.name}</span>` + `</a></li>`;
+                        $('#menu_sidebar').append(temp2);
+
+                        if (base_url === item['url_name'].toString()) {
+                            $('#menu_' + item.id).addClass("active");
+                        }
+                    }
+
+                    if (response['menus0'].length > 0){
+                    $('#menu_sidebar').append(`<li class="text-center"><a style="color: #D3D3D3">SHAXSIY MA'LUMOTLAR</a></li>`);
+                    }
+                    for (let item of response['menus0']) {
+                        let link = "/" + lang + item.url;
+                        if (lang === 'uz') {
+                            link = item.url;
+                        }
+
+                        let temp = `<li id="menu_${item.id}">` +
+                            `<a href="${link}"><span id="badge_${item.id}" style="font-size: 14px; background-color: #4DA704; color: white;"></span>` +
+                            `<i class="material-icons">${item['icon_name']}</i><span>${item.name}</span>` + `</a></li>`;
+                        $('#menu_sidebar').append(temp);
+
+                        if (base_url === item['url_name'].toString()) {
+                            $('#menu_' + item.id).addClass("active");
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            function countOfNotification() {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'load_notif_count' %}",
+                    success: function (response) {
+                        $('#badge_2').addClass("badge badge-success pull-right");
+                        $('#badge_2').text(response['notif_count']);
+                        $('#badge_3').addClass("badge badge-success pull-right");
+                        $('#badge_3').text(response['notif_count']);
+                        $('#badge_5').addClass("badge badge-danger pull-right");
+                        $('#badge_5').text(response['uncheck_reviewer_count']);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'is_have_unchecked_job' %}",
+                    success: function (response) {
+                        if (response['result'] === 1){
+                            $('#badge_46').addClass("badge badge-warning pull-right");
+                            $('#badge_46').text('!');
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
+
+            setTimeout(countOfNotification, 1500);
+        });
+    </script>
+{% endwith %}

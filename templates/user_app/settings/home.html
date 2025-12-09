@@ -1,0 +1,125 @@
+{% extends 'user_app/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+    {% trans "Bosh sahifa" %}
+{% endblock %}
+{% block content %}
+    <div id="content" class="content">
+        <h1 class="page-header">{% trans "Bosh sahifa" %}</h1>
+
+        {% if user.is_admin or user.is_editor or user.is_reviewer %}
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-green forshadow">
+                        <div class="stats-icon"><i class="fa fa-desktop"></i></div>
+                        <div class="stats-info">
+                            <h4>{% trans "CHOP ETILGAN MAQOLALAR SONI" %}</h4>
+                            <p>{{ count_published_articles }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-green forshadow">
+                        <div class="stats-icon"><i class="fa fa-link"></i></div>
+                        <div class="stats-info">
+                            <h4>{% trans "NASHR ETILGAN JURNALLAR SONI" %}</h4>
+                            <p>{{ count_published_journals }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-green forshadow">
+                        <div class="stats-icon"><i class="fa fa-users"></i></div>
+                        <div class="stats-info">
+                            <h4>{% trans "CHOP ETISHGA TAYYOR MAQOLALAR SONI" %}</h4>
+                            <p>{{ count_ready_publish_articles }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-green forshadow">
+                        <div class="stats-icon"><i class="fa fa-clock"></i></div>
+                        <div class="stats-info">
+                            <h4>{% trans "JARAYONDAGI MAQOLALAR SONI" %}</h4>
+                            <p>{{ count_reviewing_articles }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <br>
+        {% if user.is_admin %}
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="panel panel-inverse" data-sortable-id="index-1">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">{% trans "FOYDALANUVCHILAR STATISTIKASI" %}</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-valign-middle table-panel mb-0 forshadow">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>{% trans "SONI" %}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><h6>{% trans "FOYDALANUVCHILAR" %}</h6></td>
+                                    <td>{{ total_users }}</td>
+                                    <td>
+                                        <div id="sparkline-unique-visitor"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h6>{% trans "MUHARRIRLAR" %}</h6></td>
+                                    <td>{{ total_editors }}</td>
+                                    <td>
+                                        <div id="sparkline-total-page-views"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h6>{% trans "TAQRIZCHILAR" %}</h6></td>
+                                    <td>{{ total_reviewers }}</td>
+                                    <td>
+                                        <div id="sparkline-avg-time-on-site"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h6>{% trans "TAQRIZCHI BO'LMOQCHILAR" %}</h6>
+                                    </td>
+                                    <td>{{ total_request_reviewers }}</td>
+                                    <td>
+                                        <div id="sparkline-new-visits"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h6>{% trans "ADMINLAR" %}</h6></td>
+                                    <td>{{ total_editors }}</td>
+                                    <td>
+                                        <div id="sparkline-return-visitors"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h6>{% trans "ONLAYNDAGILAR" %}</h6></td>
+                                    <td>{{ total_online_users }}</td>
+                                    <td>
+                                        <div id="sparkline-bounce-rate"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $('body').ready(function () {
+
+        });
+    </script>
+{% endblock %}
