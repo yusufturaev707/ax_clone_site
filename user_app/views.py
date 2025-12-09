@@ -2126,7 +2126,7 @@ def error_404(request, exception):
     return render(request, 'user_app/error_404.html')
 
 
-def error_500(request, exception):
+def error_500(request):
     return render(request, 'user_app/handler500.html')
 
 
