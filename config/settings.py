@@ -107,6 +107,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+DJANGO_ALLOW_ASYNC_UNSAFE = True
 
 DATABASES = {
     'default': {
@@ -142,7 +143,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 LANGUAGES = [
     ('uz', _('Uzbek')),
@@ -176,7 +177,7 @@ else:
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-AUTH_USER_MODEL = 'user_app.User'
+AUTH_USER_MODEL = 'ax_clone_site/user_app.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
