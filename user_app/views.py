@@ -898,9 +898,7 @@ def reviewer_role_list_detail(request, pk):
 
 
 @login_required(login_url='login')
-@allowed_users(['admin', 'editor', 'reviewer', 'author', 'moderator', 'expert', 'out_expert', 'pupil', 'admin1'])
 def change_password(request):
-    print("Change password")
     if request.method == 'POST' and is_ajax(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
