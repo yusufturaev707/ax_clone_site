@@ -40,7 +40,7 @@ urlpatterns += i18n_patterns(
 
     # extra
     path('ax_clone_site/ckeditor/', include('ckeditor_uploader.urls')),
-    path("set_language/<str:language>", set_language, name="set-language"),
+    path("ax_clone_site/set_language/<str:language>", set_language, name="set-language"),
     prefix_default_language=False,
 )
 if settings.DEBUG:
