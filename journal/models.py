@@ -9,11 +9,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class JournalYear(models.Model):
     year = models.PositiveBigIntegerField(
-        default=0,
+        default=2000,
         validators=[
             MinValueValidator(1995, message="Son 1995 dan kichik bo'lishi mumkin emas."),
             MaxValueValidator(2100, message="Son 2100 dan katta bo'lishi mumkin emas.")
-        ]
+        ],
+        help_text=_("Jurnal sonining yili (1995 dan 2100 gacha) bo'lishi kerak.")
     )
     status = models.BooleanField(default=True)
     year_img = models.ImageField(upload_to="image_year/", null=True, blank=True,
@@ -25,7 +26,14 @@ class JournalYear(models.Model):
 
 
 class JournalNumber(models.Model):
-    number = models.PositiveBigIntegerField(default=0)
+    number = models.PositiveBigIntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1, message="Son 1 dan kichik bo'lishi mumkin emas."),
+            MaxValueValidator(10, message="Son 10 dan katta bo'lishi mumkin emas.")
+        ],
+        help_text=_("Jurnal soni (1 dan 10 gacha) bo'lishi kerak.")
+    )
     status = models.BooleanField(default=True)
 
     def __str__(self):
