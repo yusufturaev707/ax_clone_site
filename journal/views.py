@@ -676,7 +676,7 @@ def archive_journals(request):
 @login_required(login_url='login')
 @allowed_users(role=['admin', 'editor'])
 def archive_journals_numbers(request, year):
-    journals = Journal.objects.filter(year__year=year, is_publish=True, status=True).order_by('number__number')
+    journals = Journal.objects.filter(year__year=year, is_publish=True, status=True, year__gt=2020).order_by('number__number')
     context = {
         'journals': journals,
     }
