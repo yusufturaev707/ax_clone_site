@@ -11,7 +11,7 @@
             <br>
             {% if post %}
                 <center><h4 class="title">{{ post.title }}</h4></center>
-                <p>{{ post.desc }}</p>
+                <p>{{ post.desc|safe }}</p>
 {#                <a href="{{ post.get_absolute_url }}" class="btn btn-outline-success">{% trans 'Batafsil' %}>></a>#}
             {% endif %}
         </div>

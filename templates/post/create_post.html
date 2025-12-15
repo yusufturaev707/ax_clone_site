@@ -21,13 +21,13 @@
                     <div class="form-group row m-b-15">
                         <label class="col-form-label">{% trans "Teg" %}</label>
                         <div class="col-md-12 col-sm-12">
-                            {{ form.tag }}
+                            {{ form.tag|safe }}
                         </div>
                     </div>
                     <div class="form-group row m-b-15">
                         <label class="col-form-label">{% trans "To‘liq matn" %}</label>
                         <div class="col-md-12 col-sm-12">
-                            {{ form.desc }}
+                            {{ form.desc|safe }}
                         </div>
                     </div>
                     <div class="form-group row m-b-15">

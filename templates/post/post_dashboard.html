@@ -42,7 +42,7 @@
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
                                 <td>{{ post.title }}</td>
-                                <td>{{ post.tag|slice:200 }}</td>
+                                <td>{{ post.tag|safe|slice:200 }}</td>
                                 <td><img src="{{ post.img.url }}" width="30" alt=""/></td>
 
                                 <td>

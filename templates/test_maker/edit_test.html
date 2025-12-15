@@ -19,7 +19,7 @@
                     {% for items, job_number, status_code, message in data %}
                         <tr><th colspan="4">{% trans "Ekspert" %}{{ forloop.counter }} <i class="fa fa-arrow-down" style="color: #00B0E8"></i></th></tr>
                         {% if message %}
-                            <tr><td colspan="4" class="text text-justify">{{ message }}</td></tr>
+                            <tr><td colspan="4" class="text text-justify">{{ message|safe }}</td></tr>
                         {% endif %}
                         {% if items.count > 0 %}
                             {% for item in items %}

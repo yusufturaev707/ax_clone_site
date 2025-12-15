@@ -83,7 +83,7 @@
                     </tr>
                     <tr>
                         <td><b>{% trans "Yaratilgan vaqti:" %}</b></td>
-                        <td>{{ question.created_at|slice:19 }}</td>
+                        <td>{{ question.created_at|safe|slice:19 }}</td>
                     </tr>
                     {% if objects.count > 0 %}
                         {% for object in objects %}
@@ -94,7 +94,7 @@
                                     <b>Tekshirganmi:</b> {% if object.is_check %} <span class="badge badge-success">Ha</span> {% else %} <span class="badge badge-warning">Yo'q</span> {% endif %}
                                     &nbsp; <b>Status:</b> <span class="badge badge-blue-grey">{{ object.status_test.name }}</span>
                                     &nbsp;<b>Qadam:</b> <span class="badge badge-indigo">{{ object.step.name }}</span> <br>
-                                    <b>Kelgan vaqti:</b> {{ object.created_at }} <br>
+                                    <b>Kelgan vaqti:</b> {{ object.created_at|safe }} <br>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -110,7 +110,7 @@
                                         {% elif moderator.status.key == 1 %}
                                         <span class="badge badge-success">{{ moderator.status.name }}</span>
                                     {% endif %} <br>
-                                <b>Kelgan vaqti:</b> {{ moderator.created_at }} <br>
+                                <b>Kelgan vaqti:</b> {{ moderator.created_at|safe }} <br>
                                 {% else %}
                                 -
                             {% endif %}

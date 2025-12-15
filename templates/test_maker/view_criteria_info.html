@@ -19,7 +19,7 @@
                     {% for items, number, status, message in data %}
                         <tr style="background-color: #dcdcdc"><th colspan="4"><i class="fa fa-user-edit" style="font-size: large"></i> {% trans "Ekspert" %}{{ number }} <i class="fa fa-arrow-down" style="color: #00B0E8"></i></th></tr>
                          {% if message %}
-                            <tr><td colspan="4" class="text text-justify">{{ message }}</td></tr>
+                            <tr><td colspan="4" class="text text-justify">{{ message|safe }}</td></tr>
                         {% endif %}
                         {% if items.count > 0 %}
                             {% for item in items %}

@@ -12,7 +12,7 @@
             <div class="col-md-10">
                 <table>
                     <tr>
-                        <td><p><b>{% trans "Mavzu:" %} </b>{{ article.title }}</p></td>
+                        <td><p><b>{% trans "Mavzu:" %} </b>{{ article.title|safe }}</p></td>
                     </tr>
                     <br>
                     <tr>
@@ -27,10 +27,10 @@
                             <br><i>{{ article.author.email }}</i></td>
                     </tr>
                     <tr>
-                        <td><p></p><b>{% trans "Qisqacha mazmuni:" %} </b>{{ article.abstract }}</td>
+                        <td><p></p><b>{% trans "Qisqacha mazmuni:" %} </b>{{ article.abstract|safe }}</td>
                     </tr>
                     <tr>
-                        <td><b>{% trans "Kalit so'zlar:" %} </b>{{ article.keywords }}</td>
+                        <td><b>{% trans "Kalit so'zlar:" %} </b>{{ article.keywords|safe }}</td>
                     </tr>
                     <br>
                     <tr>
@@ -317,7 +317,7 @@
                                                     <div id="collapseOne{{ item.id }}" class="collapse"
                                                          aria-labelledby="headingOne" data-parent="#accordion{{ item.id }}">
                                                         <div class="card-body">
-                                                            {{ item.comment }}
+                                                            {{ item.comment|safe }}
                                                         </div>
                                                     </div>
                                                 </div>

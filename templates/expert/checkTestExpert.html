@@ -53,7 +53,7 @@
                         {% endif %}
                         <tr>
                             <td><b>{% trans "Qaysi qismga tegishligiga izoh:" %}</b></td>
-                            <td>{{ test.submission_test.submission.link_literature }}</td>
+                            <td>{{ test.submission_test.submission.link_literature|safe }}</td>
                         </tr>
                         <tr>
                             <td><b>{% trans "Holati:" %}</b></td>

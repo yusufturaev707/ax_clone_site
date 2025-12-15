@@ -29,7 +29,7 @@
                                             <b>Ekspertlar xulosasi:</b><br>
                                             {% for item in items %}
                                                 <p><i><b>{{ forloop.counter }} - ekspert:</b></i></p>
-                                                {{ item.message }}
+                                                {{ item.message|safe }}
                                             {% endfor %}
                                         </td>
                                     </tr>

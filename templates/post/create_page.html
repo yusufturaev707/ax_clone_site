@@ -26,13 +26,13 @@
                     <div class="form-group row m-b-15">
                         <label class="col-form-label">{% trans "Matn" %}</label>
                         <div class="col-md-12 col-sm-12">
-                            {{ form.body }}
+                            {{ form.body|safe }}
                         </div>
                     </div>
                     <div class="form-group row m-b-15">
                         <label class="col-form-label">{% trans "Nashr holari" %}</label>
                         <div class="col-md-12 col-sm-12">
-                            {{ form.is_publish }}
+                            {{ form.is_publish|safe }}
                         </div>
                     </div>
                 </div>
