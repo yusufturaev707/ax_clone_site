@@ -134,7 +134,7 @@
 
 $('body').on('click', '.captcha', function (e) {
     e.preventDefault();
-    $.getJSON("/captcha/refresh/", function (result) {
+    $.getJSON("/ax_clone_site/captcha/refresh/", function (result) {
         $('.captcha').attr('src', result['image_url']);
         $('#id_captcha_0').val(result['key']);
     });
@@ -194,7 +194,7 @@ $('.registerForm').on('submit', function (e) {
             }
         });
 
-        $.getJSON("/captcha/refresh/", function (result) {
+        $.getJSON("/ax_clone_site/captcha/refresh/", function (result) {
         $('.captcha').attr('src', result['image_url']);
         $('#id_captcha_0').val(result['key']);
     });
