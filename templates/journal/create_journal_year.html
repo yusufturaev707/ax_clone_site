@@ -36,11 +36,6 @@
 </form>
 <script>
     $(document).ready(function () {
-        function decodeHtml(html) {
-                let txt = document.createElement("textarea");
-                txt.innerHTML = html;
-                return txt.value;
-        }
         $('.create_journal_year_form').submit(function (e) {
             e.preventDefault();
 
@@ -65,6 +60,7 @@
                         if (response.result) {
                             $('#create_journal_year_modal').modal('hide');
                             swal({
+                                icon: 'success',
                                 title: response.message,
                                 timer: 2000,
                             });
@@ -77,6 +73,12 @@
                                 timer: 4000,
                                 html: true
                             });
+
+                            function decodeHtml(html) {
+                                let txt = document.createElement("textarea");
+                                txt.innerHTML = html;
+                                return txt.value;
+                            }
                         }
                     },
                     error: function (error) {
