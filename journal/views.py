@@ -61,7 +61,7 @@ def create_journal_year(request):
         else:
             data = {
                 "result": False,
-                "message": _("Xatolik yuz berdi!"),
+                "message": _(f"Xatolik yuz berdi: {form.errors}"),
             }
             return JsonResponse(data)
     data = {
@@ -85,7 +85,7 @@ def create_journal_number(request):
         else:
             data = {
                 "result": False,
-                "message": _("Xatolik yuz berdi!"),
+                "message": _(f"Xatolik yuz berdi: {form.errors}"),
             }
             return JsonResponse(data)
     data = {
@@ -110,7 +110,7 @@ def edit_journal_year(request, pk):
         else:
             data = {
                 "result": False,
-                "message": _("Xatolik yuz berdi!"),
+                "message": _(f"Xatolik yuz berdi: {form.errors}"),
             }
             return JsonResponse(data)
     data = {
@@ -136,7 +136,7 @@ def edit_journal_number(request, pk):
         else:
             data = {
                 "result": False,
-                "message": _("Xatolik yuz berdi!"),
+                "message": _(f"Xatolik yuz berdi: {form.errors}"),
             }
             return JsonResponse(data)
     data = {
@@ -666,7 +666,11 @@ def journal_article_view(request, pk):
 @login_required(login_url='login')
 @allowed_users(role=['admin', 'editor'])
 def archive_journals(request):
-    years = JournalYear.objects.filter(status=True)
+    try:
+        years = JournalYear.objects.filter(status=True).order_by('year')
+    except Exception as e:
+        years = JournalYear.objects.none()
+
     context = {
         'objects': years,
     }
@@ -677,7 +681,7 @@ def archive_journals(request):
 @allowed_users(role=['admin', 'editor'])
 def archive_journals_numbers(request, year):
     try:
-        journals = Journal.objects.filter(year__year=year, is_publish=True, status=True, year__gt=2020).order_by(
+        journals = Journal.objects.filter(year__year=year, is_publish=True, status=True).order_by(
             'number__number')
         context = {
             'journals': journals,
@@ -685,7 +689,7 @@ def archive_journals_numbers(request, year):
         return render(request, "journal/archive_journals_numbers.html", context=context)
     except Journal.DoesNotExist:
         context = {
-            'journals': {},
+            'journals': Journal.objects.none(),
         }
         return render(request, 'journal/archive_journals_numbers.html', context=context)
 
