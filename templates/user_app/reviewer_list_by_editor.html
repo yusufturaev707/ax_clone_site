@@ -45,10 +45,9 @@
                         </td>
                         <td>
                             <button type="button"
-                                    onclick="viewReviewerDetail({{ submission.reviewer.id }}, this)"
-                                    class="btn btn-sm btn-outline-primary forshadow"
-                                    title="{% trans 'Korish' %}">
-                                <i class="fas fa-edit"></i>
+                                    data-id="{{ submission.reviewer.id }}"
+                                    class="btn btn-sm btn-outline-primary forshadow js-view-reviewer"
+                                    title="{% trans 'Korish' %}"><i class=" fas fa-edit"></i>
                             </button>
                         </td>
                     </tr>
@@ -64,38 +63,43 @@
 </div>
 
 <div id="reviewer_submission_div"></div>
-
-{% endblock %}
-
-{% block extra_js %}
 <script>
-    function viewReviewerDetail(id, btn) {
-        const $btn = $(btn);
-        const originalHtml = $btn.html();
+    // Sahifa to'liq yuklangandan keyin ishlashini ta'minlaymiz
+    $(document).ready(function() {
 
-        // Yuklanish holati (Spinner)
-        $btn.html('<i class="fas fa-spinner fa-spin"></i>').prop('disabled', true);
+        // Delegatsiya orqali tugma bosilishini ushlaymiz
+        $(document).on('click', '.js-view-reviewer', function() {
+            const $btn = $(this);
+            const reviewerId = $btn.data('id'); // data-id dan ID ni olamiz
+            const originalHtml = $btn.html();
 
-        $.ajax({
-            type: "GET",
-            url: `/profile/choosen_reviewer_role_list/${id}/`,
-            success: function (response) {
-                $('#reviewer_submission_div').html(response);
-                $('#reviewer_role_list_detail_modal').modal('show');
-            },
-            error: function (xhr) {
-                console.error(xhr);
-                swal({
-                    title: "{% trans 'Xatolik!' %}",
-                    text: "{% trans 'Ma’lumotni yuklashda xatolik yuz berdi' %}",
-                    icon: "error",
-                });
-            },
-            complete: function () {
-                // Tugmani asliga qaytarish
-                $btn.html(originalHtml).prop('disabled', false);
-            }
+            // Yuklanish holati
+            $btn.html('<i class="fas fa-spinner fa-spin"></i>').prop('disabled', true);
+
+            $.ajax({
+                type: "GET",
+                url: "/profile/choosen_reviewer_role_list/" + reviewerId + "/",
+                success: function (response) {
+                    $('#reviewer_submission_div').html(response);
+                    $('#reviewer_role_list_detail_modal').modal('show');
+                },
+                error: function (xhr) {
+                    console.error("Xatolik:", xhr);
+                    if (typeof swal === 'function') {
+                        swal({
+                            title: "Xatolik!",
+                            text: "Ma’lumotni yuklashda xato yuz berdi.",
+                            icon: "error",
+                        });
+                    } else {
+                        alert("Xatolik yuz berdi!");
+                    }
+                },
+                complete: function () {
+                    $btn.html(originalHtml).prop('disabled', false);
+                }
+            });
         });
-    }
+    });
 </script>
 {% endblock %}
