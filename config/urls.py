@@ -40,4 +40,4 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'user_app.views.error_404'
-# handler500 = 'user_app.views.error_500'
+handler500 = 'user_app.views.error_500'
