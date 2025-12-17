@@ -35,7 +35,9 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-white" data-dismiss="modal">{% trans "Yopish" %}</a>
-                    <button type="submit" class="btn btn-primary create-journal-btn"><span class="spinner-grow spinner-grow-sm" id="create-journal-btn-spinner" style="display: none"></span><span id="btn-text">{% trans "Yaratish" %}</span></button>
+                    <button type="submit" class="btn btn-primary create-journal-btn"><span
+                            class="spinner-grow spinner-grow-sm" id="create-journal-btn-spinner"
+                            style="display: none"></span><span id="btn-text">{% trans "Yaratish" %}</span></button>
                 </div>
             </div>
         </div>
@@ -66,21 +68,20 @@
                         $('#create_journal_modal').modal('hide');
                         window.location.reload();
                     } else {
+                        let decodedMessage = decodeHtml(response.message);
                         swal({
-                        title: 'Xatolik!',
-                        text: response.message,
-                        icon: 'error',
-                        timer: 3000,
-                        buttons: {
-                            cancel: {
-                                text: 'Cancel',
-                                value: null,
-                                visible: true,
-                                className: 'btn btn-default',
-                                closeModal: true,
-                            },
+                            title: 'Xatolik!',
+                            text: decodedMessage,
+                            icon: 'error',
+                            timer: 4000,
+                            html: true
+                        });
+
+                        function decodeHtml(html) {
+                            let txt = document.createElement("textarea");
+                            txt.innerHTML = html;
+                            return txt.value;
                         }
-                    });
                     }
                 },
                 complete: function (data) {
