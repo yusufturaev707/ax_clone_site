@@ -11,6 +11,15 @@
             <br>
             <center><h4 class="title"
                         style="color:black;">{{ journal.year }} №{{ journal.number }}</h4></center>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% for item in list_articles %}
                 <div class="row">
                     <div class="col-md-12">
@@ -30,7 +39,7 @@
                             </a><br>
                             <span style="font-size: 12px">{{ item.article.author.full_name }}
                                 {% if item.count_author > 1 %}
-                                {% trans "va boshqalar" %}
+                                    {% trans "va boshqalar" %}
                                 {% endif %},
                                 {% trans "Axborotnoma" %},
                                 {{ item.article.start_page }}-{{ item.article.end_page }}, ({{ journal.year.year }}), №{{ journal.number.number }},
@@ -42,25 +51,27 @@
                     </div>
                     <div class="col-md-10" style="text-align: justify;text-justify: inter-word;">
                         <p><b>{% trans "Qisqacha mazmuni." %}</b>
-                        {% if lang == 'uz' and item.article.article_lang.key == 'uz' %}
-                                    {{ item.article.abstract }}
-                                {% elif lang == 'uz' and item.article.article_lang.key == 'en' %}
-                                    {{ item.article.abstract_en }}
-                                {% elif lang == 'en' and item.article.article_lang.key == 'uz' %}
-                                    {{ item.article.abstract_en }}
-                                {% elif lang == 'en' and item.article.article_lang.key == 'en' %}
-                                    {{ item.article.abstract }}
-                                {% else %}
-                                    {{ item.article.abstract }}
-                                {% endif %}
+                            {% if lang == 'uz' and item.article.article_lang.key == 'uz' %}
+                                {{ item.article.abstract }}
+                            {% elif lang == 'uz' and item.article.article_lang.key == 'en' %}
+                                {{ item.article.abstract_en }}
+                            {% elif lang == 'en' and item.article.article_lang.key == 'uz' %}
+                                {{ item.article.abstract_en }}
+                            {% elif lang == 'en' and item.article.article_lang.key == 'en' %}
+                                {{ item.article.abstract }}
+                            {% else %}
+                                {{ item.article.abstract }}
+                            {% endif %}
                         </p>
                     </div>
                 </div>
                 <br>
             {% endfor %}
-        <br>
-            <p><a href="{{ journal.file_pdf.url }}" class="btn btn-outline-danger"
-                  target="_blank"><i class="fa fa-file-pdf fa-lg"></i>&nbsp;{% trans "PDF" %}</a></p>
+            <br>
+            {% if result == 1 %}
+                <p><a href="{{ journal.file_pdf.url }}" class="btn btn-outline-danger"
+                      target="_blank"><i class="fa fa-file-pdf fa-lg"></i>&nbsp;{% trans "PDF" %}</a></p>
+            {% endif %}
         </div>
     </div>
     <br>

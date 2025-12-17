@@ -660,6 +660,7 @@ def journal_detail(request, pk):
             item.save()
 
         context = {
+            'result': 1,
             'journal': journal,
             'list_articles': list_articles,
             'lang': get_language(),
@@ -668,6 +669,7 @@ def journal_detail(request, pk):
     except Exception as e:
         messages.error(request, f"Xatolik yuz berdi: {e}.")
         context = {
+            'result': 0,
             'journal': {},
             'list_articles': [],
             'lang': get_language(),
