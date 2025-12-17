@@ -250,6 +250,39 @@ $('body').on('click', '.remove_article_btn', function (e) {
     });
 });
 
+const formValidate = array => {
+
+    let is_validRForm = true;
+
+    $('.text-danger').hide();
+
+    for (let index = 0; index < array.length; index++) {
+        let key = array[index].key;
+        let value = array[index].value;
+        let message = array[index].message;
+
+
+        if (key == 'email') {
+            if (value == "") {
+                $('.' + key).after('<span class="text-danger"> Iltimos e-mailizni kiriting </span>');
+                is_validRForm = false;
+            } else if (!validateEmail(value)) {
+                $('.' + key).after('<span class="text-danger"> Iltimos to\'gri e-mail kiriting</span>');
+                is_validRForm = false;
+            }
+        } else {
+
+            if (value == '') {
+                $('.' + key).after('<span class="text-danger text-small">' + message + 'ni kiriting!</span>');
+                is_validRForm = false;
+            }
+        }
+
+    }
+
+    return is_validRForm
+};
+
 $('body').on('submit', '.update_article_form', function (e) {
     e.preventDefault();
     const $myForm = $('.update_article_form')
