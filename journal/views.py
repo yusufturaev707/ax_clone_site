@@ -658,13 +658,8 @@ def journal_detail(request, pk):
             'lang': get_language(),
         }
         return render(request, "journal/journal_detail.html", context=context)
-
-    except Journal.DoesNotExist:
-        messages.error(request, "Jurnal topilmadi.")
-        return redirect('journals_list')  # yoki boshqa sahifaga
-
     except Exception as e:
-        messages.error(request, "Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.")
+        messages.error(request, f"Xatolik yuz berdi: {e}.")
         return redirect('journals_list')
 
 
@@ -682,9 +677,6 @@ def journal_year_list(request, year):
         journals = Journal.objects.filter(is_publish=True, status=True, year_id=ob_year.id).order_by('year__year',
                                                                                                      'number__number')
         return render(request, 'journal/journals_year.html', context={'journals': journals, 'year': ob_year.year})
-    except JournalYear.DoesNotExist:
-        messages.error(request, "yil topilmadi.")
-        return redirect('journal_list')
     except Exception as e:
         messages.error(request, f"Xatolik yuz berdi. {e}.")
         return redirect('journals_list')
