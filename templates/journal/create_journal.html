@@ -68,20 +68,20 @@
                         $('#create_journal_modal').modal('hide');
                         window.location.reload();
                     } else {
-                        let decodedMessage = decodeHtml(response.message);
-                        swal({
-                            title: 'Xatolik!',
-                            text: decodedMessage,
-                            icon: 'error',
-                            timer: 4000,
-                            html: true
-                        });
+                        let cleanMessage = response.message
+                                .replace(/<ul[^>]*>/g, '')
+                                .replace(/<\/ul>/g, '')
+                                .replace(/<li>/g, '• ')
+                                .replace(/<\/li>/g, '\n')
+                                .replace(/&#x27;/g, "'");
 
-                        function decodeHtml(html) {
-                            let txt = document.createElement("textarea");
-                            txt.innerHTML = html;
-                            return txt.value;
-                        }
+                            swal({
+                                title: "Xatolik!",
+                                icon: 'error',
+                                text: cleanMessage,
+                                timer: 3000,
+                                html: true
+                            });
                     }
                 },
                 complete: function (data) {
