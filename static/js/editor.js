@@ -95,7 +95,7 @@ $('body').on('click', '.resultBtn', function (e) {
     let article_id = parseInt(data.split(',')[0]);
     let notif_id = parseInt(data.split(',')[1]);
     let btn_number = parseInt(data.split(',')[2]);
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
 
     let url = $('.approve_form').data('url');
 
