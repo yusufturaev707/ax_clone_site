@@ -45,28 +45,39 @@
                 <ul class="dropdown-menu">
                     {% for language in languages %}
                         <li id="lang_{{ language.code }}">
-                            <form action="/i18n/setlang/" method="post" style="margin:0;">
-                                {% csrf_token %}
-                                <input type="hidden" name="language" value="{{ language.code }}">
-                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                                <button type="submit" class="btn btn-white btn-block text-left">
-                                    {% if language.code != 'kk' %}
-                                        &nbsp;<span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
-                                    {% else %}
-                                        &nbsp;<span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
-                                    {% endif %}
-                                    {% if language.code == 'kk' %}
-                                        Qoraqalpoq tili
-                                    {% elif language.code == 'uz' %}
-                                        O'zbek tili
-                                    {% else %}
-                                        {{ language.name_local }}
-                                    {% endif %}
-                                </button>
-                            </form>
+                            <a href="#" class="btn btn-white btn-block text-left change-language-btn"
+                               data-lang="{{ language.code }}">
+                                {% if language.code != 'kk' %}
+                                    &nbsp;<span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
+                                {% else %}
+                                    &nbsp;<span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                                {% endif %}
+                                {% if language.code == 'kk' %}
+                                    Qoraqalpoq tili
+                                {% elif language.code == 'uz' %}
+                                    O'zbek tili
+                                {% else %}
+                                    {{ language.name_local }}
+                                {% endif %}
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
+                <form id="language-form" action="/i18n/setlang/" method="post" style="display:none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" id="language-input" value="">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                </form>
+                <script>
+                    document.querySelectorAll('.change-language-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            var lang = this.getAttribute('data-lang');
+                            document.getElementById('language-input').value = lang;
+                            document.getElementById('language-form').submit();
+                        });
+                    });
+                </script>
             </div>
         </li>
         <li class="dropdown navbar-user">
