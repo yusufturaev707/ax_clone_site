@@ -1813,189 +1813,191 @@ def editor_resubmit_to_reviewer(request):
 @login_required(login_url='login')
 @allowed_users(role=['editor'])
 def approve_publish(request):
-    user = get_object_or_404(User, pk=request.user.id)
-    if request.method == 'POST' and is_ajax(request):
-        data = None
-        article_id = request.POST.get('article_id')
-        notif_id = request.POST.get('notif_id')
-        btn_number = int(request.POST.get('btn_number'))
-        token = request.POST['csrfmiddlewaretoken']
+    try:
+        user = get_object_or_404(User, pk=request.user.id)
+        if request.method == 'POST' and is_ajax(request):
+            data = None
+            article_id = request.POST.get('article_id')
+            notif_id = request.POST.get('notif_id')
+            btn_number = int(request.POST.get('btn_number'))
+            token = request.POST['csrfmiddlewaretoken']
 
-        article = get_object_or_404(Article, pk=int(article_id))
-        notif = get_object_or_404(Notification, pk=int(notif_id))
+            article = get_object_or_404(Article, pk=int(article_id))
+            notif = get_object_or_404(Notification, pk=int(notif_id))
 
-        d = {'user': article.author, 'article': article}
-        subject = _(
-            "O'zbekiston respublikasi, oliy ta'lim, fan va innovatsiyalar vazirligi huzuridagi bilim va "
-            "malakalarni baholash agentligi online axborotnoma jurnali.")
-        to_email = article.author.email
+            d = {'user': article.author, 'article': article}
+            subject = _(
+                "O'zbekiston respublikasi, oliy ta'lim, fan va innovatsiyalar vazirligi huzuridagi bilim va "
+                "malakalarni baholash agentligi online axborotnoma jurnali.")
+            to_email = article.author.email
 
-        if btn_number == 0:
-            article.article_status = ArticleStatus.objects.get(pk=2)
-            article.is_publish = True
-            article.save()
+            if btn_number == 0:
+                article.article_status = ArticleStatus.objects.get(pk=2)
+                article.is_publish = True
+                article.save()
 
-            if notif.notification_status.id == 2:
-                notif.notification_status = NotificationStatus.objects.get(id=3)
-                notif.save()
+                if notif.notification_status.id == 2:
+                    notif.notification_status = NotificationStatus.objects.get(id=3)
+                    notif.save()
 
-            msg = ''
-            r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
-            i = 1
-            for r in r_articles:
-                msg += f"{i}-TAQRIZ. {r.comment}\n\n"
-                i += 1
+                msg = ''
+                r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
+                i = 1
+                for r in r_articles:
+                    msg += f"{i}-TAQRIZ. {r.comment}\n\n"
+                    i += 1
 
-            Notification.objects.create(
-                article=article,
-                from_user=user,
-                to_user=article.author,
-                message=msg,
-                notification_status=NotificationStatus.objects.get(id=1),
-            )
-
-            # template = 'user_app/Email_confirm.html'
-            #             # send_message_email(template=template, data=d, to_email=to_email, subject=subject)
-
-            data = {
-                "message": _("Maqola muvaffaqiyatli tasdiqlandi!"),
-            }
-        elif btn_number == 1:
-            article.article_status = ArticleStatus.objects.get(pk=3)
-            article.save()
-
-            if notif.notification_status.id == 2:
-                notif.notification_status = NotificationStatus.objects.get(id=3)
-                notif.save()
-
-            msg = ''
-            r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
-            i = 1
-            for r in r_articles:
-                msg += f"{i}-TAQRIZ. {r.comment}\n\n"
-                i += 1
-
-            Notification.objects.create(
-                article=article,
-                from_user=user,
-                to_user=article.author,
-                message=msg,
-                notification_status=NotificationStatus.objects.get(id=1),
-            )
-
-            template = 'user_app/Email_reject.html'
-            send_message_email(template=template, data=d, to_email=to_email, subject=subject)
-
-            data = {
-                "message": _("Maqola Rad Etildi!"),
-            }
-        elif btn_number == 2:
-            text = request.POST.get('text')
-            article.article_status = get_object_or_404(ArticleStatus, pk=8)
-            article.is_resubmit = True
-            article.save()
-
-            msg = ''
-            r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
-            i = 1
-            for r in r_articles:
-                msg += f"{i}-TAQRIZ. {r.comment}\n\n"
-                i += 1
-
-            Notification.objects.create(
-                article=article,
-                from_user=user,
-                to_user=article.author,
-                message=text,
-                notification_status=NotificationStatus.objects.get(id=1),
-            )
-            Notification.objects.create(
-                article=article,
-                from_user=user,
-                to_user=article.author,
-                message=msg,
-                notification_status=NotificationStatus.objects.get(id=1),
-            )
-            data = {
-                "message": _("Muallifga maqolani qayta yuborish uchun yuborildi!"),
-            }
-        elif btn_number == 3:
-            article_section = article.section
-            editor = get_object_or_404(Editor, user=user)
-            authors = ExtraAuthor.objects.filter(article=article)
-
-            author_levels = []
-            for author in authors:
-                author_levels.append(author.scientific_degree.level)
-
-            max_level_author = max(author_levels)
-
-            reviewers = Reviewer.objects.filter(is_reviewer=True).filter(
-                scientific_degree__level__gte=max_level_author)
-
-            reviewers_id = []
-            if reviewers.count() > 0:
-                for reviewer in reviewers:
-                    results = ReviewerArticle.objects.filter(article=article).filter(reviewer=reviewer)
-                    if results.count() == 0:
-                        sections = []
-                        for it in reviewer.section.all():
-                            sections.append(it.id)
-                        if article_section.id in sections:
-                            reviewers_id.append(reviewer.id)
-                    else:
-                        continue
-            else:
-                degree = ScientificDegree.objects.get(level=max_level_author)
-                data = {
-                    "is_valid": False,
-                    "message": _(f"Bu maqolaga ilmiy darajasi({degree.name})ga teng taqrizchi topilmadi!"),
-                }
-                return JsonResponse(data=data)
-
-            if len(reviewers_id) > 0:
-                select_random_reviewer = np.random.choice(reviewers_id, 1, replace=False).tolist()
-            else:
-                data = {
-                    "is_valid": False,
-                    "message": _(f"{article_section.name} sohasini tekshiradigan taqrizchilar topilmadi!"),
-                }
-                return JsonResponse(data=data)
-
-            for item in select_random_reviewer:
-                reviewer = get_object_or_404(Reviewer, pk=int(item))
-                reviewer_user = get_object_or_404(User, pk=reviewer.user.id)
-
-                notif = Notification.objects.create(
+                Notification.objects.create(
                     article=article,
                     from_user=user,
-                    to_user=reviewer_user,
-                    message=_("Hurmatli taqrizchi sizga maqola yuborildi"),
+                    to_user=article.author,
+                    message=msg,
                     notification_status=NotificationStatus.objects.get(id=1),
-                    is_update_article=True,
                 )
 
-                ReviewerArticle.objects.create(
+                # template = 'user_app/Email_confirm.html'
+                #             # send_message_email(template=template, data=d, to_email=to_email, subject=subject)
+
+                data = {
+                    "message": _("Maqola muvaffaqiyatli tasdiqlandi!"),
+                }
+            elif btn_number == 1:
+                article.article_status = ArticleStatus.objects.get(pk=3)
+                article.save()
+
+                if notif.notification_status.id == 2:
+                    notif.notification_status = NotificationStatus.objects.get(id=3)
+                    notif.save()
+
+                msg = ''
+                r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
+                i = 1
+                for r in r_articles:
+                    msg += f"{i}-TAQRIZ. {r.comment}\n\n"
+                    i += 1
+
+                Notification.objects.create(
                     article=article,
-                    editor=editor,
-                    reviewer=reviewer,
-                    status=StatusReview.objects.get(pk=1),
-                    comment="",
-                    is_extra=True,
-                    notification=notif,
+                    from_user=user,
+                    to_user=article.author,
+                    message=msg,
+                    notification_status=NotificationStatus.objects.get(id=1),
                 )
 
-            data = {
-                "is_valid": True,
-                "select_random_reviewers": select_random_reviewer,
-                "message": _("Taqrizchiga muvaffaqiyatli yuborildi!"),
-            }
+                template = 'user_app/Email_reject.html'
+                send_message_email(template=template, data=d, to_email=to_email, subject=subject)
 
+                data = {
+                    "message": _("Maqola Rad Etildi!"),
+                }
+            elif btn_number == 2:
+                text = request.POST.get('text')
+                article.article_status = get_object_or_404(ArticleStatus, pk=8)
+                article.is_resubmit = True
+                article.save()
+
+                msg = ''
+                r_articles = ReviewerArticle.objects.filter(article=article).order_by('id')
+                i = 1
+                for r in r_articles:
+                    msg += f"{i}-TAQRIZ. {r.comment}\n\n"
+                    i += 1
+
+                Notification.objects.create(
+                    article=article,
+                    from_user=user,
+                    to_user=article.author,
+                    message=text,
+                    notification_status=NotificationStatus.objects.get(id=1),
+                )
+                Notification.objects.create(
+                    article=article,
+                    from_user=user,
+                    to_user=article.author,
+                    message=msg,
+                    notification_status=NotificationStatus.objects.get(id=1),
+                )
+                data = {
+                    "message": _("Muallifga maqolani qayta yuborish uchun yuborildi!"),
+                }
+            elif btn_number == 3:
+                article_section = article.section
+                editor = get_object_or_404(Editor, user=user)
+                authors = ExtraAuthor.objects.filter(article=article)
+
+                author_levels = []
+                for author in authors:
+                    author_levels.append(author.scientific_degree.level)
+
+                max_level_author = max(author_levels)
+
+                reviewers = Reviewer.objects.filter(is_reviewer=True).filter(
+                    scientific_degree__level__gte=max_level_author)
+
+                reviewers_id = []
+                if reviewers.count() > 0:
+                    for reviewer in reviewers:
+                        results = ReviewerArticle.objects.filter(article=article).filter(reviewer=reviewer)
+                        if results.count() == 0:
+                            sections = []
+                            for it in reviewer.section.all():
+                                sections.append(it.id)
+                            if article_section.id in sections:
+                                reviewers_id.append(reviewer.id)
+                        else:
+                            continue
+                else:
+                    degree = ScientificDegree.objects.get(level=max_level_author)
+                    data = {
+                        "is_valid": False,
+                        "message": _(f"Bu maqolaga ilmiy darajasi({degree.name})ga teng taqrizchi topilmadi!"),
+                    }
+                    return JsonResponse(data=data)
+
+                if len(reviewers_id) > 0:
+                    select_random_reviewer = np.random.choice(reviewers_id, 1, replace=False).tolist()
+                else:
+                    data = {
+                        "is_valid": False,
+                        "message": _(f"{article_section.name} sohasini tekshiradigan taqrizchilar topilmadi!"),
+                    }
+                    return JsonResponse(data=data)
+
+                for item in select_random_reviewer:
+                    reviewer = get_object_or_404(Reviewer, pk=int(item))
+                    reviewer_user = get_object_or_404(User, pk=reviewer.user.id)
+
+                    notif = Notification.objects.create(
+                        article=article,
+                        from_user=user,
+                        to_user=reviewer_user,
+                        message=_("Hurmatli taqrizchi sizga maqola yuborildi"),
+                        notification_status=NotificationStatus.objects.get(id=1),
+                        is_update_article=True,
+                    )
+
+                    ReviewerArticle.objects.create(
+                        article=article,
+                        editor=editor,
+                        reviewer=reviewer,
+                        status=StatusReview.objects.get(pk=1),
+                        comment="",
+                        is_extra=True,
+                        notification=notif,
+                    )
+
+                data = {
+                    "is_valid": True,
+                    "select_random_reviewers": select_random_reviewer,
+                    "message": _("Taqrizchiga muvaffaqiyatli yuborildi!"),
+                }
+            else:
+                pass  # No action needed for else case
+            return JsonResponse(data=data)
         else:
-            pass  # No action needed for else case
-        return JsonResponse(data=data)
-    else:
-        return HttpResponse("Not Fount Page!")
+            return HttpResponse("Not Fount Page!")
+    except Exception as e:
+        return HttpResponse(f"{e}")
 
 
 @login_required(login_url='login')

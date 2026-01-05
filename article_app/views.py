@@ -39,59 +39,59 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-# def set_language(request, language):
-#     # Tilni tekshirish
-#     valid_languages = [lang[0] for lang in settings.LANGUAGES]
-#     if language not in valid_languages:
-#         language = settings.LANGUAGE_CODE
-#
-#     # Oldingi sahifaga qaytish
-#     referer = request.META.get("HTTP_REFERER", "/")
-#
-#     response = HttpResponseRedirect(referer)
-#     response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
-#
-#     return response
-
-def set_language(request, language=None):
-    # POST dan yoki URL dan tilni olish
-    if request.method == 'POST':
-        language = request.POST.get('language')
-        print(f"language: {language}")
-
+def set_language(request, language):
     # Tilni tekshirish
     valid_languages = [lang[0] for lang in settings.LANGUAGES]
     if language not in valid_languages:
         language = settings.LANGUAGE_CODE
 
-    print(f"valid_languages: {language}")
+    # Oldingi sahifaga qaytish
+    referer = request.META.get("HTTP_REFERER", "/")
 
-    # Tilni aktivlashtirish
-    activate(language)
-
-    # Qaytish URL'ini olish
-    next_url = request.POST.get('next') or request.GET.get('next')
-    # if not next_url:
-    #     next_url = request.META.get('HTTP_REFERER', '/ax_clone_site/')
-
-    # URL'ni yangi tilga tarjima qilish
-    try:
-        next_url = translate_url(next_url, language)
-    except:
-        pass
-
-    response = HttpResponseRedirect(next_url)
-
-    # Cookie'ni o'rnatish
-    response.set_cookie(
-        settings.LANGUAGE_COOKIE_NAME,
-        language,
-        max_age=settings.LANGUAGE_COOKIE_AGE,
-        path=settings.LANGUAGE_COOKIE_PATH,
-        domain=settings.LANGUAGE_COOKIE_DOMAIN,
-    )
+    response = HttpResponseRedirect(referer)
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
 
     return response
+
+# def set_language(request, language=None):
+#     # POST dan yoki URL dan tilni olish
+#     if request.method == 'POST':
+#         language = request.POST.get('language')
+#         print(f"language: {language}")
+#
+#     # Tilni tekshirish
+#     valid_languages = [lang[0] for lang in settings.LANGUAGES]
+#     if language not in valid_languages:
+#         language = settings.LANGUAGE_CODE
+#
+#     print(f"valid_languages: {language}")
+#
+#     # Tilni aktivlashtirish
+#     activate(language)
+#
+#     # Qaytish URL'ini olish
+#     next_url = request.POST.get('next') or request.GET.get('next')
+#     # if not next_url:
+#     #     next_url = request.META.get('HTTP_REFERER', '/ax_clone_site/')
+#
+#     # URL'ni yangi tilga tarjima qilish
+#     try:
+#         next_url = translate_url(next_url, language)
+#     except:
+#         pass
+#
+#     response = HttpResponseRedirect(next_url)
+#
+#     # Cookie'ni o'rnatish
+#     response.set_cookie(
+#         settings.LANGUAGE_COOKIE_NAME,
+#         language,
+#         max_age=settings.LANGUAGE_COOKIE_AGE,
+#         path=settings.LANGUAGE_COOKIE_PATH,
+#         domain=settings.LANGUAGE_COOKIE_DOMAIN,
+#     )
+#
+#     return response
 
 
 def main_page(request):
