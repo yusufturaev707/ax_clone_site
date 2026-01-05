@@ -323,7 +323,7 @@ $('body').on('click', '.edit_user_btn', function (e) {
 $('body').on('click', '.edit_user_btn_save', function (e) {
     e.preventDefault();
 
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     let url = $('#choose_role_form').data('url');
 
     let selected = [];

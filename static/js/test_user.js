@@ -2,7 +2,7 @@ $('body').on('submit', '.sendTestForm', function (e) {
     e.preventDefault();
 
     let formData = new FormData(this);
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     let url = $('.sendTestForm').data('url');
 
     $.ajax({

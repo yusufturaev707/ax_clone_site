@@ -41,7 +41,7 @@
                     type: 'POST',
                     url: "{% url 'get_admission_questions' %}",
                     data: {
-                        csrfmiddlewaretoken: getCookie('csrftoken')
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                     },
                     datatype: "json",
                 },

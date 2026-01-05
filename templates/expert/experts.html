@@ -38,7 +38,7 @@
                     type: 'POST',
                     url: "{% url 'get_experts' %}",
                     data: {
-                        csrfmiddlewaretoken: getCookie('csrftoken')
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                     },
                     datatype: "json",
                 },

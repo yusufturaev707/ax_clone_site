@@ -32,7 +32,7 @@
                     type: 'POST',
                     url: "{% url 'get_moderators' %}",
                     data: {
-                        csrfmiddlewaretoken: getCookie('csrftoken')
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                     },
                     datatype: "json",
                 },

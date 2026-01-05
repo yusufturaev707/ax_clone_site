@@ -22,7 +22,7 @@ $('body').on('click', '.resultBtnUnReview', function (e) {
     let article_id = parseInt(data.split(',')[0]);
     let notif_id = parseInt(data.split(',')[1]);
     let btn_number = parseInt(data.split(',')[2]);
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     let text = $('#resubmit_or_reject_text').val();
 
 
@@ -67,7 +67,7 @@ $('body').on('click', '.resubmit_to_reviewer_btn', function (e) {
         type: "POST",
         url: url,
         headers: {
-            "X-CSRFToken": getCookie("csrftoken")  // JavaScript orqali cookie'dan token olish
+            "X-CSRFToken": $('input[name="csrfmiddlewaretoken"]').val()
         },
         data: {
             review_id: id,
@@ -170,7 +170,7 @@ $('body').on('click', '#random_send_reviewer_btn', function (e) {
     let data = $(this).data('id');
     let id = parseInt(data.split(',')[0]);
     let notif_id = parseInt(data.split(',')[1]);
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
 
     let value = $('#reviewer_number').val();
     let url = $('.random_sending_reviewer_form').data('url');
@@ -215,7 +215,7 @@ $('body').on('click', '#send_btn_to_reviewer', function (e) {
     let data = $(this).data('id');
     let article_id = parseInt(data.split(',')[0]);
     let notif_id = parseInt(data.split(',')[1]);
-    let csrftoken = getCookie('csrftoken');
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     let url = $('#choose_reviewer_form').data('url');
     let reload_url = $(this).data('action');
 

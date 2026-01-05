@@ -145,7 +145,7 @@
                     type: 'POST',
                     url: "{% url 'load_checked_jobs' %}",
                     data: {
-                        csrfmiddlewaretoken: getCookie('csrftoken')
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                     },
                     datatype: "json",
                 },

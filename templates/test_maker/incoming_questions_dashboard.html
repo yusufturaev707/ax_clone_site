@@ -44,7 +44,7 @@
                     type: 'POST',
                     url: "{% url 'load_incoming_questions' %}",
                     data: {
-                        csrfmiddlewaretoken: getCookie('csrftoken')
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
                     },
                     datatype: "json",
                 },
