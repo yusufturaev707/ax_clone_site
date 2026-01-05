@@ -39,16 +39,19 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-def set_language(request, language):
+def set_language(request):
+    # POST dan tilni olish
+    language = request.POST.get('language')
+
     # Tilni tekshirish
     valid_languages = [lang[0] for lang in settings.LANGUAGES]
     if language not in valid_languages:
         language = settings.LANGUAGE_CODE
 
     # Oldingi sahifaga qaytish
-    referer = request.META.get("HTTP_REFERER", "/")
+    next_url = request.POST.get('next') or request.META.get("HTTP_REFERER", "/")
 
-    response = HttpResponseRedirect(referer)
+    response = HttpResponseRedirect(next_url)
     response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
 
     return response
