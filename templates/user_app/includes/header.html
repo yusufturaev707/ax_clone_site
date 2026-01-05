@@ -45,7 +45,7 @@
                 <ul class="dropdown-menu">
                     {% for language in languages %}
                         <li id="lang_{{ language.code }}">
-                            <form action="{% url 'set_language' %}" method="post" style="margin:0;">
+                            <form action="/i18n/setlang/" method="post" style="margin:0;">
                                 {% csrf_token %}
                                 <input type="hidden" name="language" value="{{ language.code }}">
                                 <input type="hidden" name="next" value="{{ request.get_full_path }}">
