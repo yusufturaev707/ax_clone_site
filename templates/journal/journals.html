@@ -13,7 +13,7 @@
             <div class="row">
                 {% for ob in objects %}
                     <div class="card forshadow" style="width:120px; margin: 1%">
-                        {% if ob.year_img.url %}
+                        {% if ob.year_img %}
                             <img class="card-img-top" src="{{ ob.year_img.url }}" alt="No Image" style="width:100%">
                         {% endif %}
                         <div class="card-body">
