@@ -229,9 +229,11 @@
                                     <button type="button" data-url="{% url 'edit_journal' journal.id %}"
                                             class="btn btn-outline-warning btn-sm edit_journal_btn"><i
                                             class="fa fa-pencil-alt"></i></button>
-                                    <button type="button" data-url="{% url 'delete_journal' journal.id %}"
+                                    {% if user.is_admin %}
+                                    	<button type="button" data-url="{% url 'delete_journal' journal.id %}"
                                             class="btn btn-outline-danger btn-sm delete_journal_btn"><i
                                             class="fa fa-trash-alt"></i></button>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
