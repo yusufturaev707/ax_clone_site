@@ -13,7 +13,9 @@
             <div class="row">
                 {% for ob in objects %}
                     <div class="card forshadow" style="width:120px; margin: 1%">
-                        <img class="card-img-top" src="{{ ob.year_img.url }}" alt="No Image" style="width:100%">
+                        {% if ob.year_img.url %}
+                            <img class="card-img-top" src="{{ ob.year_img.url }}" alt="No Image" style="width:100%">
+                        {% endif %}
                         <div class="card-body">
                             <a href="{% url 'journal_year_list' ob.year %}" class="btn btn-outline-primary btn-block">{{ ob.year }}</a>
                         </div>
