@@ -1,39 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 {% load static %}
-<head style="position: relative;">
+{% load i18n %}
+<head>
     <meta charset="utf-8"/>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{% static '/img/logo.ico' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.ico' %}">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
 
-    <!-- ================== BEGIN BASE CSS STYLE ================== -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+    <!-- ================== BEGIN MD3 CSS ================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link href="{% static '/assets/css/google/app.min.css' %}" rel="stylesheet"/>
-    <!-- ================== END BASE CSS STYLE ================== -->
+    <link href="{% static 'assets/css/google/app.min.css' %}" rel="stylesheet"/>
+    <!-- ================== END MD3 CSS ================== -->
 
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="{% static '/assets/plugins/gritter/css/jquery.gritter.css' %}" rel="stylesheet"/>
+    <!-- ================== BEGIN PLUGINS CSS ================== -->
+    <link href="{% static 'assets/plugins/gritter/css/jquery.gritter.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/style_exam.css' %}" rel="stylesheet"/>
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
+    <link href="{% static 'css/md3.css' %}" rel="stylesheet"/>
+    <!-- ================== END PLUGINS CSS ================== -->
 </head>
-<body style="background-color: #fdfeff;">
-        {% block content %}
+<body class="md3-body" style="background-color: var(--md-surface);">
 
-        {% endblock content %}
+    {% block content %}
+    {% endblock content %}
 
-        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
-           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- MD3 Scroll to Top -->
+    <button class="md3-scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="material-icons">keyboard_arrow_up</i>
+    </button>
 
 <!-- ================== BEGIN BASE JS ================== -->
-<script src="{% static '/assets/js/app.min.js' %}"></script>
-<script src="{% static '/assets/js/theme/google.min.js' %}"></script>
+<script src="{% static 'assets/js/app.min.js' %}"></script>
+<script src="{% static 'assets/js/theme/google.min.js' %}"></script>
 <!-- ================== END BASE JS ================== -->
 <script src="{% static 'pdf_viewer/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'pdf_viewer/pdf/pdf.js' %}"></script>
 
+<!-- MD3 Scroll to Top Script -->
+<script>
+window.addEventListener('scroll', function() {
+    var btn = document.getElementById('scrollTopBtn');
+    if (btn) {
+        if (window.scrollY > 300) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    }
+});
+</script>
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>

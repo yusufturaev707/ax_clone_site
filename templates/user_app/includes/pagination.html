@@ -1,17 +1,41 @@
-<nav class="pagination">
-    <ul class="pagination">
+<nav style="display:flex;justify-content:center;margin-top:24px;">
+    <ul class="pagination" style="display:flex;gap:4px;list-style:none;padding:0;margin:0;">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&laquo;Birinchi</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldinga</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page=1" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;color:var(--md-on-surface);font-size:14px;text-decoration:none;transition:background 0.2s;">
+                    <i class="material-icons" style="font-size:18px;">first_page</i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;color:var(--md-on-surface);font-size:14px;text-decoration:none;transition:background 0.2s;">
+                    <i class="material-icons" style="font-size:18px;">chevron_left</i>
+                </a>
+            </li>
         {% endif %}
 
         {% for i in page_count %}
-            <li {% if page_obj.number == i %} class="page-item active" {% else %} class="page-item" {% endif %}><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% if page_obj.number == i %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ i }}" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;background:var(--md-primary);color:var(--md-on-primary);font-size:14px;font-weight:500;text-decoration:none;">{{ i }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ i }}" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;color:var(--md-on-surface);font-size:14px;text-decoration:none;transition:background 0.2s;">{{ i }}</a>
+                </li>
+            {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyinga</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Oxiriga&raquo;</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;color:var(--md-on-surface);font-size:14px;text-decoration:none;transition:background 0.2s;">
+                    <i class="material-icons" style="font-size:18px;">chevron_right</i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" style="display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border-radius:9999px;border:none;color:var(--md-on-surface);font-size:14px;text-decoration:none;transition:background 0.2s;">
+                    <i class="material-icons" style="font-size:18px;">last_page</i>
+                </a>
+            </li>
         {% endif %}
     </ul>
 </nav>

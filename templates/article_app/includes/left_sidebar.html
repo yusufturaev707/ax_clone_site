@@ -1,12 +1,21 @@
 {% load i18n %}
 {% load static %}
 {% with request.resolver_match.url_name as url_name %}
-    <div class="card card-forum" style="box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;">
-        <div class="card-header f-w-600"
-             style="color:black; font-family: Tahoma, Helvetica, Arial,serif; font-size: 14px;"></div>
-        <ul class="threads-list left_sidebar_menus"></ul>
+    <div class="md3-left-sidebar">
+        <div class="md3-sidebar-header">
+            <i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">menu_book</i>
+            {% trans "Bo'limlar" %}
+        </div>
+        <ul class="left_sidebar_menus"></ul>
     </div>
-    <br>
+
+    <div style="margin-top:16px;">
+        <a href="{% url 'last_journal' %}" class="md3-btn md3-btn-tonal" style="width:100%;justify-content:center;">
+            <i class="material-icons" style="font-size:18px;">auto_stories</i>
+            {% trans "So'nggi nashr" %}
+        </a>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -23,14 +32,10 @@
                         if (lang === 'uz') {
                             link = item.url;
                         }
-                        let temp = `<li id="left_menu_${item.id}">` +
-                            `<h4 class="title" id="left_menu_h4_${item.id}" style="color: black, font-size: 18px;">` +
-                            `<a href="${link}">${item.name}</a></h4></li>`;
+                        let isActive = base_url === item.url_name.toString() ? ' active' : '';
+                        let temp = `<li class="${isActive}" id="left_menu_${item.id}">` +
+                            `<a href="${link}">${item.name}</a></li>`;
                         $('.left_sidebar_menus').append(temp);
-
-                        if (base_url === item.url_name.toString()) {
-                            $('#left_menu_h4_' + item.id).css({"font-size": "18px", "font-weight": "bold"});
-                        }
                     }
                 },
                 error: function (error) {
@@ -40,8 +45,3 @@
         });
     </script>
 {% endwith %}
-<div style="width: 250px">
-    <a href="{% url 'last_journal' %}"
-       class="btn btn-block btn-outline-info"><strong>{% trans "So‘nggi nashr" %}</strong>
-    </a>
-</div>

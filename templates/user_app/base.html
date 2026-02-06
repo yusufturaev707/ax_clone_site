@@ -11,15 +11,15 @@
     <meta content="" name="author"/>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 
-    <!-- ================== BEGIN BASE CSS STYLE ================== -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+    <!-- ================== BEGIN MD3 CSS ================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css"/>
     <link href="{% static 'assets/css/google/app.min.css' %}" rel="stylesheet"/>
-    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== END MD3 CSS ================== -->
 
     <!-- ================== BEGIN PLUGINS CSS ================== -->
     <link href="{% static 'assets/plugins/switchery/switchery.min.css' %}" rel="stylesheet"/>
@@ -39,30 +39,42 @@
     <link href="{% static 'assets/plugins/ionicons/css/ionicons.min.css' %}" rel="stylesheet"/>
     <!-- ================== END PLUGINS CSS ================== -->
 
-    <!-- ================== BEGIN CUSTOM CSS ================== -->
+    <!-- ================== BEGIN CUSTOM & MD3 CSS ================== -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/style_table.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/md3.css' %}" rel="stylesheet"/>
     {% block extra_css %}{% endblock %}
-    <!-- ================== END CUSTOM CSS ================== -->
+    <!-- ================== END CUSTOM & MD3 CSS ================== -->
 </head>
-<body style="background-color: #eeeeee" class="viewArticleFont">
-<div id="page-loader" class="fade show">
-    <span class="spinner"></span>
+<body class="md3-body">
+
+<!-- MD3 Page Loader -->
+<div id="page-loader" class="md3-loader">
+    <div class="md3-loader-spinner"></div>
 </div>
 
 {% block base_content %}
-    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed page-with-wide-sidebar page-with-light-sidebar">
-        {% include 'user_app/includes/header.html' %}
-        {% include 'user_app/includes/sidebar.html' %}
+    <!-- MD3 Header -->
+    {% include 'user_app/includes/header.html' %}
 
+    <!-- MD3 Sidebar Overlay (mobile) -->
+    <div class="md3-sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- MD3 Sidebar -->
+    {% include 'user_app/includes/sidebar.html' %}
+
+    <!-- MD3 Content -->
+    <div class="md3-content" id="mainContent">
         {% block content %}
         {% endblock content %}
-
-        <div id="show_res"></div>
-        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top">
-            <i class="fa fa-angle-up"></i>
-        </a>
     </div>
+
+    <div id="show_res"></div>
+
+    <!-- MD3 Scroll to Top -->
+    <button class="md3-scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="material-icons">keyboard_arrow_up</i>
+    </button>
 {% endblock base_content %}
 
 <!-- ================== BEGIN BASE JS ================== -->
@@ -128,11 +140,45 @@
 {% block extra_js %}{% endblock %}
 <!-- ================== END CUSTOM JS ================== -->
 
+<!-- ================== BEGIN MD3 SCRIPTS ================== -->
+<script>
+// MD3 Page Loader
+window.addEventListener('load', function() {
+    var loader = document.getElementById('page-loader');
+    if (loader) {
+        loader.classList.add('hide');
+        setTimeout(function() { loader.style.display = 'none'; }, 300);
+    }
+});
+
+// MD3 Scroll to Top
+window.addEventListener('scroll', function() {
+    var btn = document.getElementById('scrollTopBtn');
+    if (btn) {
+        if (window.scrollY > 300) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    }
+});
+
+// MD3 Sidebar Toggle (mobile)
+function toggleSidebar() {
+    var sidebar = document.getElementById('md3Sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
+}
+</script>
+<!-- ================== END MD3 SCRIPTS ================== -->
+
 <!-- ================== BEGIN SESSION TIMEOUT HANDLER ================== -->
 {% if user.is_authenticated %}
 <script>
 (function() {
-    // Global AJAX error handler for session timeout
     $(document).ajaxError(function(event, jqXHR, settings, thrownError) {
         if (jqXHR.status === 401) {
             try {
@@ -147,16 +193,13 @@
                         window.location.href = response.redirect_url || '/login/';
                     });
                 }
-            } catch (e) {
-                // JSON parse error - ignore
-            }
+            } catch (e) {}
         }
     });
 
-    // Session activity monitor - warn before timeout
     var sessionWarningShown = false;
-    var sessionTimeout = {{ session_timeout_minutes|default:15 }};  // Minutes
-    var warningTime = (sessionTimeout - 2) * 60 * 1000;  // 2 minutes before timeout
+    var sessionTimeout = {{ session_timeout_minutes|default:15 }};
+    var warningTime = (sessionTimeout - 2) * 60 * 1000;
 
     setTimeout(function() {
         if (!sessionWarningShown) {
@@ -171,9 +214,7 @@
                 }
             }).then(function(willContinue) {
                 if (willContinue) {
-                    // Refresh session by making a simple request
                     $.get('/profile/api/session-refresh/').fail(function() {
-                        // If no such endpoint, just reload
                         window.location.reload();
                     });
                 } else {

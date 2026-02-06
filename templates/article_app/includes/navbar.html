@@ -1,112 +1,91 @@
 {% load static %}
 {% load i18n %}
 {% with request.resolver_match.url_name as url_name %}
-<div id="header" class="header navbar navbar-default navbar-fixed-top navbar-expand-lg">
-    <div class="container">
-{#        <a href="{% url 'main_page' %}">#}
-{#            <img src="" alt="" width="80"/>#}
-{#        </a>#}
-        <span style="text-transform: uppercase; margin-left: 1em; font-size: 16px; font-family: Roboto,sans-serif; text-align: center; display: table-cell; vertical-align: middle;">
-                <a href="{% url 'main_page' %}" style="text-decoration: none;"><b style="color: black;">{% trans "Axborotnoma" %}</b></a>
-        </span>
+<div class="md3-navbar" id="md3Navbar">
+    <!-- Brand -->
+    <a href="{% url 'main_page' %}" class="md3-navbar-brand">
+        {% trans "Axborotnoma" %}
+    </a>
 
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class="collapse navbar-collapse" id="header-navbar">
-            <ul class="nav navbar-nav navbar-right d-flex flex-grow-1 navbar_menus">
+    <!-- Mobile Toggle -->
+    <button class="md3-menu-toggle d-lg-none" style="margin-left:auto;" onclick="document.getElementById('navbarMenu').classList.toggle('show')">
+        <i class="material-icons">menu</i>
+    </button>
 
-            </ul>
-        <ul class="nav navbar-nav navbar-right d-flex flex-grow-1">
-             <li style="margin-top: 1%">
-                    {% get_current_language as LANGUAGE_CODE %}
-                    {% get_available_languages as LANGUAGES %}
-                    {% get_language_info_list for LANGUAGES as languages %}
-                    <div class="dropdown">
-                        <button class="btn btn-white dropdown-toggle" type="button" id="lang_btn"
-                                data-toggle="dropdown">
-                            {% if LANGUAGE_CODE == 'uz' %}
-                                <span class="flag-icon flag-icon-uz"></span>
-                                O‘zbek tili
-                            {% elif LANGUAGE_CODE == 'ru' %}
-                                <span class="flag-icon flag-icon-ru"></span>
-                                Русский
-                            {% elif LANGUAGE_CODE == 'en' %}
-                                <span class="flag-icon flag-icon-gb"></span>
-                                English
-                            {% elif LANGUAGE_CODE == 'kk' %}
-                                <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
-                                Qoraqalpoq tili
-                            {% endif %}
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% for language in languages %}
-                                <li id="lang_{{ language.code }}">
-                                    <a href="#" class="btn btn-white btn-block text-left change-language-btn-navbar"
-                                       data-lang="{{ language.code }}">
-                                        {% if language.code != 'kk' %}
-                                            <span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
-                                        {% else %}
-                                            <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
-                                        {% endif %}
-                                        {% if language.code == 'kk' %}
-                                            Qaraqalpaq tili
-                                        {% elif language.code == 'uz' %}
-                                            O'zbek tili
-                                        {% else %}
-                                            {{ language.name_local }}
-                                        {% endif %}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <form id="language-form-navbar" action="/i18n/setlang/" method="post" style="display:none;">
-                            {% csrf_token %}
-                            <input type="hidden" name="language" id="language-input-navbar" value="">
-                            <input type="hidden" name="next" id="next-input-navbar" value="">
-                        </form>
-                        <script>
-                            document.querySelectorAll('.change-language-btn-navbar').forEach(function(btn) {
-                                btn.addEventListener('click', function(e) {
-                                    e.preventDefault();
-                                    var lang = this.getAttribute('data-lang');
-                                    var currentPath = window.location.pathname;
-                                    var defaultLang = 'uz';
-                                    var supportedLangs = ['uz', 'en', 'ru', 'kk'];
+    <!-- Navbar Menu -->
+    <ul class="md3-navbar-nav navbar_menus d-none d-lg-flex" id="navbarMenu">
+    </ul>
 
-                                    // Joriy URL dan til prefiksini olib tashlash
-                                    var pathWithoutLang = currentPath;
-                                    for (var i = 0; i < supportedLangs.length; i++) {
-                                        var prefix = '/' + supportedLangs[i] + '/';
-                                        if (currentPath.indexOf(prefix) === 0) {
-                                            pathWithoutLang = currentPath.substring(prefix.length - 1);
-                                            break;
-                                        }
-                                    }
+    <!-- Right Actions -->
+    <div class="md3-header-actions">
+        <!-- Language Switcher -->
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <div class="dropdown">
+            <button class="md3-lang-btn dropdown-toggle" type="button" id="lang_btn" data-toggle="dropdown">
+                {% if LANGUAGE_CODE == 'uz' %}
+                    <span class="flag-icon flag-icon-uz"></span> O'zbek
+                {% elif LANGUAGE_CODE == 'ru' %}
+                    <span class="flag-icon flag-icon-ru"></span> Русский
+                {% elif LANGUAGE_CODE == 'en' %}
+                    <span class="flag-icon flag-icon-gb"></span> English
+                {% elif LANGUAGE_CODE == 'kk' %}
+                    <img src="{% static 'img/qq.png' %}" alt="" width="18" style="border-radius:2px;"/> Qoraqalpoq
+                {% endif %}
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                {% for language in languages %}
+                    <a href="#" class="dropdown-item change-language-btn-navbar" data-lang="{{ language.code }}">
+                        {% if language.code != 'kk' %}
+                            <span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}" style="margin-right:8px;"></span>
+                        {% else %}
+                            <img src="{% static 'img/qq.png' %}" alt="" width="18" style="border-radius:2px;margin-right:8px;"/>
+                        {% endif %}
+                        {% if language.code == 'kk' %}Qaraqalpaq tili{% elif language.code == 'uz' %}O'zbek tili{% else %}{{ language.name_local }}{% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+            <form id="language-form-navbar" action="/i18n/setlang/" method="post" style="display:none;">
+                {% csrf_token %}
+                <input type="hidden" name="language" id="language-input-navbar" value="">
+                <input type="hidden" name="next" id="next-input-navbar" value="">
+            </form>
+            <script>
+                document.querySelectorAll('.change-language-btn-navbar').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var lang = this.getAttribute('data-lang');
+                        var currentPath = window.location.pathname;
+                        var defaultLang = 'uz';
+                        var supportedLangs = ['uz', 'en', 'ru', 'kk'];
 
-                                    // Yangi til prefiksini qo'shish
-                                    var newPath;
-                                    if (lang === defaultLang) {
-                                        newPath = pathWithoutLang;
-                                    } else {
-                                        newPath = '/' + lang + pathWithoutLang;
-                                    }
+                        var pathWithoutLang = currentPath;
+                        for (var i = 0; i < supportedLangs.length; i++) {
+                            var prefix = '/' + supportedLangs[i] + '/';
+                            if (currentPath.indexOf(prefix) === 0) {
+                                pathWithoutLang = currentPath.substring(prefix.length - 1);
+                                break;
+                            }
+                        }
 
-                                    document.getElementById('language-input-navbar').value = lang;
-                                    document.getElementById('next-input-navbar').value = newPath;
-                                    document.getElementById('language-form-navbar').submit();
-                                });
-                            });
-                        </script>
-                    </div>
-                </li>
-        </ul>
+                        var newPath;
+                        if (lang === defaultLang) {
+                            newPath = pathWithoutLang;
+                        } else {
+                            newPath = '/' + lang + pathWithoutLang;
+                        }
+
+                        document.getElementById('language-input-navbar').value = lang;
+                        document.getElementById('next-input-navbar').value = newPath;
+                        document.getElementById('language-form-navbar').submit();
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript">
     $('body').ready(function () {
@@ -127,44 +106,48 @@
                     if (lang === 'uz') {
                         link = item.url;
                     }
-                    // Safe DOM manipulation - escape user data
                     let li = document.createElement('li');
                     li.id = 'navbar_menus_' + item.id;
                     let a = document.createElement('a');
                     a.href = link;
                     a.id = 'navbar_menu_text_' + item.id;
-                    a.style.cssText = 'font-family: Cambria, Helvetica, Arial, Sans-Serif,serif; font-size: 16px;';
                     a.textContent = item.name;
-                    li.appendChild(a);
-                    $('.navbar_menus').append(li);
-
 
                     if (base_url === item.url_name.toString()) {
-                        $('#navbar_menu_text_' + item.id).css({"font-weight": "bold", "color": "#3e6db5" });
+                        a.className = 'active';
                     }
+
+                    li.appendChild(a);
+                    $('.navbar_menus').append(li);
                 }
-                // Safe DOM manipulation for user dropdown
+
                 if (response.is_authenticated){
                     let li2 = document.createElement('li');
-                    li2.className = 'dropdown navbar-user';
+                    let dropdownDiv = document.createElement('div');
+                    dropdownDiv.className = 'dropdown';
+
                     let dropdownLink = document.createElement('a');
                     dropdownLink.href = '#';
                     dropdownLink.className = 'dropdown-toggle';
                     dropdownLink.setAttribute('data-toggle', 'dropdown');
-                    dropdownLink.style.cssText = 'font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;';
-                    let b = document.createElement('b');
+                    dropdownLink.style.cssText = 'display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9999px;color:var(--md-on-surface);font-weight:500;font-size:14px;';
+
                     let span = document.createElement('span');
-                    span.className = 'd-none d-md-inline';
                     span.textContent = response.full_name;
-                    b.appendChild(span);
-                    dropdownLink.appendChild(b);
-                    li2.appendChild(dropdownLink);
+                    let icon = document.createElement('i');
+                    icon.className = 'material-icons';
+                    icon.style.fontSize = '18px';
+                    icon.textContent = 'person';
+                    dropdownLink.appendChild(icon);
+                    dropdownLink.appendChild(span);
+                    dropdownDiv.appendChild(dropdownLink);
 
                     let dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `<a href="{% url 'dashboard' %}" class="dropdown-item" style="font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;"><i class="icon-pencil  p-r-10"></i><span>{% trans "Shaxsiy kabinet" %}</span></a>` +
-                        `<a href="{% url 'logout' %}" class="dropdown-item" style="font-family: Tahoma, Helvetica, Arial, Sans-Serif,serif; font-size: 14px;"><i class="icon-logout  p-r-10"></i><span>{% trans "Chiqish" %}</span></a>`;
-                    li2.appendChild(dropdownMenu);
+                    dropdownMenu.innerHTML = `<a href="{% url 'dashboard' %}" class="dropdown-item"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">dashboard</i>{% trans "Shaxsiy kabinet" %}</a>` +
+                        `<a href="{% url 'logout' %}" class="dropdown-item"><i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">logout</i>{% trans "Chiqish" %}</a>`;
+                    dropdownDiv.appendChild(dropdownMenu);
+                    li2.appendChild(dropdownDiv);
                     $('.navbar_menus').append(li2);
                 }
             },
