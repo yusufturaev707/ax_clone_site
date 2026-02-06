@@ -1,101 +1,121 @@
 {% load i18n %}
 {% load static %}
 
-<div class="md3-header" id="md3Header">
-    <!-- Menu Toggle (mobile) -->
-    <button class="md3-menu-toggle" onclick="toggleSidebar()">
-        <i class="material-icons">menu</i>
-    </button>
-
-    <!-- Title -->
-    <div class="md3-header-title">
-        <a href="{% url 'main_page' %}">{% trans "Bilimni baholash agentligi" %}</a>
+<div id="header" class="header navbar-default navbar-fixed-top navbar-expand-lg">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed navbar-toggle-left" data-click="sidebar-minify">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+    <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
     </div>
+    <ul class="navbar-nav d-flex flex-grow-1">
+        <li style="padding-top: 20px;">
+            <span style="text-transform: uppercase; margin-left: 1em; font-size: 16px; font-family: Roboto,sans-serif; text-align: center; display: table-cell; vertical-align: middle;">
+                <a href="{% url 'main_page' %}" style="text-decoration: none;"><b style="color: black;">{% trans "Bilimni baholash agentligi" %}</b></a>
+        </span>
+        </li>
+        <li class="navbar-form flex-grow-1"></li>
+        <li class="navbar-brand">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle" type="button" id="lang_btn"
+                        data-toggle="dropdown">
+                    {% if LANGUAGE_CODE == 'uz' %}
+                        <span class="flag-icon flag-icon-uz"></span>
+                        O‘zbek tili
+                    {% elif LANGUAGE_CODE == 'ru' %}
+                        <span class="flag-icon flag-icon-ru"></span>
+                        Русский
+                    {% elif LANGUAGE_CODE == 'en' %}
+                        <span class="flag-icon flag-icon-gb"></span>
+                        English
+                    {% elif LANGUAGE_CODE == 'kk' %}
+                        <span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                        Qoraqalpoq tili
+                    {% endif %}
+                </button>
+                <ul class="dropdown-menu">
+                    {% for language in languages %}
+                        <li id="lang_{{ language.code }}">
+                            <a href="#" class="btn btn-white btn-block text-left change-language-btn"
+                               data-lang="{{ language.code }}">
+                                {% if language.code != 'kk' %}
+                                    &nbsp;<span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}"></span>
+                                {% else %}
+                                    &nbsp;<span><img src="{% static 'img/qq.png' %}" alt="" width="22"/></span>
+                                {% endif %}
+                                {% if language.code == 'kk' %}
+                                    Qoraqalpoq tili
+                                {% elif language.code == 'uz' %}
+                                    O'zbek tili
+                                {% else %}
+                                    {{ language.name_local }}
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <form id="language-form" action="/i18n/setlang/" method="post" style="display:none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" id="language-input" value="">
+                    <input type="hidden" name="next" id="next-input" value="">
+                </form>
+                <script>
+                    document.querySelectorAll('.change-language-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            var lang = this.getAttribute('data-lang');
+                            var currentPath = window.location.pathname;
+                            var defaultLang = 'uz';
+                            var supportedLangs = ['uz', 'en', 'ru', 'kk'];
 
-    <!-- Actions -->
-    <div class="md3-header-actions">
-        <!-- Language Switcher -->
-        {% get_current_language as LANGUAGE_CODE %}
-        {% get_available_languages as LANGUAGES %}
-        {% get_language_info_list for LANGUAGES as languages %}
-        <div class="dropdown">
-            <button class="md3-lang-btn dropdown-toggle" type="button" id="lang_btn" data-toggle="dropdown">
-                {% if LANGUAGE_CODE == 'uz' %}
-                    <span class="flag-icon flag-icon-uz"></span> O'zbek
-                {% elif LANGUAGE_CODE == 'ru' %}
-                    <span class="flag-icon flag-icon-ru"></span> Русский
-                {% elif LANGUAGE_CODE == 'en' %}
-                    <span class="flag-icon flag-icon-gb"></span> English
-                {% elif LANGUAGE_CODE == 'kk' %}
-                    <img src="{% static 'img/qq.png' %}" alt="" width="18" style="border-radius:2px;"/> Qoraqalpoq
-                {% endif %}
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                {% for language in languages %}
-                    <a href="#" class="dropdown-item change-language-btn" data-lang="{{ language.code }}">
-                        {% if language.code != 'kk' %}
-                            <span class="flag-icon flag-icon-{% if language.code == 'en' %}gb{% else %}{{ language.code }}{% endif %}" style="margin-right:8px;"></span>
-                        {% else %}
-                            <img src="{% static 'img/qq.png' %}" alt="" width="18" style="border-radius:2px;margin-right:8px;"/>
-                        {% endif %}
-                        {% if language.code == 'kk' %}Qoraqalpoq tili{% elif language.code == 'uz' %}O'zbek tili{% else %}{{ language.name_local }}{% endif %}
-                    </a>
-                {% endfor %}
-            </div>
-            <form id="language-form" action="/i18n/setlang/" method="post" style="display:none;">
-                {% csrf_token %}
-                <input type="hidden" name="language" id="language-input" value="">
-                <input type="hidden" name="next" id="next-input" value="">
-            </form>
-            <script>
-                document.querySelectorAll('.change-language-btn').forEach(function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        var lang = this.getAttribute('data-lang');
-                        var currentPath = window.location.pathname;
-                        var defaultLang = 'uz';
-                        var supportedLangs = ['uz', 'en', 'ru', 'kk'];
-
-                        var pathWithoutLang = currentPath;
-                        for (var i = 0; i < supportedLangs.length; i++) {
-                            var prefix = '/' + supportedLangs[i] + '/';
-                            if (currentPath.indexOf(prefix) === 0) {
-                                pathWithoutLang = currentPath.substring(prefix.length - 1);
-                                break;
+                            // Joriy URL dan til prefiksini olib tashlash
+                            var pathWithoutLang = currentPath;
+                            for (var i = 0; i < supportedLangs.length; i++) {
+                                var prefix = '/' + supportedLangs[i] + '/';
+                                if (currentPath.indexOf(prefix) === 0) {
+                                    pathWithoutLang = currentPath.substring(prefix.length - 1);
+                                    break;
+                                }
                             }
-                        }
 
-                        var newPath;
-                        if (lang === defaultLang) {
-                            newPath = pathWithoutLang;
-                        } else {
-                            newPath = '/' + lang + pathWithoutLang;
-                        }
+                            // Yangi til prefiksini qo'shish
+                            var newPath;
+                            if (lang === defaultLang) {
+                                newPath = pathWithoutLang;
+                            } else {
+                                newPath = '/' + lang + pathWithoutLang;
+                            }
 
-                        document.getElementById('language-input').value = lang;
-                        document.getElementById('next-input').value = newPath;
-                        document.getElementById('language-form').submit();
+                            document.getElementById('language-input').value = lang;
+                            document.getElementById('next-input').value = newPath;
+                            document.getElementById('language-form').submit();
+                        });
                     });
-                });
-            </script>
-        </div>
-
-        <!-- User Menu -->
-        <div class="dropdown">
-            <a href="#" class="md3-user-menu dropdown-toggle" data-toggle="dropdown">
+                </script>
+            </div>
+        </li>
+        <li class="dropdown navbar-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {% if request.user.avatar %}
                     <img src="{{ request.user.avatar }}" alt=""/>
-                {% else %}
-                    <img src="{% static 'img/no-image.png' %}" alt=""/>
+                    {% else %}
+                 <img src="{% static 'img/no-image.png' %}" alt=""/>
                 {% endif %}
-                <span class="d-none d-md-inline">{{ request.user.full_name }}</span>
+                <span class="d-none d-md-inline">{{ request.user.full_name }}</span><b class="caret"></b>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{% url 'logout' %}" class="dropdown-item">
-                    <i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">logout</i>
-                    {% trans "Chiqish" %}
-                </a>
+                <a href="{% url 'logout' %}" class="dropdown-item"><i
+                        class="icon-logout  p-r-10"></i><span>{% trans "Chiqish" %}</span></a>
             </div>
-        </div>
-    </div>
+        </li>
+    </ul>
 </div>

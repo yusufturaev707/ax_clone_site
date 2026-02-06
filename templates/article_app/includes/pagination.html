@@ -1,25 +1,17 @@
-<nav style="display:flex;justify-content:center;margin-top:24px;">
-    <div style="display:flex;align-items:center;gap:12px;">
+<nav class="pagination justify-content-end">
+    <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1" class="md3-btn md3-btn-icon" title="Birinchi">
-                <i class="material-icons">first_page</i>
-            </a>
-            <a href="?page={{ page_obj.previous_page_number }}" class="md3-btn md3-btn-icon" title="Oldingi">
-                <i class="material-icons">chevron_left</i>
-            </a>
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
-        <span style="display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:9999px;background:var(--md-surface-container);color:var(--md-on-surface);font-size:14px;font-weight:500;">
-            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="md3-btn md3-btn-icon" title="Keyingi">
-                <i class="material-icons">chevron_right</i>
-            </a>
-            <a href="?page={{ page_obj.paginator.num_pages }}" class="md3-btn md3-btn-icon" title="Oxirgi">
-                <i class="material-icons">last_page</i>
-            </a>
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
-    </div>
+    </span>
 </nav>

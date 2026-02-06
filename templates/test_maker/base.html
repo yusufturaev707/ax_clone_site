@@ -1,105 +1,43 @@
 <!DOCTYPE html>
 {% load static %}
 {% load i18n %}
-<html lang="uz">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.ico' %}">
+    <link rel="icon" type="image/x-icon" href="{% static '/img/logo.ico' %}">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
 
-    <!-- ================== BEGIN MD3 CSS ================== -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-    <link href="{% static 'assets/css/google/app.min.css' %}" rel="stylesheet"/>
-    <!-- ================== END MD3 CSS ================== -->
 
-    <!-- ================== BEGIN CUSTOM & MD3 CSS ================== -->
+    <link href="{% static '/assets/css/google/app.min.css' %}" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
     <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/md3.css' %}" rel="stylesheet"/>
-    {% block extra_css %}{% endblock %}
-    <!-- ================== END CUSTOM & MD3 CSS ================== -->
+
 </head>
-<body class="md3-body">
-
-<!-- MD3 Page Loader -->
-<div id="page-loader" class="md3-loader">
-    <div class="md3-loader-spinner"></div>
+<body style="background-color: #eeeeee" class="viewArticleFont">
+<div id="page-loader" class="fade show">
+    <span class="spinner"></span>
 </div>
-
 {% block base_content %}
-    <!-- MD3 Test Maker Header -->
-    <div class="md3-header">
-        <button class="md3-menu-toggle" onclick="history.back()">
-            <i class="material-icons">arrow_back</i>
-        </button>
-        <div class="md3-header-title">
-            {% trans "Test topshiriqlarini abrabatsiyadan o'tkazish" %}
-        </div>
-        <div class="md3-header-actions">
-            <div class="dropdown">
-                <a href="#" class="md3-user-menu dropdown-toggle" data-toggle="dropdown">
-                    {% if request.user.avatar %}
-                        <img src="{{ request.user.avatar }}" alt=""/>
-                    {% else %}
-                        <img src="{% static 'img/no-image.png' %}" alt=""/>
-                    {% endif %}
-                    <span class="d-none d-md-inline">{{ request.user.full_name }}</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{% url 'logout' %}" class="dropdown-item">
-                        <i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">logout</i>
-                        {% trans "Chiqish" %}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="fade page-sidebar-fixed page-header-fixed page-with-wide-sidebar page-with-light-sidebar">
+        {% include 'test_maker/header.html' %}
 
-    <!-- MD3 Content -->
-    <div class="md3-content-nosidebar">
         {% block content %}
         {% endblock content %}
+
+        <div id="show_res"></div>
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
     </div>
-
-    <div id="show_res"></div>
-
-    <!-- MD3 Scroll to Top -->
-    <button class="md3-scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <i class="material-icons">keyboard_arrow_up</i>
-    </button>
 {% endblock base_content %}
-
-<!-- ================== BEGIN BASE JS ================== -->
-<script src="{% static 'assets/js/app.min.js' %}"></script>
-<script src="{% static 'assets/js/theme/google.min.js' %}"></script>
 <script src="{% static 'js/test_user.js' %}"></script>
-<!-- ================== END BASE JS ================== -->
 
-<!-- MD3 Scripts -->
-<script>
-window.addEventListener('load', function() {
-    var loader = document.getElementById('page-loader');
-    if (loader) {
-        loader.classList.add('hide');
-        setTimeout(function() { loader.style.display = 'none'; }, 300);
-    }
-});
-window.addEventListener('scroll', function() {
-    var btn = document.getElementById('scrollTopBtn');
-    if (btn) {
-        if (window.scrollY > 300) {
-            btn.classList.add('show');
-        } else {
-            btn.classList.remove('show');
-        }
-    }
-});
-</script>
 
-{% block extra_js %}{% endblock %}
 </body>
 </html>

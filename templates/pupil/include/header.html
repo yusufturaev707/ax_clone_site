@@ -1,34 +1,34 @@
 {% load i18n %}
 {% load static %}
 
-<div class="md3-header" id="md3Header">
-    <!-- Menu Toggle (mobile) -->
-    <button class="md3-menu-toggle" onclick="toggleSidebar()">
-        <i class="material-icons">menu</i>
-    </button>
-
-    <!-- Title -->
-    <div class="md3-header-title">
-        {% trans "Test topshiriqlarini abrabatsiyadan o'tkazish" %}
+<div class="header navbar-default navbar-fixed-top navbar-expand-lg">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed navbar-toggle-left" data-click="sidebar-minify">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
     </div>
-
-    <!-- Actions -->
-    <div class="md3-header-actions">
-        <div class="dropdown">
-            <a href="#" class="md3-user-menu dropdown-toggle" data-toggle="dropdown">
+    <ul class="navbar-nav d-flex flex-grow-1">
+        <li style="padding-top: 20px;">
+            <span style="text-transform: uppercase; margin-left: 1em; font-size: 16px; font-family: Roboto,sans-serif; text-align: center; display: table-cell; vertical-align: middle;">
+                <b style="color: black;">{% trans "Test topshiriqlarini abrabatsiyadan o'tkazish" %}</b>
+        </span>
+        </li>
+        <li class="navbar-form flex-grow-1"></li>
+        <li class="dropdown navbar-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {% if request.user.avatar %}
                     <img src="{{ request.user.avatar }}" alt=""/>
-                {% else %}
-                    <img src="{% static 'img/no-image.png' %}" alt=""/>
+                    {% else %}
+                    <img src="{% static 'img/no-image.png' %}" alt="no image">
                 {% endif %}
-                <span class="d-none d-md-inline">{{ request.user.full_name }}</span>
+                <span class="d-none d-md-inline">{{ request.user.full_name }}</span><b class="caret"></b>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{% url 'logout' %}" class="dropdown-item">
-                    <i class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">logout</i>
-                    {% trans "Chiqish" %}
-                </a>
+                <a href="{% url 'logout' %}" class="dropdown-item"><i
+                        class="icon-logout  p-r-10"></i><span>{% trans "Chiqish" %}</span></a>
             </div>
-        </div>
-    </div>
+        </li>
+    </ul>
 </div>
