@@ -187,7 +187,7 @@ def delete_journal_number(request, pk):
 @allowed_users(role=['admin', 'editor'])
 def journal_dashboard(request):
     user = User.objects.get(pk=request.user.id)
-    journals = Journal.objects.all().order_by('-id')
+    journals = Journal.objects.all().order_by('year__year', 'number__number')
     head_template = get_object_or_404(TemplateFile, code_name=1)
     articles = Article.objects.filter(article_status_id=2, is_publish=True, is_publish_journal=False) \
         .order_by('year', 'number', 'order_page')
