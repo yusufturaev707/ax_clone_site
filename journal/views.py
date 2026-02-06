@@ -602,7 +602,7 @@ def edit_journal(request, pk):
 
 
 @login_required(login_url='login')
-@allowed_users(role=['admin', 'editor'])
+@allowed_users(role=['admin'])
 def delete_journal(request, pk):
     journal = get_object_or_404(Journal, pk=pk)
     if request.method == "POST" and is_ajax(request):
