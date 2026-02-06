@@ -678,7 +678,7 @@ def journal_detail(request, pk):
 
 
 def journals_list(request):
-    objects = JournalYear.objects.filter(status=True)
+    objects = JournalYear.objects.filter(status=True).order_by('year')
     context = {
         'objects': objects,
     }
