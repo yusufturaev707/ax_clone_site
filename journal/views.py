@@ -473,126 +473,133 @@ def upload_template(request):
 def edit_journal(request, pk):
     journal = get_object_or_404(Journal, pk=pk)
     if request.method == "POST" and is_ajax(request):
-        form = UpdateJournalForm(request.POST, request.FILES, instance=journal)
-        if not form.has_changed():
-            data = {"message": _("Jurnal ma'lumotlarida o'zgarish yo'q!"), "result": False}
-            return JsonResponse(data)
-        if form.is_valid():
-            journal_ob = form.save(commit=False)
-            if journal.is_split and journal.file_pdf and journal.file_mundarija and journal.file_head_pdf and journal.status:
-                journal_ob.is_publish = True
-                journal_ob.save()
+        try:
+            form = UpdateJournalForm(request.POST, request.FILES, instance=journal)
+            if not form.has_changed():
+                data = {"message": _("Jurnal ma'lumotlarida o'zgarish yo'q!"), "result": False}
+                return JsonResponse(data)
+            if form.is_valid():
+                journal_ob = form.save(commit=False)
+                if journal.is_split and journal.file_pdf and journal.file_mundarija and journal.file_head_pdf and journal.status:
+                    journal_ob.is_publish = True
+                    journal_ob.save()
+
+                    data = {
+                        "result": True,
+                        "message": _("Muvaffaqiyatli saytga publish qilindi!")
+                    }
+                    return JsonResponse(data)
+                else:
+                    journal_ob.is_publish = False
+                    journal_ob.save()
+
+                file_pdf_head = journal.file_head_pdf.path
+
+                reader = PyPDF2.PdfReader(file_pdf_head)
+                pages_count = len(reader.pages)
+                journal.count_of_head_file = pages_count
+
+                j_articles = JournalArticle.objects.filter(journal=journal).order_by('order_page')
+                s_page_number = journal.count_of_head_file
+
+                merger1 = PdfMerger()
+
+                for item in j_articles:
+                    article = get_object_or_404(Article, pk=item.article.id)
+
+                    file_pdf_ch = article.checked_upload_file.path
+                    merger1.append(file_pdf_ch)
+
+                    pdf = PyPDF2.PdfReader(file_pdf_ch)
+                    pages_count = len(pdf.pages)
+
+                    article.start_page = s_page_number + 1
+                    item.start_page = s_page_number + 1
+                    s_page_number += pages_count
+                    article.end_page = s_page_number
+                    item.end_page = s_page_number
+                    article.save()
+                    item.save()
+
+                merger1.write(f"{cwd}/media/files/pdf_files/{journal.id}.pdf")
+                merger1.close()
+                journal.file_pdf = f"files/pdf_files/{journal.id}.pdf"
+                journal.save()
+
+                file_content_pdf = journal.file_pdf.path
+                merger2 = PdfMerger()
+                merger2.append(file_pdf_head)
+                merger2.append(file_content_pdf)
+                merger2.write(f"{cwd}/media/files/pdf_files/{journal.year}-{journal.number}-{journal.id}.pdf")
+                merger2.close()
+
+                if journal.file_pdf:
+                    journal.file_pdf.delete()
+                journal.file_pdf = f"files/pdf_files/{journal.year}-{journal.number}-{journal.id}.pdf"
+                journal.save()
+
+                existing_pdf = PyPDF2.PdfReader(open(journal.file_pdf.path, "rb"))
+
+                output = PyPDF2.PdfWriter()
+
+                for i in range(len(existing_pdf.pages)):
+                    packet = io.BytesIO()
+                    can = canvas.Canvas(packet, pagesize=A4)
+                    if i == 0:
+                        can.drawString(290, 30, "")
+                    else:
+                        can.drawString(290, 30, f"{i + 1}")
+                    can.save()
+                    packet.seek(0)
+
+                    new_pdf = PyPDF2.PdfReader(packet)
+                    page = existing_pdf.pages[int(i)]
+                    page.merge_page(new_pdf.pages[0])
+                    output.add_page(page)
+
+                out_file_path = f"{cwd}/media/files/journals/finish/{journal.year}-{journal.number}-{journal.id}.pdf"
+                with open(out_file_path, "wb") as f:
+                    output.write(f)
+                    f.close()
+
+                journal.file_pdf = f"files/journals/finish/{journal.year}-{journal.number}-{journal.id}.pdf"
+                journal.save()
+
+                pdf = PyPDF2.PdfReader(journal.file_pdf.path)
+                j_articles = JournalArticle.objects.filter(journal=journal).order_by('order_page')
+                for item in j_articles:
+                    newpdf = PyPDF2.PdfWriter()
+                    for j in range(item.article.start_page, item.article.end_page + 1, 1):
+                        newpdf.add_page(pdf.pages[j - 1])
+
+                    out_path = f"{cwd}/media/files/journals/split_article/{item.article.id}.pdf"
+                    save_path = f"files/journals/split_article/{item.article.id}.pdf"
+
+                    with open(out_path, "wb") as out:
+                        newpdf.write(out)
+
+                    if journal.is_publish:
+                        item.article_pdf = save_path
+                        item.article.is_publish_journal = True
+                        item.article.save()
+                        item.article_pdf = save_path
+                        item.save()
 
                 data = {
                     "result": True,
-                    "message": _("Muvaffaqiyatli saytga publish qilindi!")
+                    "message": _("Muvaffaqiyatli bajarildi!")
                 }
                 return JsonResponse(data)
             else:
-                journal_ob.is_publish = False
-                journal_ob.save()
-
-            file_pdf_head = journal.file_head_pdf.path
-
-            reader = PyPDF2.PdfReader(file_pdf_head)
-            pages_count = len(reader.pages)
-            journal.count_of_head_file = pages_count
-
-            j_articles = JournalArticle.objects.filter(journal=journal).order_by('order_page')
-            s_page_number = journal.count_of_head_file
-
-            merger1 = PdfMerger()
-
-            for item in j_articles:
-                article = get_object_or_404(Article, pk=item.article.id)
-
-                file_pdf_ch = article.checked_upload_file.path
-                merger1.append(file_pdf_ch)
-
-                pdf = PyPDF2.PdfReader(file_pdf_ch)
-                pages_count = len(pdf.pages)
-
-                article.start_page = s_page_number + 1
-                item.start_page = s_page_number + 1
-                s_page_number += pages_count
-                article.end_page = s_page_number
-                item.end_page = s_page_number
-                article.save()
-                item.save()
-
-            merger1.write(f"{cwd}/media/files/pdf_files/{journal.id}.pdf")
-            merger1.close()
-            journal.file_pdf = f"files/pdf_files/{journal.id}.pdf"
-            journal.save()
-
-            file_content_pdf = journal.file_pdf.path
-            merger2 = PdfMerger()
-            merger2.append(file_pdf_head)
-            merger2.append(file_content_pdf)
-            merger2.write(f"{cwd}/media/files/pdf_files/{journal.year}-{journal.number}-{journal.id}.pdf")
-            merger2.close()
-
-            if journal.file_pdf:
-                journal.file_pdf.delete()
-            journal.file_pdf = f"files/pdf_files/{journal.year}-{journal.number}-{journal.id}.pdf"
-            journal.save()
-
-            existing_pdf = PyPDF2.PdfReader(open(journal.file_pdf.path, "rb"))
-
-            output = PyPDF2.PdfWriter()
-
-            for i in range(len(existing_pdf.pages)):
-                packet = io.BytesIO()
-                can = canvas.Canvas(packet, pagesize=A4)
-                if i == 0:
-                    can.drawString(290, 30, "")
-                else:
-                    can.drawString(290, 30, f"{i + 1}")
-                can.save()
-                packet.seek(0)
-
-                new_pdf = PyPDF2.PdfReader(packet)
-                page = existing_pdf.pages[int(i)]
-                page.merge_page(new_pdf.pages[0])
-                output.add_page(page)
-
-            out_file_path = f"{cwd}/media/files/journals/finish/{journal.year}-{journal.number}-{journal.id}.pdf"
-            with open(out_file_path, "wb") as f:
-                output.write(f)
-                f.close()
-
-            journal.file_pdf = f"files/journals/finish/{journal.year}-{journal.number}-{journal.id}.pdf"
-            journal.save()
-
-            pdf = PyPDF2.PdfReader(journal.file_pdf.path)
-            j_articles = JournalArticle.objects.filter(journal=journal).order_by('order_page')
-            for item in j_articles:
-                newpdf = PyPDF2.PdfWriter()
-                for j in range(item.article.start_page, item.article.end_page + 1, 1):
-                    newpdf.add_page(pdf.pages[j - 1])
-
-                out_path = f"{cwd}/media/files/journals/split_article/{item.article.id}.pdf"
-                save_path = f"files/journals/split_article/{item.article.id}.pdf"
-
-                with open(out_path, "wb") as out:
-                    newpdf.write(out)
-
-                if journal.is_publish:
-                    item.article_pdf = save_path
-                    item.article.is_publish_journal = True
-                    item.article.save()
-                    item.article_pdf = save_path
-                    item.save()
-
-            data = {
-                "result": True,
-                "message": _("Muvaffaqiyatli bajarildi!")
-            }
-            return JsonResponse(data)
-        else:
+                data = {
+                    "result": False,
+                    "message": _(f"{form.errors}!")
+                }
+                return JsonResponse(data)
+        except Exception as e:
             data = {
                 "result": False,
-                "message": _(f"{form.errors}!")
+                "message": _(f"{e}!")
             }
             return JsonResponse(data)
 
